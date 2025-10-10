@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\SDU\\Group Project Semester 1\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul.csproj",
+      "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\SDU\\Group Project Semester 1\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul.csproj",
       "projectName": "WorldOfZuul",
-      "projectPath": "C:\\Users\\Lenovo\\Desktop\\SDU\\Group Project Semester 1\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul.csproj",
+      "projectPath": "C:\\Users\\Lenovo\\Desktop\\SDU\\Group Project Semester 1\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul.csproj",
       "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Lenovo\\Desktop\\SDU\\Group Project Semester 1\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul\\obj\\",
+      "outputPath": "C:\\Users\\Lenovo\\Desktop\\SDU\\Group Project Semester 1\\WorldOfZuul\\WorldOfZuul\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config"
