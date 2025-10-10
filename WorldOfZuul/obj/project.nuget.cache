@@ -1,13 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "iouU8BdqwKQ=",
+  "dgSpecHash": "yg2r9GWzXOY=",
   "success": true,
-  "projectFilePath": "C:\\Users\\edris\\Documents\\GitHub\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\edris\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.36\\microsoft.netcore.app.ref.6.0.36.nupkg.sha512",
-    "C:\\Users\\edris\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.36\\microsoft.windowsdesktop.app.ref.6.0.36.nupkg.sha512",
-    "C:\\Users\\edris\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.36\\microsoft.aspnetcore.app.ref.6.0.36.nupkg.sha512",
-    "C:\\Users\\edris\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.36\\microsoft.netcore.app.host.win-x64.6.0.36.nupkg.sha512"
-  ],
+  "projectFilePath": "C:\\Users\\Lenovo\\Desktop\\SDU\\Group Project Semester 1\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }
