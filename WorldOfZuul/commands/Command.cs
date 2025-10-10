@@ -14,7 +14,11 @@ namespace WorldOfZuul
         public Command(string name, string? secondWord = null)
         {
             Name = name;
+<<<<<<< Updated upstream:WorldOfZuul/commands/Command.cs
             SecondWord = secondWord;
+=======
+            SecondWord = secondWord;//daje roma
+>>>>>>> Stashed changes:WorldOfZuul/Command.cs
         }
     }
 }
