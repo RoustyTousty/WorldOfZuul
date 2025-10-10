@@ -14,7 +14,7 @@ namespace WorldOfZuul
         public Command(string name, string? secondWord = null)
         {
             Name = name;
-            SecondWord = secondWord;
+            SecondWord = secondWord;   //change test comment hi :333 
         }
     }
 }
