@@ -8,16 +8,11 @@
     "net6.0": []
   },
   "packageFolders": {
-<<<<<<< HEAD
     "C:\\Users\\Lenovo\\.nuget\\packages\\": {}
-=======
-    "C:\\Users\\MS\\.nuget\\packages\\": {}
->>>>>>> 6c63f0f0830b595ea9c247a171462f265bedc73f
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
       "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\SDU\\Group Project Semester 1\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul.csproj",
       "projectName": "WorldOfZuul",
       "projectPath": "C:\\Users\\Lenovo\\Desktop\\SDU\\Group Project Semester 1\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul.csproj",
@@ -26,16 +21,6 @@
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config"
-=======
-      "projectUniqueName": "C:\\Users\\MS\\Documents\\GitHub\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul.csproj",
-      "projectName": "WorldOfZuul",
-      "projectPath": "C:\\Users\\MS\\Documents\\GitHub\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul.csproj",
-      "packagesPath": "C:\\Users\\MS\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\MS\\Documents\\GitHub\\WorldOfZuul\\WorldOfZuul\\obj\\",
-      "projectStyle": "PackageReference",
-      "configFilePaths": [
-        "C:\\Users\\MS\\AppData\\Roaming\\NuGet\\NuGet.Config"
->>>>>>> 6c63f0f0830b595ea9c247a171462f265bedc73f
       ],
       "originalTargetFrameworks": [
         "net6.0"
