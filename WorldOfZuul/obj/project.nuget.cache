@@ -1,14 +1,8 @@
 {
   "version": 2,
-<<<<<<< HEAD
   "dgSpecHash": "yg2r9GWzXOY=",
   "success": true,
   "projectFilePath": "C:\\Users\\Lenovo\\Desktop\\SDU\\Group Project Semester 1\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul.csproj",
-=======
-  "dgSpecHash": "YwN1aGWl7xE=",
-  "success": true,
-  "projectFilePath": "C:\\Users\\MS\\Documents\\GitHub\\WorldOfZuul\\WorldOfZuul\\WorldOfZuul.csproj",
->>>>>>> 6c63f0f0830b595ea9c247a171462f265bedc73f
   "expectedPackageFiles": [],
   "logs": []
 }
