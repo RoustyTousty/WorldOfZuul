@@ -1,0 +1,48 @@
+{
+  "locations": [
+    {
+      "id": "hospital",
+      "name": "Hospital",
+      "rooms": [
+        {
+          "id": "lobby",
+          "name": "Hospital Lobby",
+          "description": "You are in the hospital lobby.",
+          "exits": [
+            { "name": "ward", "targetRoomId": "ward" }
+          ]
+        },
+        {
+          "id": "ward",
+          "name": "Ward",
+          "description": "This is the hospital ward.",
+          "exits": [
+            { "name": "lobby", "targetRoomId": "lobby" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "school",
+      "name": "School",
+      "rooms": [
+        {
+          "id": "entrance",
+          "name": "School Entrance",
+          "description": "You are at the school entrance.",
+          "exits": [
+            { "name": "classroom", "targetRoomId": "classroom" }
+          ]
+        },
+        {
+          "id": "classroom",
+          "name": "Classroom",
+          "description": "This is a classroom.",
+          "exits": [
+            { "name": "entrance", "targetRoomId": "entrance" }
+          ]
+        }
+      ]
+    }
+  ]
+}

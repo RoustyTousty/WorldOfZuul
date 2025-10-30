@@ -1,51 +1,37 @@
-﻿namespace WorldOfZuul
+﻿using WorldOfZuul.World;
+using WorldOfZuul.Entities;
+
+namespace WorldOfZuul
 {
     public class Game
     {
-        private Room? currentRoom;
-        private Room? previousRoom;
+        private const string DEFAULT_PLAYER_NAME = "Bomboclat";
+
+        private Player? player;
 
         public Game()
         {
-            CreateRooms();
-        }
+            Builder builder = new Builder();
+            Map map = builder.BuildMapFromJSON();
 
-        private void CreateRooms()
-        {
-  
-            Room? outside = new("Outside", "You are standing outside the main entrance of the university. To the east is a large building, to the south is a computing lab, and to the west is the campus pub.");
-            Room? theatre = new("Theatre", "You find yourself inside a large lecture theatre. Rows of seats ascend up to the back, and there's a podium at the front. It's quite dark and quiet.");
-            Room? pub = new("Pub", "You've entered the campus pub. It's a cozy place, with a few students chatting over drinks. There's a bar near you and some pool tables at the far end.");
-            Room? lab = new("Lab", "You're in a computing lab. Desks with computers line the walls, and there's an office to the east. The hum of machines fills the room.");
-            Room? office = new("Office", "You've entered what seems to be an administration office. There's a large desk with a computer on it, and some bookshelves lining one wall.");
+            string name = PromptPlayerName();
 
-            outside.SetExits(null, theatre, lab, pub); // North, East, South, West
-
-            theatre.SetExit("west", outside);
-
-            pub.SetExit("east", outside);
-
-            lab.SetExits(outside, office, null, null);
-
-            office.SetExit("west", lab);
-
-            currentRoom = outside;
+            player = new Player(name, map.Locations[0]);
         }
 
         public void Play()
         {
             Parser parser = new();
-
             PrintWelcome();
 
             bool continuePlaying = true;
+
             while (continuePlaying)
             {
-                Console.WriteLine(currentRoom?.ShortDescription);
+                Console.WriteLine($"Current room: {player?.CurrentRoom.Name}");
                 Console.Write("> ");
 
                 string? input = Console.ReadLine();
-
                 if (string.IsNullOrEmpty(input))
                 {
                     Console.WriteLine("Please enter a command.");
@@ -53,31 +39,38 @@
                 }
 
                 Command? command = parser.GetCommand(input);
-
                 if (command == null)
                 {
                     Console.WriteLine("I don't know that command.");
                     continue;
                 }
 
-                switch(command.Name)
+                switch (command.Name)
                 {
                     case "look":
-                        Console.WriteLine(currentRoom?.LongDescription);
+                        player?.Look();
                         break;
 
                     case "back":
-                        if (previousRoom == null)
-                            Console.WriteLine("You can't go back from here!");
+                        if (player != null && player.GoBack())
+                            Console.WriteLine($"You return to {player.CurrentRoom.Name}.");
                         else
-                            currentRoom = previousRoom;
+                            Console.WriteLine("You can't go back from here!");
                         break;
 
-                    case "north":
-                    case "south":
-                    case "east":
-                    case "west":
-                        Move(command.Name);
+                    case "move":
+                        if (command.SecondWord == null)
+                        {
+                            Console.WriteLine("Move where?");
+                        }
+                        else if (player != null && player.Move(command.SecondWord))
+                        {
+                            Console.WriteLine($"You move to {player.CurrentRoom.Name}.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"You can't go to '{command.SecondWord}'.");
+                        }
                         break;
 
                     case "quit":
@@ -89,7 +82,7 @@
                         break;
 
                     default:
-                        Console.WriteLine("I don't know what command.");
+                        Console.WriteLine("I don't know that command.");
                         break;
                 }
             }
@@ -97,19 +90,24 @@
             Console.WriteLine("Thank you for playing World of Zuul!");
         }
 
-        private void Move(string direction)
+        private static string PromptPlayerName()
         {
-            if (currentRoom?.Exits.ContainsKey(direction) == true)
+            Console.WriteLine("Enter your name!");
+            Console.Write("> ");
+            string? name = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(name))
             {
-                previousRoom = currentRoom;
-                currentRoom = currentRoom?.Exits[direction];
+                name = DEFAULT_PLAYER_NAME;
+                Console.WriteLine($"No name entered. You shall be known as {name}!");
             }
             else
             {
-                Console.WriteLine($"You can't go {direction}!");
+                Console.WriteLine($"Welcome, {name}!");
             }
-        }
 
+            return name;
+        }
 
         private static void PrintWelcome()
         {
@@ -121,14 +119,12 @@
 
         private static void PrintHelp()
         {
-            Console.WriteLine("You are lost. You are alone. You wander");
-            Console.WriteLine("around the university.");
-            Console.WriteLine();
-            Console.WriteLine("Navigate by typing 'north', 'south', 'east', or 'west'.");
-            Console.WriteLine("Type 'look' for more details.");
-            Console.WriteLine("Type 'back' to go to the previous room.");
-            Console.WriteLine("Type 'help' to print this message again.");
-            Console.WriteLine("Type 'quit' to exit the game.");
+            Console.WriteLine("Commands:");
+            Console.WriteLine(" - move [exitName]");
+            Console.WriteLine(" - back");
+            Console.WriteLine(" - look");
+            Console.WriteLine(" - help");
+            Console.WriteLine(" - quit");
         }
     }
 }
