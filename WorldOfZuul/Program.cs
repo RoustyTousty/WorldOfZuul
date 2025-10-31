@@ -80,6 +80,9 @@ namespace WorldOfZuul
 {
     public class Program
     {
+        /*
+        * The main method to start the WorldOfZuul project.
+        */
         public static void Main()
         {
             Game game = new();
