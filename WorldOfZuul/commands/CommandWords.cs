@@ -1,4 +1,4 @@
-﻿namespace WorldOfZuul
+﻿namespace WorldOfZuul.Commands
 {
     public class CommandWords
     {

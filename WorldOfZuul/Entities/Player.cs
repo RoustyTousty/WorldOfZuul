@@ -18,26 +18,43 @@ namespace WorldOfZuul.Entities
             CurrentLocation = startingLocation;
         }
 
+
+
+        /*
+        * Moves the player to the room connected by the specified exit name.
+        * Returns true if the move was successful, false otherwise.
+        */
         public bool Move(string exitName)
         {
-            if (!CurrentRoom.Exits.ContainsKey(exitName))
+            Room? nextRoom = CurrentRoom.GetExitsRoom(exitName);
+            if (nextRoom == null)
                 return false;
 
             PreviousRoom = CurrentRoom;
-            CurrentRoom = CurrentRoom.GetExitsRoom(exitName);
+            CurrentRoom = nextRoom;
             return true;
         }
 
+
+
+        /*
+        * Moves the player to a new location, resetting the current room to the starting room of that location.
+        */
         public bool MoveToLocation(Location newLocation)
         {
             if (newLocation == null) return false;
-            
+
             CurrentLocation = newLocation;
             PreviousRoom = null;
             CurrentRoom = newLocation.StartingRoom;
             return true;
         }
 
+
+
+        /*
+        * Moves the player back to the previous room.
+        */
         public bool GoBack()
         {
             if (PreviousRoom == null)
@@ -49,6 +66,11 @@ namespace WorldOfZuul.Entities
             return true;
         }
 
+
+
+        /*
+        * Prints the description of the current room and its exits.
+        */
         public void Look()
         {
             Console.WriteLine(CurrentRoom.Description);

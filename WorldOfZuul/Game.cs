@@ -1,5 +1,6 @@
 ﻿using WorldOfZuul.World;
 using WorldOfZuul.Entities;
+using WorldOfZuul.Commands;
 
 namespace WorldOfZuul
 {
@@ -11,6 +12,9 @@ namespace WorldOfZuul
 
         public Game()
         {
+            /*
+            * Build the game world and setup the player.
+            */
             Builder builder = new Builder();
             Map map = builder.BuildMapFromJSON();
 
@@ -19,6 +23,12 @@ namespace WorldOfZuul
             player = new Player(name, map.Locations[0]);
         }
 
+
+
+        /*   
+        * Main play cycle. Loops until end of the game.
+        * Manages user input (Commands) and executes them.
+        */
         public void Play()
         {
             Parser parser = new();
@@ -90,6 +100,11 @@ namespace WorldOfZuul
             Console.WriteLine("Thank you for playing World of Zuul!");
         }
 
+
+
+        /*        
+        * Prompts the player to enter their name. If no name is entered, a default name is assigned.
+        */
         private static string PromptPlayerName()
         {
             Console.WriteLine("Enter your name!");
@@ -109,6 +124,11 @@ namespace WorldOfZuul
             return name;
         }
 
+
+
+        /*        
+        * Prints the welcome message.
+        */
         private static void PrintWelcome()
         {
             Console.WriteLine("Welcome to the World of Zuul!");
@@ -117,6 +137,11 @@ namespace WorldOfZuul
             Console.WriteLine();
         }
 
+
+
+        /*
+        * Prints the help message and lists available commands and their usage.
+        */
         private static void PrintHelp()
         {
             Console.WriteLine("Commands:");

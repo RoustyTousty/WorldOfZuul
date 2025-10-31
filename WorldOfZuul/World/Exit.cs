@@ -1,5 +1,12 @@
+using WorldOfZuul.Item;
+
 namespace WorldOfZuul.World
 {
+    /*
+    * Exit class representing a connection from one room to another.
+    * Acts as a doorway or path between rooms.
+    * Works one way.
+    */
     public class Exit
     {
         public string Name { get; set; }
@@ -15,16 +22,20 @@ namespace WorldOfZuul.World
             KeyItemId = keyItemId;
         }
 
-        public bool TryUnlock(Item.Item byItem)
-        {
-            if (!IsLocked) return true;
-            if (byItem == null) return false;
-            if (KeyItemId != null && byItem.Id == KeyItemId)
-            {
-                IsLocked = false;
-                return true;
-            }
-            return false;
-        }
+        /*
+        * Attempts to unlock the exit using the provided item.
+        * TODO: Implement item checking logic.
+        */
+        // public bool TryUnlock(Item byItem)
+        // {
+        //     if (!IsLocked) return true;
+        //     if (byItem == null) return false;
+        //     if (KeyItemId != null && byItem.Id == KeyItemId)
+        //     {
+        //         IsLocked = false;
+        //         return true;
+        //     }
+        //     return false;
+        // }
     }
 }
