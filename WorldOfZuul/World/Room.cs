@@ -57,7 +57,7 @@
             else
             {
                 Console.WriteLine("Items in " + Name + ": ");
-                foreach(var item in Items)
+                foreach (var item in Items)
                 {
                     Console.WriteLine($"- {item.ItemName}");
                 }

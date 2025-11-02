@@ -87,20 +87,26 @@ namespace WorldOfZuul
     */
     public class WorldData
     {
-        public List<LocationData> Locations { get; set; } = new List<LocationData>();
+        public List<LocationData> Locations { get; } = new List<LocationData>();
     }
     public class LocationData
     {
-        public string Id { get; set; } = string.Empty;
+        public string Id { get; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public List<RoomData> Rooms { get; set; } = new List<RoomData>();
     }
     public class RoomData
     {
-        public string Id { get; set; } = string.Empty;
+        public string Id { get; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public List<ExitData>? Exits { get; set; }
+    }
+    public class ItemData
+    {
+        public string Id { get; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
     }
     public class ExitData
     {

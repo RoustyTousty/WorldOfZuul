@@ -1,22 +1,23 @@
 namespace WorldOfZuul.Item
 {
-
     public class Item
     {
-        public string ItemName { get; set; }
-        public string ItemDesc { get; set; }
+        public string Id { get; }
+        public string Name { get; set; }
+        public string Description { get; set; }
 
 
-        public Item(string itemName, string itemDesc)
+        public Item(string id, string name, string description)
         {
-            ItemName = itemName;
-            ItemDesc = itemDesc;
+            Id = id;
+            Name = name;
+            Description = description;
         }
 
 
         public string Inspect()
         {
-            return ItemDesc;
+            return Description;
         }
 
 

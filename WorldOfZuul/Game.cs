@@ -124,7 +124,7 @@ namespace WorldOfZuul
             if (string.IsNullOrWhiteSpace(name))
             {
                 name = DEFAULT_PLAYER_NAME;
-                Console.WriteLine($"No name entered. You shall be known as {name}!");
+                Console.WriteLine($"No name entered. You will be known as {name}!");
             }
             else
             {
