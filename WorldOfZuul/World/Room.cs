@@ -10,7 +10,7 @@
         public string Description { get; set; }
 
         public Dictionary<string, Exit> Exits { get; } = new();
-        // public List<Item.Item> Items { get; } = new();
+        public List<Item.Item> Items { get; } = new();
         // public List<Entities.Npc> Npcs { get; } = new();
         // public List<Events.IEvent> Triggers { get; } = new();
 
@@ -46,5 +46,25 @@
             if (string.IsNullOrWhiteSpace(name) || exit == null) return;
             Exits[name] = exit;
         }
+
+
+        public void ItemInside()
+        {
+            if (Items.Count == 0)
+            {
+                Console.WriteLine("You see no items.");
+            }
+            else
+            {
+                Console.WriteLine("Items in " + Name + ": ");
+                foreach(var item in Items)
+                {
+                    Console.WriteLine($"- {item.ItemName}");
+                }
+            }
+        }
+
+
+
     }
 }

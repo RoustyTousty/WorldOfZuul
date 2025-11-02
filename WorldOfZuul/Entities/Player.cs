@@ -78,6 +78,9 @@ namespace WorldOfZuul.Entities
             foreach (var exit in CurrentRoom.Exits)
                 Console.Write(exit.Key + ", ");
             Console.WriteLine();
+            CurrentRoom.ItemInside();
         }
+
+    
     }
 }

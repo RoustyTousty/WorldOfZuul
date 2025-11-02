@@ -21,6 +21,7 @@ namespace WorldOfZuul
             string name = PromptPlayerName();
 
             player = new Player(name, map.Locations[0]);
+
         }
 
 
@@ -59,8 +60,17 @@ namespace WorldOfZuul
                 {
                     case "look":
                         player?.Look();
+                        
                         break;
 
+                    case "inspect":
+                        if (command.SecondWord == null)
+                        {
+                            Console.WriteLine("Inspect what?");
+                        }
+                        
+                        break;
+                        
                     case "back":
                         if (player != null && player.GoBack())
                             Console.WriteLine($"You return to {player.CurrentRoom.Name}.");
