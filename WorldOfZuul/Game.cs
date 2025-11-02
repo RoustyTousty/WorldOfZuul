@@ -22,9 +22,10 @@ namespace WorldOfZuul
 
             player = new Player(name, map.Locations[0]);
 
+            
         }
 
-
+        
 
         /*   
         * Main play cycle. Loops until end of the game.
@@ -34,7 +35,7 @@ namespace WorldOfZuul
         {
             Parser parser = new();
             PrintWelcome();
-
+            
             bool continuePlaying = true;
 
             while (continuePlaying)
@@ -55,7 +56,7 @@ namespace WorldOfZuul
                     Console.WriteLine("I don't know that command.");
                     continue;
                 }
-
+                
                 switch (command.Name)
                 {
                     case "look":
@@ -68,7 +69,8 @@ namespace WorldOfZuul
                         {
                             Console.WriteLine("Inspect what?");
                         }
-                        
+                       
+                                                
                         break;
                         
                     case "back":
