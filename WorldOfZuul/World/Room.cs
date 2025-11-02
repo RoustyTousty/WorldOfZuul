@@ -46,25 +46,5 @@
             if (string.IsNullOrWhiteSpace(name) || exit == null) return;
             Exits[name] = exit;
         }
-
-
-        public void ItemInside()
-        {
-            if (Items.Count == 0)
-            {
-                Console.WriteLine("You see no items.");
-            }
-            else
-            {
-                Console.WriteLine("Items in " + Name + ": ");
-                foreach (var item in Items)
-                {
-                    Console.WriteLine($"- {item.ItemName}");
-                }
-            }
-        }
-
-
-
     }
 }
