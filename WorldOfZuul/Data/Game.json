@@ -12,6 +12,10 @@
             { "name": "ward", "targetRoomId": "ward" },
             { "name": "cafeteria", "targetRoomId": "cafeteria" },
             { "name": "emergency", "targetRoomId": "emergency" }
+          ],
+          "Items": [
+            { "id": "mask", "name": "Surgical Mask", "description": "A disposable surgical mask to protect against germs." },
+            { "id": "gloves", "name": "Latex Gloves", "description": "A pair of latex gloves for hygiene." }
           ]
         },
         {

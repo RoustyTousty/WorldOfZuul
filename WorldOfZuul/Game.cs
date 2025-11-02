@@ -21,8 +21,6 @@ namespace WorldOfZuul
             string name = PromptPlayerName();
 
             player = new Player(name, map.Locations[0]);
-
-            
         }
 
         

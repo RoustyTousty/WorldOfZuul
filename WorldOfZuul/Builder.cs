@@ -69,7 +69,22 @@ namespace WorldOfZuul
                     }
                 }
 
-                // TODO: Create items (Once we have items)
+                /*
+                * Reads items from JSON and places them in the appropriate rooms.
+                * TODO: Implement item types builder.
+                */
+                foreach (var roomData in locData.Rooms)
+                {
+                    Room room = roomLookup[roomData.Id];
+                    if (roomData.Items != null)
+                    {
+                        foreach (var itemData in roomData.Items)
+                        {
+                            Item.Item item = new Item.Item(itemData.Id, itemData.Name, itemData.Description);
+                            room.Items.Add(item);
+                        }
+                    }
+                }
 
                 // TODO: Create NPCs (Once we have npcs)
 
@@ -87,24 +102,25 @@ namespace WorldOfZuul
     */
     public class WorldData
     {
-        public List<LocationData> Locations { get; } = new List<LocationData>();
+        public List<LocationData> Locations { get; set; } = new List<LocationData>();
     }
     public class LocationData
     {
-        public string Id { get; } = string.Empty;
+        public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public List<RoomData> Rooms { get; set; } = new List<RoomData>();
     }
     public class RoomData
     {
-        public string Id { get; } = string.Empty;
+        public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public List<ExitData>? Exits { get; set; }
+        public List<ItemData>? Items { get; set; }
     }
     public class ItemData
     {
-        public string Id { get; } = string.Empty;
+        public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
     }

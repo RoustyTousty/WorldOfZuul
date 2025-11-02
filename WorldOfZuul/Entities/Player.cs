@@ -66,7 +66,8 @@ namespace WorldOfZuul.Entities
             return true;
         }
 
-        
+
+
         /*
         * Prints the description of the current room and its exits.
         */
@@ -77,28 +78,20 @@ namespace WorldOfZuul.Entities
 
             foreach (var exit in CurrentRoom.Exits)
                 Console.Write(exit.Key + ", ");
-            
+
             Console.WriteLine();
 
-        /*
-        * Lists all items present in the current room.
-        */
-            if (CurrentRoom.Items.Count == 0)
+            /*
+            * Lists all items present in the current room.
+            */
+            if (CurrentRoom.Items.Count > 0)
             {
-                Console.WriteLine("You see no items.");
-            }
-            else
-            {
-                Console.WriteLine("Items in " + Name + ": ");
+                Console.WriteLine("Items in " + CurrentRoom.Name + ": ");
                 foreach (var item in CurrentRoom.Items)
                 {
-                    Console.WriteLine($"- {item.ItemName}");
+                    Console.WriteLine($"- {item.Name}");
                 }
             }
         }
-
-    
-        
-
     }
 }

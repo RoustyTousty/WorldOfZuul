@@ -13,6 +13,10 @@ EXAMPLE JSON STRUCTURE (HOW TO ADD NEW LOCATIONS AND ROOMS)
                     "exits": [
                         { "name": "exitName", "targetRoomId": "id_of_target_room" },
                         { "name": "otherExitName", "targetRoomId": "another_room_id" }
+                    ],
+                    "items": [
+                        { "id": "unique_item_id", "name": "itemName", "description": "itemDescription"}, -- Later will add item types here as well
+                        { "id": "other_unique_item_id", "name": "otherItemName", "description": "otherItemDescription"}
                     ]
                 }
             ]
