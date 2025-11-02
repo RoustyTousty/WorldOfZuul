@@ -1,4 +1,6 @@
-﻿namespace WorldOfZuul.World
+﻿using WorldOfZuul.Items;
+
+namespace WorldOfZuul.World
 {
     /*
     * Room class representing a location in the game world.
@@ -10,7 +12,7 @@
         public string Description { get; set; }
 
         public Dictionary<string, Exit> Exits { get; } = new();
-        public List<Item.Item> Items { get; } = new();
+        public List<Item> Items { get; } = new();
         // public List<Entities.Npc> Npcs { get; } = new();
         // public List<Events.IEvent> Triggers { get; } = new();
 
@@ -24,14 +26,14 @@
 
 
         /*
-        * Get the room that an exit leads to by exit name.
+        * Get the exit that matches the given name.
         * Returns null if the exit does not exist.
         */
-        public Room? GetExitsRoom(string name)
+        public Exit? GetExit(string name)
         {
             if (Exits.TryGetValue(name, out var exit))
             {
-                return exit.TargetRoom;
+                return exit;
             }
             return null;
         }
@@ -43,7 +45,7 @@
         */
         public void SetExit(string name, Exit exit)
         {
-            if (string.IsNullOrWhiteSpace(name) || exit == null) return;
+            if (name == null || exit == null) return;
             Exits[name] = exit;
         }
     }

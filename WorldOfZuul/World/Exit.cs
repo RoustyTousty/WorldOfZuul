@@ -1,41 +1,33 @@
-using WorldOfZuul.Item;
-
 namespace WorldOfZuul.World
 {
     /*
     * Exit class representing a connection from one room to another.
-    * Acts as a doorway or path between rooms.
-    * Works one way.
+    * Acts as a doorway or path between rooms, but works one way and can be locked.
     */
     public class Exit
     {
+        // TODO: Small refactor and add Ids to exits.
         public string Name { get; set; }
         public Room TargetRoom { get; set; }
         public bool IsLocked { get; private set; } = false;
         public string? KeyItemId { get; set; }
 
-        public Exit(string name, Room targetRoom, bool locked = false, string? keyItemId = null)
+        public Exit(string name, Room targetRoom, bool isLocked = false, string? keyItemId = null)
         {
             Name = name;
             TargetRoom = targetRoom;
-            IsLocked = locked;
+            IsLocked = isLocked;
             KeyItemId = keyItemId;
         }
 
+
+
         /*
-        * Attempts to unlock the exit using the provided item.
-        * TODO: Implement item checking logic.
+        * Unlocks the exit. (method for encapsulating unlocking)
         */
-        // public bool TryUnlock(Item byItem)
-        // {
-        //     if (!IsLocked) return true;
-        //     if (byItem == null) return false;
-        //     if (KeyItemId != null && byItem.Id == KeyItemId)
-        //     {
-        //         IsLocked = false;
-        //         return true;
-        //     }
-        //     return false;
-        // }
+        public void Unlock()
+        {
+            IsLocked = false;
+        }
     }
 }

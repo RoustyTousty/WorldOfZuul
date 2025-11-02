@@ -1,4 +1,4 @@
-namespace WorldOfZuul.Item
+namespace WorldOfZuul.Items
 {
 
 }

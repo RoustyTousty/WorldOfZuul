@@ -79,18 +79,16 @@ namespace WorldOfZuul
                         break;
 
                     case "move":
+                        if (player == null)
+                            break;
+
                         if (command.SecondWord == null)
                         {
                             Console.WriteLine("Move where?");
+                            break;
                         }
-                        else if (player != null && player.Move(command.SecondWord))
-                        {
-                            Console.WriteLine($"You move to {player.CurrentRoom.Name}.");
-                        }
-                        else
-                        {
-                            Console.WriteLine($"You can't go to '{command.SecondWord}'.");
-                        }
+
+                        player.Move(command.SecondWord);
                         break;
 
                     case "quit":

@@ -1,5 +1,6 @@
 using System.Text.Json;
 using WorldOfZuul.World;
+using WorldOfZuul.Items;
 
 namespace WorldOfZuul
 {
@@ -46,13 +47,18 @@ namespace WorldOfZuul
                 */
                 foreach (var roomData in locData.Rooms)
                 {
-                    Room room = new Room(roomData.Id, roomData.Name, roomData.Description);
+                    Room room = new Room(
+                        roomData.Id,
+                        roomData.Name,
+                        roomData.Description
+                    );
                     roomLookup[roomData.Id] = room;
                     location.Rooms.Add(room);
                 }
 
                 /*
                 * Reads exits from JSON and links rooms together.
+                * TODO: Implement locked exits.
                 */
                 foreach (var roomData in locData.Rooms)
                 {
@@ -63,7 +69,12 @@ namespace WorldOfZuul
                         {
                             if (roomLookup.TryGetValue(exitData.TargetRoomId, out var targetRoom))
                             {
-                                room.SetExit(exitData.Name, new Exit(exitData.Name, targetRoom));
+                                Exit exit = new Exit(
+                                    exitData.Name,
+                                    targetRoom,
+                                    exitData.IsLocked ?? false
+                                );
+                                room.SetExit(exitData.Name, exit);
                             }
                         }
                     }
@@ -71,7 +82,7 @@ namespace WorldOfZuul
 
                 /*
                 * Reads items from JSON and places them in the appropriate rooms.
-                * TODO: Implement item types builder.
+                * TODO: Implement item type based builder.
                 */
                 foreach (var roomData in locData.Rooms)
                 {
@@ -80,7 +91,11 @@ namespace WorldOfZuul
                     {
                         foreach (var itemData in roomData.Items)
                         {
-                            Item.Item item = new Item.Item(itemData.Id, itemData.Name, itemData.Description);
+                            Item item = new Item(
+                                itemData.Id,
+                                itemData.Name,
+                                itemData.Description
+                            );
                             room.Items.Add(item);
                         }
                     }
@@ -128,5 +143,6 @@ namespace WorldOfZuul
     {
         public string Name { get; set; } = string.Empty;
         public string TargetRoomId { get; set; } = string.Empty;
+        public bool? IsLocked { get; set; }
     }
 }

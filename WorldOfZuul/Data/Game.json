@@ -10,7 +10,7 @@
           "description": "You are in the bright hospital lobby. A reception desk stands before you.",
           "exits": [
             { "name": "ward", "targetRoomId": "ward" },
-            { "name": "cafeteria", "targetRoomId": "cafeteria" },
+            { "name": "cafeteria", "targetRoomId": "cafeteria", "isLocked": true },
             { "name": "emergency", "targetRoomId": "emergency" }
           ],
           "Items": [

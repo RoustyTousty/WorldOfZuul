@@ -11,7 +11,7 @@ EXAMPLE JSON STRUCTURE (HOW TO ADD NEW LOCATIONS AND ROOMS)
                     "name": "Readable Room Name",
                     "description": "What the player sees when entering this room.",
                     "exits": [
-                        { "name": "exitName", "targetRoomId": "id_of_target_room" },
+                        { "name": "exitName", "targetRoomId": "id_of_target_room", "isLocked": true },
                         { "name": "otherExitName", "targetRoomId": "another_room_id" }
                     ],
                     "items": [
