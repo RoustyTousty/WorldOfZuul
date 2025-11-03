@@ -16,6 +16,30 @@
           "Items": [
             { "id": "mask", "name": "Surgical Mask", "description": "A disposable surgical mask to protect against germs." },
             { "id": "gloves", "name": "Latex Gloves", "description": "A pair of latex gloves for hygiene." }
+          ],
+          "npcs": [
+            {
+              "id": "nurse_anna",
+              "name": "Nurse Anna",
+              "description": "A tired but kind nurse checking on the patients.",
+              "dialogue": [
+                {
+                  "id": "greeting",
+                  "text": "Hello! Please keep quiet in the ward. People are resting.",
+                  "responses": [
+                    { "text": "Sorry, I’ll be quiet.", "next": "end" },
+                    { "text": "Can you help me find the doctor?", "next": "help_doctor" }
+                  ]
+                },
+                {
+                  "id": "help_doctor",
+                  "text": "You can usually find Dr. Smith in the emergency room.",
+                  "responses": [
+                    { "text": "Thanks!", "next": "end" }
+                  ]
+                }
+              ]
+            }
           ]
         },
         {

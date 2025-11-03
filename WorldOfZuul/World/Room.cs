@@ -1,4 +1,5 @@
 ﻿using WorldOfZuul.Items;
+using WorldOfZuul.Entities;
 
 namespace WorldOfZuul.World
 {
@@ -13,7 +14,7 @@ namespace WorldOfZuul.World
 
         public Dictionary<string, Exit> Exits { get; } = new();
         public List<Item> Items { get; } = new();
-        // public List<Entities.Npc> Npcs { get; } = new();
+        public List<Npc> Npcs { get; } = new();
         // public List<Events.IEvent> Triggers { get; } = new();
 
         public Room(string id, string name, string description)

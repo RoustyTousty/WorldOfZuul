@@ -1,6 +1,7 @@
 using System.Text.Json;
 using WorldOfZuul.World;
 using WorldOfZuul.Items;
+using WorldOfZuul.Entities;
 
 namespace WorldOfZuul
 {
@@ -100,7 +101,39 @@ namespace WorldOfZuul
                     }
                 }
 
-                // TODO: Create NPCs (Once we have npcs)
+                /*
+                * Reads NPCs from JSON and places them in the appropriate rooms.
+                * Setup npc dialogue trees.
+                */
+                foreach (var roomData in locData.Rooms)
+                {
+                    Room room = roomLookup[roomData.Id];
+                    if (roomData.Npcs != null)
+                    {
+                        foreach (var npcData in roomData.Npcs)
+                        {
+                            List<DialogueNode> dialogueNodes = new();
+
+                            if (npcData.Dialogue != null)
+                            {
+                                foreach (var nodeData in npcData.Dialogue)
+                                {
+                                    var responses = nodeData.Responses?.Select(r => new DialogueResponse(r.Text, r.Next)).ToList();
+                                    dialogueNodes.Add(new DialogueNode(nodeData.Id, nodeData.Text, responses));
+                                }
+                            }
+
+                            Npc npc = new Npc(
+                                npcData.Id,
+                                npcData.Name,
+                                npcData.Description,
+                                dialogueNodes
+                            );
+                            room.Npcs.Add(npc);
+                        }
+                    }
+                }
+
 
                 world.Locations.Add(location);
             }
@@ -131,6 +164,7 @@ namespace WorldOfZuul
         public string Description { get; set; } = string.Empty;
         public List<ExitData>? Exits { get; set; }
         public List<ItemData>? Items { get; set; }
+        public List<NpcData>? Npcs { get; set; }
     }
     public class ItemData
     {
@@ -143,5 +177,25 @@ namespace WorldOfZuul
         public string Name { get; set; } = string.Empty;
         public string TargetRoomId { get; set; } = string.Empty;
         public bool? IsLocked { get; set; }
+    }
+    public class NpcData
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public List<DialogueNodeData>? Dialogue { get; set; }
+    }
+
+    public class DialogueNodeData
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Text { get; set; } = string.Empty;
+        public List<DialogueResponseData>? Responses { get; set; }
+    }
+
+    public class DialogueResponseData
+    {
+        public string Text { get; set; } = string.Empty;
+        public string Next { get; set; } = string.Empty;
     }
 }

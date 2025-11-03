@@ -6,6 +6,7 @@ namespace WorldOfZuul.World
     */
     public class Map
     {
+        // TODO: Consider refactoring to use a dictionary for faster lookups. And add a constructur.
         public List<Location> Locations { get; } = new();
 
         /*

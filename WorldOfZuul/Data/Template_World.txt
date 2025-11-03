@@ -9,7 +9,7 @@ EXAMPLE JSON STRUCTURE (HOW TO ADD NEW LOCATIONS AND ROOMS)
                 {
                     "id": "unique_room_id",
                     "name": "Readable Room Name",
-                    "description": "What the player sees when entering this room.",
+                    "description": "What the player sees when looking at this room.",
                     "exits": [
                         { "name": "exitName", "targetRoomId": "id_of_target_room", "isLocked": true },
                         { "name": "otherExitName", "targetRoomId": "another_room_id" }
@@ -17,6 +17,30 @@ EXAMPLE JSON STRUCTURE (HOW TO ADD NEW LOCATIONS AND ROOMS)
                     "items": [
                         { "id": "unique_item_id", "name": "itemName", "description": "itemDescription"}, -- Later will add item types here as well
                         { "id": "other_unique_item_id", "name": "otherItemName", "description": "otherItemDescription"}
+                    ]
+                    "npcs": [
+                        {
+                            "id": "unique_npc_id",
+                            "name": "Readable Npc Name",
+                            "description": "What the player sees when looking at this npc.",
+                            "dialogue": [
+                                {
+                                    "id": "unique_dialogue_id",
+                                    "text": "What the npc says at the start of the dialogue node.",
+                                    "responses": [
+                                        { "text": "Optional Answer 1", "next": "end" },
+                                        { "text": "Optional Answer 2", "next": "target_dialogue_node_id" }
+                                    ]
+                                },
+                                    {
+                                    "id": "other_unique_dialogue_id",
+                                    "text": "What the npc says at the start of the dialogue node.",
+                                    "responses": [
+                                        { "text": "Optional Answer 1", "next": "end" }
+                                    ]
+                                }
+                            ]
+                        }
                     ]
                 }
             ]

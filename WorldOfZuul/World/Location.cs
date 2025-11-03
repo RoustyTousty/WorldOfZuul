@@ -5,6 +5,7 @@ namespace WorldOfZuul.World
     */
     public class Location
     {
+        // TODO: Small refactor. Change how StartingRoom and Rooms are handled.
         public string Id { get; }
         public string Name { get; set; }
         public List<Room> Rooms { get; } = new();

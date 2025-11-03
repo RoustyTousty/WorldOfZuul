@@ -116,6 +116,16 @@ namespace WorldOfZuul.Entities
 
 
         /*
+        * Attempts to take an item from the current room and add it to the player's inventory.
+        */
+        public void TryTakeItem(string itemName)
+        {
+            // TODO: Implement method when item interactions are added.
+        }
+
+
+
+        /*
         * Attempts to unlock an exit using the items inside players inventory.
         */
         private bool TryUnlockExit(Exit exit)
@@ -130,6 +140,27 @@ namespace WorldOfZuul.Entities
                 }
             }
             return false;
+        }
+
+
+
+        /*
+        * Attempts to talk to an NPC in the current room.
+        */
+        public void TryTalkToNpc(string npcName)
+        {
+            /*
+            * Look for an npc with a matching or close to matching name to the input.
+            */
+            var npc = CurrentRoom.Npcs.FirstOrDefault(n => n.Name.Contains(npcName, StringComparison.OrdinalIgnoreCase));
+
+            if (npc == null)
+            {
+                Console.WriteLine($"There is no one named {npcName} here.");
+                return;
+            }
+
+            npc.StartDialogue();
         }
 
 
@@ -172,8 +203,8 @@ namespace WorldOfZuul.Entities
                 Console.WriteLine("Exits:");
                 foreach (var exit in CurrentRoom.Exits)
                 {
-                    string lockInfo = exit.Value.IsLocked ? " (locked)" : "";
-                    Console.WriteLine($" - {exit.Key}{lockInfo}");
+                    string lockInfo = exit.Value.IsLocked ? "(locked)" : "";
+                    Console.WriteLine($" - {exit.Key} {lockInfo}");
                 }
             }
             else
@@ -187,6 +218,15 @@ namespace WorldOfZuul.Entities
                 foreach (var item in CurrentRoom.Items)
                 {
                     Console.WriteLine($" - {item.Name} ({item.Description})");
+                }
+            }
+
+            if (CurrentRoom.Npcs.Count > 0)
+            {
+                Console.WriteLine("\nNpcs:");
+                foreach (var npc in CurrentRoom.Npcs)
+                {
+                    Console.WriteLine($" - {npc.Name} ({npc.Description})");
                 }
             }
 

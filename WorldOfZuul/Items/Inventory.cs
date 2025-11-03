@@ -10,7 +10,7 @@ namespace WorldOfZuul.Items
 
 
         /*
-        * Returns the list of items in the inventory.
+        * Returns the list of items in the inventory. (This is being used so be carefull)
         */
         public List<Item> GetItems()
         {

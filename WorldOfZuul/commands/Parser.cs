@@ -6,20 +6,16 @@
 
         public Command? GetCommand(string inputLine)
         {
-            string[] words = inputLine.Split();
+            if (string.IsNullOrWhiteSpace(inputLine))
+                return null;
+
+            string[] words = inputLine.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
 
             if (words.Length == 0 || !commandWords.IsValidCommand(words[0]))
-            {
                 return null;
-            }
 
-            if (words.Length > 1)
-            {
-                return new Command(words[0], words[1]);
-            }
-
-            return new Command(words[0]);
+            string? secondWord = words.Length > 1 ? words[1] : null;
+            return new Command(words[0], secondWord);
         }
     }
-
 }
