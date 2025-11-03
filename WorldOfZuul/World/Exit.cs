@@ -6,14 +6,15 @@ namespace WorldOfZuul.World
     */
     public class Exit
     {
-        // TODO: Small refactor and add Ids to exits.
+        public string Id { get; set; }
         public string Name { get; set; }
         public Room TargetRoom { get; set; }
         public bool IsLocked { get; private set; } = false;
         public string? KeyItemId { get; set; }
 
-        public Exit(string name, Room targetRoom, bool isLocked = false, string? keyItemId = null)
+        public Exit(string id, string name, Room targetRoom, bool isLocked = false, string? keyItemId = null)
         {
+            Id = id;
             Name = name;
             TargetRoom = targetRoom;
             IsLocked = isLocked;
@@ -22,8 +23,11 @@ namespace WorldOfZuul.World
 
 
 
+
+        
+
         /*
-        * Unlocks the exit. (method for encapsulating unlocking)
+        * Unlocks the exit.
         */
         public void Unlock()
         {

@@ -5,17 +5,44 @@ namespace WorldOfZuul.World
     */
     public class Location
     {
-        // TODO: Small refactor. Change how StartingRoom and Rooms are handled.
         public string Id { get; }
         public string Name { get; set; }
-        public List<Room> Rooms { get; } = new();
+        public string Description { get; set; }
+        public string StartingRoomId { get; set; }
 
-        public Room StartingRoom => Rooms.First();
+        public Dictionary<string, Room> Rooms { get; } = new();
 
-        public Location(string id, string name)
+        public Location(string id, string name, string description, string startingRoomId)
         {
             Id = id;
             Name = name;
+            Description = description;
+            StartingRoomId = startingRoomId;
+        }
+
+
+
+        /*
+        * Returns a room by its ID.
+        */
+        public Room? GetRoom(string id)
+        {
+            if (Rooms.TryGetValue(id, out var room))
+            {
+                return room;
+            }
+            return null;
+        }
+
+
+
+        /*
+        * Sets a new room to the location.
+        */
+        public void AddRoom(Room room)
+        {
+            if (room == null) return;
+            Rooms[room.Id] = room;
         }
     }
 }

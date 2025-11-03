@@ -33,14 +33,14 @@ namespace WorldOfZuul
             if (worldData == null)
                 throw new Exception("Failed to deserialize world JSON.");
 
-            Map world = new Map();
+            Map world = new Map(worldData.StartingLocationId);
 
             /*
             * Reads locations from JSON and creates them in the world.
             */
             foreach (var locData in worldData.Locations)
             {
-                Location location = new Location(locData.Id, locData.Name);
+                Location location = new Location(locData.Id, locData.Name, locData.Description, locData.StartingRoomId);
                 Dictionary<string, Room> roomLookup = new Dictionary<string, Room>();
 
                 /*
@@ -54,7 +54,7 @@ namespace WorldOfZuul
                         roomData.Description
                     );
                     roomLookup[roomData.Id] = room;
-                    location.Rooms.Add(room);
+                    location.AddRoom(room);
                 }
 
                 /*
@@ -70,11 +70,12 @@ namespace WorldOfZuul
                             if (roomLookup.TryGetValue(exitData.TargetRoomId, out var targetRoom))
                             {
                                 Exit exit = new Exit(
+                                    exitData.Id,
                                     exitData.Name,
                                     targetRoom,
                                     exitData.IsLocked ?? false
                                 );
-                                room.SetExit(exitData.Name, exit);
+                                room.SetExit(exit);
                             }
                         }
                     }
@@ -96,7 +97,7 @@ namespace WorldOfZuul
                                 itemData.Name,
                                 itemData.Description
                             );
-                            room.Items.Add(item);
+                            room.SetItem(item);
                         }
                     }
                 }
@@ -129,13 +130,13 @@ namespace WorldOfZuul
                                 npcData.Description,
                                 dialogueNodes
                             );
-                            room.Npcs.Add(npc);
+                            room.SetNpc(npc);
                         }
                     }
                 }
 
 
-                world.Locations.Add(location);
+                world.SetLocation(location);
             }
 
             return world;
@@ -149,12 +150,15 @@ namespace WorldOfZuul
     */
     public class WorldData
     {
+        public string StartingLocationId { get; set; } = string.Empty;
         public List<LocationData> Locations { get; set; } = new List<LocationData>();
     }
     public class LocationData
     {
         public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string StartingRoomId { get; set; } = string.Empty;
         public List<RoomData> Rooms { get; set; } = new List<RoomData>();
     }
     public class RoomData
@@ -174,6 +178,7 @@ namespace WorldOfZuul
     }
     public class ExitData
     {
+        public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string TargetRoomId { get; set; } = string.Empty;
         public bool? IsLocked { get; set; }

@@ -1,17 +1,20 @@
 {
+  "startinglocationid": "hospital",
   "locations": [
     {
       "id": "hospital",
       "name": "Hospital",
+      "description": "A large medical facility bustling with activity.",
+      "startingroomid": "lobby",
       "rooms": [
         {
           "id": "lobby",
           "name": "Hospital Lobby",
           "description": "You are in the bright hospital lobby. A reception desk stands before you.",
           "exits": [
-            { "name": "ward", "targetRoomId": "ward" },
-            { "name": "cafeteria", "targetRoomId": "cafeteria", "isLocked": true },
-            { "name": "emergency", "targetRoomId": "emergency" }
+            { "id": "ward", "name": "ward", "targetRoomId": "ward" },
+            { "id": "cafeteria", "name": "cafeteria", "targetRoomId": "cafeteria", "isLocked": true },
+            { "id": "emergency", "name": "emergency", "targetRoomId": "emergency" }
           ],
           "Items": [
             { "id": "mask", "name": "Surgical Mask", "description": "A disposable surgical mask to protect against germs." },
@@ -135,6 +138,8 @@
     {
       "id": "school",
       "name": "School",
+      "description": "A school filled with classrooms, a gym, and a cafeteria.",
+      "startingroomid": "entrance",
       "rooms": [
         {
           "id": "entrance",
@@ -214,6 +219,8 @@
     {
       "id": "city",
       "name": "City Center",
+      "description": "A vibrant urban area filled with shops, parks, and busy streets.",
+      "startingroomid": "square",
       "rooms": [
         {
           "id": "square",

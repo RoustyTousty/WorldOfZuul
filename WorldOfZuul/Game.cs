@@ -19,7 +19,7 @@ namespace WorldOfZuul
             /*
             * Initialize player and prompt for a name.
             */
-            player = new Player(map.Locations[0]);
+            player = new Player(map.GetLocation(map.StartingLocationId)!);
             player.PromptPlayerName();
         }
 
@@ -91,7 +91,7 @@ namespace WorldOfZuul
                     //     Console.WriteLine("Take what?");
                     //     break;
                     // }
-                    // player?.TakeItem(command.SecondWord);
+                    // player?.TryTakeItem(command.SecondWord);
                     break;
 
 

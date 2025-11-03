@@ -12,12 +12,12 @@ namespace WorldOfZuul.Entities
 
         public Inventory Inventory { get; } = new();
 
-        private const string DEFAULT_PLAYER_NAME = "Bob the great adventurer";
+        private const string DEFAULT_PLAYER_NAME = "Bob the 'great' investigator";
 
         public Player(Location startingLocation)
         {
             CurrentLocation = startingLocation;
-            CurrentRoom = startingLocation.StartingRoom;
+            CurrentRoom = startingLocation.GetRoom(startingLocation.StartingRoomId)!;
         }
 
 
@@ -67,6 +67,7 @@ namespace WorldOfZuul.Entities
             PreviousRoom = CurrentRoom;
             CurrentRoom = exit.TargetRoom;
 
+            PrintEmptySpace(30);
             Console.WriteLine($"You enter {CurrentRoom.Name}.");
             PrintRoom();
             return true;
@@ -89,6 +90,7 @@ namespace WorldOfZuul.Entities
             CurrentRoom = PreviousRoom;
             PreviousRoom = temp;
 
+            PrintEmptySpace(30);
             Console.WriteLine($"You return to {CurrentRoom.Name}.");
             PrintRoom();
             return true;
@@ -106,8 +108,9 @@ namespace WorldOfZuul.Entities
 
             CurrentLocation = newLocation;
             PreviousRoom = null;
-            CurrentRoom = newLocation.StartingRoom;
+            CurrentRoom = newLocation.GetRoom(newLocation.StartingRoomId)!;
 
+            PrintEmptySpace(30);
             Console.WriteLine($"You travel to {newLocation.Name} and arrive at {CurrentRoom.Name}.");
             PrintRoom();
             return true;
@@ -152,7 +155,7 @@ namespace WorldOfZuul.Entities
             /*
             * Look for an npc with a matching or close to matching name to the input.
             */
-            var npc = CurrentRoom.Npcs.FirstOrDefault(n => n.Name.Contains(npcName, StringComparison.OrdinalIgnoreCase));
+            var npc = CurrentRoom.Npcs.Values.FirstOrDefault(n => n.Name.Contains(npcName, StringComparison.OrdinalIgnoreCase));
 
             if (npc == null)
             {
@@ -182,14 +185,14 @@ namespace WorldOfZuul.Entities
             else
             {
                 Name = input;
-                Console.WriteLine($"Welcome, {Name}!");
             }
+            Console.WriteLine($"Welcome, {Name}!");
         }
 
 
 
         /*
-        * Prints the description of the current room, its exits, and any items inside.
+        * Prints the description of the current room, its exits, npcs and any items inside.
         */
         public void PrintRoom()
         {
@@ -215,7 +218,7 @@ namespace WorldOfZuul.Entities
             if (CurrentRoom.Items.Count > 0)
             {
                 Console.WriteLine("\nYou see:");
-                foreach (var item in CurrentRoom.Items)
+                foreach (var item in CurrentRoom.Items.Values)
                 {
                     Console.WriteLine($" - {item.Name} ({item.Description})");
                 }
@@ -224,7 +227,7 @@ namespace WorldOfZuul.Entities
             if (CurrentRoom.Npcs.Count > 0)
             {
                 Console.WriteLine("\nNpcs:");
-                foreach (var npc in CurrentRoom.Npcs)
+                foreach (var npc in CurrentRoom.Npcs.Values)
                 {
                     Console.WriteLine($" - {npc.Name} ({npc.Description})");
                 }
@@ -283,6 +286,19 @@ namespace WorldOfZuul.Entities
             Console.WriteLine(" - inevntory");
             Console.WriteLine(" - help");
             Console.WriteLine(" - quit");
+        }
+
+
+
+        /*
+        * Prints empty lines to the console for better readability.
+        */
+        public void PrintEmptySpace(int lines = 1)
+        {
+            for (int i = 0; i < lines; i++)
+            {
+                Console.WriteLine();
+            }
         }
     }
 }

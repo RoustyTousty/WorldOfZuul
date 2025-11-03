@@ -6,15 +6,35 @@ namespace WorldOfZuul.World
     */
     public class Map
     {
-        // TODO: Consider refactoring to use a dictionary for faster lookups. And add a constructur.
-        public List<Location> Locations { get; } = new();
+        public string StartingLocationId { get; set; }
+        public Dictionary<string, Location> Locations { get; } = new();
+
+        public Map(string startingLocationId)
+        {
+            StartingLocationId = startingLocationId;
+        }
 
         /*
         * Returns a location by its ID.
         */
         public Location? GetLocation(string id)
         {
-            return Locations.FirstOrDefault(l => l.Id == id);
+            if (Locations.TryGetValue(id, out var location))
+            {
+                return location;
+            }
+            return null;
+        }
+
+
+
+        /*
+        * Sets a new location to the map.
+        */
+        public void SetLocation(Location location)
+        {
+            if (location == null) return;
+            Locations[location.Id] = location;
         }
     }
 }
