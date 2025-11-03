@@ -5,16 +5,17 @@ namespace WorldOfZuul.Entities
 {
     public class Player
     {
-        public string Name { get; set; }
+        public string? Name { get; private set; }
         public Location CurrentLocation { get; private set; }
         public Room CurrentRoom { get; private set; }
         public Room? PreviousRoom { get; private set; }
 
         public Inventory Inventory { get; } = new();
 
-        public Player(string name, Location startingLocation)
+        private const string DEFAULT_PLAYER_NAME = "Bob the great adventurer";
+
+        public Player(Location startingLocation)
         {
-            Name = name;
             CurrentLocation = startingLocation;
             CurrentRoom = startingLocation.StartingRoom;
         }
@@ -23,9 +24,10 @@ namespace WorldOfZuul.Entities
 
         /*
         * Attempts to move the player through a specified exit.
-        * Provides in-game feedback and returns true if successful.
+        * Checks if the exit exists, the room exists and if the exit is locked.
+        * Attempts to unlock the exit using inventory items if it is locked.
         */
-        public bool Move(string exitName)
+        public bool MoveToRoom(string? exitName)
         {
             if (string.IsNullOrWhiteSpace(exitName))
             {
@@ -66,27 +68,30 @@ namespace WorldOfZuul.Entities
             CurrentRoom = exit.TargetRoom;
 
             Console.WriteLine($"You enter {CurrentRoom.Name}.");
-            Look();
+            PrintRoom();
             return true;
         }
 
 
 
         /*
-        * Tries to unlock an exit using the items inside players inventory.
+        * Moves the player back to the last room.
         */
-        private bool TryUnlockExit(Exit exit)
+        public bool BackToRoom()
         {
-            List<Item> items = Inventory.GetItems();
-            foreach (var item in items)
+            if (PreviousRoom == null)
             {
-                if (item.Id == exit.KeyItemId)
-                {
-                    exit.Unlock();
-                    return true;
-                }
+                Console.WriteLine("There’s nowhere to go back to.");
+                return false;
             }
-            return false;
+
+            Room temp = CurrentRoom;
+            CurrentRoom = PreviousRoom;
+            PreviousRoom = temp;
+
+            Console.WriteLine($"You return to {CurrentRoom.Name}.");
+            PrintRoom();
+            return true;
         }
 
 
@@ -104,30 +109,50 @@ namespace WorldOfZuul.Entities
             CurrentRoom = newLocation.StartingRoom;
 
             Console.WriteLine($"You travel to {newLocation.Name} and arrive at {CurrentRoom.Name}.");
-            Look();
+            PrintRoom();
             return true;
         }
 
 
 
         /*
-        * Moves the player back to the last room.
+        * Attempts to unlock an exit using the items inside players inventory.
         */
-        public bool GoBack()
+        private bool TryUnlockExit(Exit exit)
         {
-            if (PreviousRoom == null)
+            List<Item> items = Inventory.GetItems();
+            foreach (var item in items)
             {
-                Console.WriteLine("There’s nowhere to go back to.");
-                return false;
+                if (item.Id == exit.KeyItemId)
+                {
+                    exit.Unlock();
+                    return true;
+                }
             }
+            return false;
+        }
 
-            var temp = CurrentRoom;
-            CurrentRoom = PreviousRoom;
-            PreviousRoom = temp;
 
-            Console.WriteLine($"You return to {CurrentRoom.Name}.");
-            Look();
-            return true;
+
+        /*        
+        * Prompts the player to enter their name. If no name is entered, a default name is assigned.
+        */
+        public void PromptPlayerName()
+        {
+            Console.WriteLine("Enter your name!");
+            Console.Write("> ");
+            string? input = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Name = DEFAULT_PLAYER_NAME;
+                Console.WriteLine($"No name entered. You will be known as {Name}!");
+            }
+            else
+            {
+                Name = input;
+                Console.WriteLine($"Welcome, {Name}!");
+            }
         }
 
 
@@ -135,7 +160,7 @@ namespace WorldOfZuul.Entities
         /*
         * Prints the description of the current room, its exits, and any items inside.
         */
-        public void Look()
+        public void PrintRoom()
         {
             Console.WriteLine();
             Console.WriteLine($"--- {CurrentRoom.Name} ---");
@@ -161,7 +186,7 @@ namespace WorldOfZuul.Entities
                 Console.WriteLine("\nYou see:");
                 foreach (var item in CurrentRoom.Items)
                 {
-                    Console.WriteLine($" - {item.Name}");
+                    Console.WriteLine($" - {item.Name} ({item.Description})");
                 }
             }
 
@@ -173,7 +198,7 @@ namespace WorldOfZuul.Entities
         /*
         * Prints a list of items in the player's inventory.
         */
-        public void InventoryList()
+        public void PrintInventory()
         {
             List<Item> items = Inventory.GetItems();
             if (items.Count == 0)
@@ -187,6 +212,37 @@ namespace WorldOfZuul.Entities
             {
                 Console.WriteLine($" - {item.Name}");
             }
+        }
+
+
+
+        /*        
+        * Prints the welcome message.
+        */
+        public void PrintWelcome()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Welcome to the World of Zuul!");
+            Console.WriteLine("World of Zuul is a new, incredibly boring adventure game.");
+            Console.WriteLine();
+            PrintHelp();
+            Console.WriteLine();
+        }
+
+
+
+        /*
+        * Prints the help message and lists available commands and their usage.
+        */
+        public void PrintHelp()
+        {
+            Console.WriteLine("Commands:");
+            Console.WriteLine(" - move [exitName]");
+            Console.WriteLine(" - back");
+            Console.WriteLine(" - look");
+            Console.WriteLine(" - inevntory");
+            Console.WriteLine(" - help");
+            Console.WriteLine(" - quit");
         }
     }
 }

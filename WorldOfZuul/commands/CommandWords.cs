@@ -2,7 +2,7 @@
 {
     public class CommandWords
     {
-        public List<string> ValidCommands { get; } = new List<string> { "look", "back", "quit", "move", "inspect", "take" };
+        public List<string> ValidCommands { get; } = new List<string> { "look", "back", "quit", "move", "inspect", "take", "inventory" };
 
         public bool IsValidCommand(string command)
         {

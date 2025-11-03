@@ -9,7 +9,7 @@ namespace WorldOfZuul
     */
     public class Builder
     {
-        private static string DEFAULT_JSON_PATH = Path.Combine(AppContext.BaseDirectory, "Data", "Game.json");
+        private static string DEFAULT_JSON_PATH = Path.Combine(AppContext.BaseDirectory, "Data", "World.json");
 
         public Map BuildMapFromJSON(string? filePath = null)
         {
@@ -58,7 +58,6 @@ namespace WorldOfZuul
 
                 /*
                 * Reads exits from JSON and links rooms together.
-                * TODO: Implement locked exits.
                 */
                 foreach (var roomData in locData.Rooms)
                 {
