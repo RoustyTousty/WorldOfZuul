@@ -1,40 +1,60 @@
-namespace WorldOfZuul.Items
-{
-    /*
-     * Inventory class representing a collection of items held by a player/entity.
-     */
+namespace WorldOfZuul.Items {
     public class Inventory
+    /*creates a public class (acessible from other classes) called Inventory */
     {
-        public List<Item> items = new List<Item>();
-
-
-
-        /*
-        * Returns the list of items in the inventory. (This is being used so be carefull)
-        */
-        public List<Item> GetItems()
+        private Item[] items;
+        public Inventory(Item[] items)
         {
-            return items;
+            this.items = items;
         }
-
-
-
-        /*
-        * Adds an item to the inventory.
-        */
+        public Inventory() : this(new Item[0])
+        {
+        }
         public void AddItem(Item item)
         {
-            items.Add(item);
+            if (!Contains(items, item))
+            {
+                Item[] newItems = new Item[items.Length + 1];
+                for (int i = 0; i < items.Length; i++)
+                {
+                    newItems[i] = items[i];
+                }
+                newItems[items.Length] = item;
+                items = newItems;
+            }
         }
-        
-
-
-        /*
-        * Removes an item from the inventory.
-        */
         public void RemoveItem(Item item)
         {
-            items.Remove(item);
+            if (Contains(items, item))
+            {
+                Item[] newItems = new Item[items.Length - 1];
+                int i = 0;
+                for (; items[i] != item; i++)
+                {
+                    newItems[i] = items[i];
+                }
+                for (i++; i < items.Length; i++)
+                {
+                    newItems[i - 1] = items[i];
+                }
+                items = newItems;
+            }
+        }
+        public void PrintInventory()
+        {
+            Console.WriteLine("Inventory:");
+            foreach (Item item in items)
+            {
+                Console.WriteLine(" - " + item);
+            }
+        }
+        private bool Contains(Item[] items, Item item)
+        {
+            foreach (Item candidateItem in items)
+            {
+                if (candidateItem == item) return true;
+            }
+            return false;
         }
     }
 }
