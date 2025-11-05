@@ -1,4 +1,9 @@
+using WorldOfZuul.Items;
+
 namespace WorldOfZuul.Items {
+    /*
+     * Creates an inventory managing the items .
+     */
     public class Inventory
     /*creates a public class (acessible from other classes) called Inventory */
     {
@@ -40,6 +45,20 @@ namespace WorldOfZuul.Items {
                 items = newItems;
             }
         }
+        public bool UseItem(Item item)
+        {
+            if (item is UsableItem usableItem)
+            {
+                if (usableItem.Use())
+                {
+                    // If the item was successfully used, remove it from inventory
+                    RemoveItem(item);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void PrintInventory()
         {
             Console.WriteLine("Inventory:");
