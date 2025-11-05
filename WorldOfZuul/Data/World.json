@@ -1,15 +1,15 @@
 {
-  "startinglocationid": "hospital",
+  "startinglocationid": "backrooms",
   "locations": [
     {
-      "id": "hospital",
-      "name": "Hospital",
-      "description": "A large medical facility bustling with activity.",
-      "startingroomid": "lobby",
+      "id": "backrooms",
+      "name": "Backrooms",
+      "description": "Mafia backrooms.",
+      "startingroomid": "entrence",
       "rooms": [
         {
-          "id": "lobby",
-          "name": "Hospital Lobby",
+          "id": "entrence",
+          "name": "Entrence",
           "description": "You are in the bright hospital lobby. A reception desk stands before you.",
           "exits": [
             { "id": "ward", "name": "ward", "targetRoomId": "ward" },
@@ -48,276 +48,32 @@
         {
           "id": "ward",
           "name": "Ward",
-          "description": "Rows of patient beds line the ward. You hear the quiet beeping of monitors.",
+          "description": "A quiet hospital ward with several beds.",
           "exits": [
-            { "name": "lobby", "targetRoomId": "lobby" },
-            { "name": "icu", "targetRoomId": "icu" },
-            { "name": "hallway", "targetRoomId": "hallway" }
-          ]
-        },
-        {
-          "id": "icu",
-          "name": "ICU",
-          "description": "You step into the Intensive Care Unit. The air feels tense and quiet.",
-          "exits": [
-            { "name": "ward", "targetRoomId": "ward" }
-          ]
+            { "id": "entrence", "name": "entrence", "targetRoomId": "entrence" }
+          ],
+          "Items": [],
+          "npcs": []
         },
         {
           "id": "cafeteria",
           "name": "Cafeteria",
-          "description": "The cafeteria smells faintly of coffee and disinfectant.",
+          "description": "The hospital cafeteria, currently closed for cleaning.",
           "exits": [
-            { "name": "lobby", "targetRoomId": "lobby" },
-            { "name": "storage", "targetRoomId": "storage" }
-          ]
-        },
-        {
-          "id": "storage",
-          "name": "Storage Room",
-          "description": "A cramped room filled with cleaning supplies and boxes.",
-          "exits": [
-            { "name": "cafeteria", "targetRoomId": "cafeteria" }
-          ]
+            { "id": "entrence", "name": "entrence", "targetRoomId": "entrence" }
+          ],
+          "Items": [],
+          "npcs": []
         },
         {
           "id": "emergency",
           "name": "Emergency Room",
-          "description": "Doctors rush around treating patients. It's loud and chaotic.",
+          "description": "The bustling emergency room with doctors and nurses attending to patients.",
           "exits": [
-            { "name": "lobby", "targetRoomId": "lobby" },
-            { "name": "surgery", "targetRoomId": "surgery" }
-          ]
-        },
-        {
-          "id": "surgery",
-          "name": "Surgery Room",
-          "description": "A sterile operating theater with bright lights overhead.",
-          "exits": [
-            { "name": "emergency", "targetRoomId": "emergency" }
-          ]
-        },
-        {
-          "id": "hallway",
-          "name": "Hospital Hallway",
-          "description": "A long corridor with patient charts pinned on the walls.",
-          "exits": [
-            { "name": "ward", "targetRoomId": "ward" },
-            { "name": "pharmacy", "targetRoomId": "pharmacy" },
-            { "name": "stairwell", "targetRoomId": "stairwell" }
-          ]
-        },
-        {
-          "id": "pharmacy",
-          "name": "Pharmacy",
-          "description": "Shelves of medicine line the walls.",
-          "exits": [
-            { "name": "hallway", "targetRoomId": "hallway" }
-          ]
-        },
-        {
-          "id": "stairwell",
-          "name": "Stairwell",
-          "description": "A narrow stairwell that connects to the rooftop.",
-          "exits": [
-            { "name": "hallway", "targetRoomId": "hallway" },
-            { "name": "rooftop", "targetRoomId": "rooftop" }
-          ]
-        },
-        {
-          "id": "rooftop",
-          "name": "Rooftop",
-          "description": "You can see the entire city from up here.",
-          "exits": [
-            { "name": "stairwell", "targetRoomId": "stairwell" }
-          ]
-        }
-      ]
-    },
-
-    {
-      "id": "school",
-      "name": "School",
-      "description": "A school filled with classrooms, a gym, and a cafeteria.",
-      "startingroomid": "entrance",
-      "rooms": [
-        {
-          "id": "entrance",
-          "name": "School Entrance",
-          "description": "You are at the entrance of the school. A large notice board greets you.",
-          "exits": [
-            { "name": "classroom", "targetRoomId": "classroom" },
-            { "name": "gym", "targetRoomId": "gym" },
-            { "name": "hallway", "targetRoomId": "hallway" }
-          ]
-        },
-        {
-          "id": "classroom",
-          "name": "Classroom",
-          "description": "Rows of desks face a whiteboard filled with equations.",
-          "exits": [
-            { "name": "entrance", "targetRoomId": "entrance" },
-            { "name": "library", "targetRoomId": "library" }
-          ]
-        },
-        {
-          "id": "library",
-          "name": "Library",
-          "description": "Quiet and dusty. Shelves of books stretch to the ceiling.",
-          "exits": [
-            { "name": "classroom", "targetRoomId": "classroom" },
-            { "name": "office", "targetRoomId": "office" }
-          ]
-        },
-        {
-          "id": "office",
-          "name": "Principal's Office",
-          "description": "A tidy office with certificates on the wall.",
-          "exits": [
-            { "name": "library", "targetRoomId": "library" }
-          ]
-        },
-        {
-          "id": "hallway",
-          "name": "School Hallway",
-          "description": "Lockers line the walls. The sound of chatter echoes faintly.",
-          "exits": [
-            { "name": "entrance", "targetRoomId": "entrance" },
-            { "name": "science_lab", "targetRoomId": "science_lab" },
-            { "name": "cafeteria", "targetRoomId": "school_cafeteria" }
-          ]
-        },
-        {
-          "id": "science_lab",
-          "name": "Science Lab",
-          "description": "You smell chemicals and see flasks bubbling on burners.",
-          "exits": [
-            { "name": "hallway", "targetRoomId": "hallway" }
-          ]
-        },
-        {
-          "id": "school_cafeteria",
-          "name": "Cafeteria",
-          "description": "Students sit chatting over trays of food.",
-          "exits": [
-            { "name": "hallway", "targetRoomId": "hallway" },
-            { "name": "gym", "targetRoomId": "gym" }
-          ]
-        },
-        {
-          "id": "gym",
-          "name": "Gymnasium",
-          "description": "You hear the echo of bouncing balls. A basketball hoop stands at each end.",
-          "exits": [
-            { "name": "school_cafeteria", "targetRoomId": "school_cafeteria" },
-            { "name": "entrance", "targetRoomId": "entrance" }
-          ]
-        }
-      ]
-    },
-
-    {
-      "id": "city",
-      "name": "City Center",
-      "description": "A vibrant urban area filled with shops, parks, and busy streets.",
-      "startingroomid": "square",
-      "rooms": [
-        {
-          "id": "square",
-          "name": "Central Square",
-          "description": "A bustling plaza with fountains and shops around.",
-          "exits": [
-            { "name": "alley", "targetRoomId": "alley" },
-            { "name": "metro", "targetRoomId": "metro" },
-            { "name": "park", "targetRoomId": "park" }
-          ]
-        },
-        {
-          "id": "alley",
-          "name": "Dark Alley",
-          "description": "A narrow alleyway between two tall buildings.",
-          "exits": [
-            { "name": "square", "targetRoomId": "square" },
-            { "name": "warehouse", "targetRoomId": "warehouse" }
-          ]
-        },
-        {
-          "id": "alley",
-          "name": "Dark Alley",
-          "description": "A narrow alleyway between two tall buildings.",
-          "exits": [
-            { "name": "square", "targetRoomId": "square" },
-            { "name": "warehouse", "targetRoomId": "warehouse" }
-          ]
-        },
-        {
-          "id": "warehouse",
-          "name": "Abandoned Warehouse",
-          "description": "Dust and old crates fill this forgotten place.",
-          "exits": [
-            { "name": "alley", "targetRoomId": "alley" }
-          ]
-        },
-        {
-          "id": "metro",
-          "name": "Metro Station",
-          "description": "The hum of trains echoes through the tunnels.",
-          "exits": [
-            { "name": "square", "targetRoomId": "square" },
-            { "name": "underground_tunnel", "targetRoomId": "underground_tunnel" }
-          ]
-        },
-        {
-          "id": "underground_tunnel",
-          "name": "Underground Tunnel",
-          "description": "A damp tunnel stretching far under the city.",
-          "exits": [
-            { "name": "metro", "targetRoomId": "metro" },
-            { "name": "bunker", "targetRoomId": "bunker" }
-          ]
-        },
-        {
-          "id": "bunker",
-          "name": "Old Bunker",
-          "description": "A relic from the past, filled with metal shelves and flickering lights.",
-          "exits": [
-            { "name": "underground_tunnel", "targetRoomId": "underground_tunnel" }
-          ]
-        },
-        {
-          "id": "park",
-          "name": "City Park",
-          "description": "Trees sway gently as people walk their dogs.",
-          "exits": [
-            { "name": "square", "targetRoomId": "square" },
-            { "name": "bridge", "targetRoomId": "bridge" }
-          ]
-        },
-        {
-          "id": "bridge",
-          "name": "Old Bridge",
-          "description": "The bridge crosses a slow-moving river, offering a view of the skyline.",
-          "exits": [
-            { "name": "park", "targetRoomId": "park" },
-            { "name": "suburbs", "targetRoomId": "suburbs" }
-          ]
-        },
-        {
-          "id": "suburbs",
-          "name": "Suburbs",
-          "description": "A quiet residential area with rows of identical houses.",
-          "exits": [
-            { "name": "bridge", "targetRoomId": "bridge" },
-            { "name": "bus_stop", "targetRoomId": "bus_stop" }
-          ]
-        },
-        {
-          "id": "bus_stop",
-          "name": "Bus Stop",
-          "description": "A small bus shelter. Timetables are posted on the wall.",
-          "exits": [
-            { "name": "suburbs", "targetRoomId": "suburbs" }
-          ]
+            { "id": "entrence", "name": "entrence", "targetRoomId": "entrence" }
+          ],
+          "Items": [],
+          "npcs": []
         }
       ]
     }

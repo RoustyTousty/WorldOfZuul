@@ -39,7 +39,7 @@ namespace WorldOfZuul.World
         /*
         * Sets a new room to the location.
         */
-        public void AddRoom(Room room)
+        public void SetRoom(Room room)
         {
             if (room == null) return;
             Rooms[room.Id] = room;
