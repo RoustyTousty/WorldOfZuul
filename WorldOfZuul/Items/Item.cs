@@ -15,6 +15,7 @@ namespace WorldOfZuul.Items
             Id = id;
             Name = name;
             Description = description;
+
         }
 
 
