@@ -27,19 +27,19 @@ namespace WorldOfZuul.Entities
         * Checks if the exit exists, the room exists and if the exit is locked.
         * Attempts to unlock the exit using inventory items if it is locked.
         */
-        public bool MoveToRoom(string? exitName)
+        public bool MoveToRoom(string? exitId)
         {
-            if (string.IsNullOrWhiteSpace(exitName))
+            if (string.IsNullOrWhiteSpace(exitId))
             {
                 Console.WriteLine("Move where?");
                 return false;
             }
 
-            Exit? exit = CurrentRoom.GetExit(exitName);
+            Exit? exit = CurrentRoom.GetExit(exitId);
 
             if (exit == null)
             {
-                Console.WriteLine($"There is no exit called '{exitName}'.");
+                Console.WriteLine($"There is no exit called '{exitId}'.");
                 return false;
             }
 
@@ -67,7 +67,6 @@ namespace WorldOfZuul.Entities
             PreviousRoom = CurrentRoom;
             CurrentRoom = exit.TargetRoom;
 
-            PrintEmptySpace(30);
             Console.WriteLine($"You enter {CurrentRoom.Name}.");
             PrintRoom();
             return true;
@@ -90,7 +89,6 @@ namespace WorldOfZuul.Entities
             CurrentRoom = PreviousRoom;
             PreviousRoom = temp;
 
-            PrintEmptySpace(30);
             Console.WriteLine($"You return to {CurrentRoom.Name}.");
             PrintRoom();
             return true;
@@ -101,16 +99,26 @@ namespace WorldOfZuul.Entities
         /*
         * Moves the player to a new locations starting room.
         */
-        public bool MoveToLocation(Location newLocation)
+        public bool MoveToLocation(string? locationName, Map map)
         {
-            if (newLocation == null)
+            if (string.IsNullOrWhiteSpace(locationName))
+            {
+                Console.WriteLine("Travel where?");
                 return false;
+            }
+
+            Location? newLocation = map.GetLocation(locationName);
+
+            if (newLocation == null)
+            {
+                Console.WriteLine($"There is no location called '{locationName}'.");
+                return false;
+            }
 
             CurrentLocation = newLocation;
             PreviousRoom = null;
             CurrentRoom = newLocation.GetRoom(newLocation.StartingRoomId)!;
 
-            PrintEmptySpace(30);
             Console.WriteLine($"You travel to {newLocation.Name} and arrive at {CurrentRoom.Name}.");
             PrintRoom();
             return true;

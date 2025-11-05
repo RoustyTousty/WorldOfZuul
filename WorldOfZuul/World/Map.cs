@@ -7,12 +7,15 @@ namespace WorldOfZuul.World
     public class Map
     {
         public string StartingLocationId { get; set; }
+
         public Dictionary<string, Location> Locations { get; } = new();
 
         public Map(string startingLocationId)
         {
             StartingLocationId = startingLocationId;
         }
+
+
 
         /*
         * Returns a location by its ID.

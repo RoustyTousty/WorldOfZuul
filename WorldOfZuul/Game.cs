@@ -6,7 +6,8 @@ namespace WorldOfZuul
 {
     public class Game
     {
-        private Player? player;
+        private Player player;
+        private Map map;
 
         public Game()
         {
@@ -14,12 +15,13 @@ namespace WorldOfZuul
             * Build the game world.
             */
             Builder builder = new Builder();
-            Map map = builder.BuildMapFromJSON();
+            map = builder.BuildMapFromJSON();
 
             /*
             * Initialize player and prompt for a name.
             */
             player = new Player(map.GetLocation(map.StartingLocationId)!);
+            player.PrintEmptySpace(50);
             player.PromptPlayerName();
         }
 
@@ -32,6 +34,8 @@ namespace WorldOfZuul
         public void Play()
         {
             Parser parser = new();
+
+            player?.PrintEmptySpace(50);
             player?.PrintWelcome();
 
             bool continuePlaying = true;
@@ -54,7 +58,9 @@ namespace WorldOfZuul
                     continue;
                 }
 
+                player?.PrintEmptySpace(50);
                 continuePlaying = HandleCommand(command);
+                Console.WriteLine();
             }
 
             Console.WriteLine("Thank you for playing World of Zuul!");
@@ -107,6 +113,11 @@ namespace WorldOfZuul
 
                 case "move":
                     player?.MoveToRoom(command.SecondWord);
+                    break;
+
+
+                case "travel":
+                    player?.MoveToLocation(command.SecondWord, map);
                     break;
 
 

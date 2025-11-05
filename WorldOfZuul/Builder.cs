@@ -54,7 +54,7 @@ namespace WorldOfZuul
                         roomData.Description
                     );
                     roomLookup[roomData.Id] = room;
-                    location.AddRoom(room);
+                    location.SetRoom(room);
                 }
 
                 /*
