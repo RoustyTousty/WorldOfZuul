@@ -131,7 +131,22 @@ namespace WorldOfZuul.Entities
         */
         public void TryTakeItem(string itemName)
         {
-            // TODO: Implement method when item interactions are added.
+            var item = CurrentRoom.GetItem(itemName);
+            if (item == null)
+            {
+                Console.WriteLine($"There is no item named {itemName} here.");
+                return;
+            }
+
+            if (!item.CanPickUp)
+            {
+                Console.WriteLine($"You can't pick up the {item.Name}.");
+                return;
+            }
+
+            Inventory.AddItem(item);
+            //TODO: Remove item from room
+            Console.WriteLine($"You picked up the {item.Name}.");
         }
 
 

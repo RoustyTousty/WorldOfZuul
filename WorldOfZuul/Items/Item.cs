@@ -9,6 +9,9 @@ namespace WorldOfZuul.Items
         public string Name { get; set; }
         public string Description { get; set; }
 
+
+        public virtual bool CanPickUp => true;
+
         // TODO: Add types.
         public Item(string id, string name, string description)
         {
@@ -18,9 +21,20 @@ namespace WorldOfZuul.Items
         }
 
 
-        public string Inspect()
+
+        public virtual string Inspect()
         {
             return Description;
+        }
+
+        public virtual void Use()
+        {
+            Console.WriteLine($"You use the {Name}, but nothing happens.");
+        }
+
+        public virtual void Drop()
+        {
+            Console.WriteLine($"You drop the {Name}.");
         }
 
 
