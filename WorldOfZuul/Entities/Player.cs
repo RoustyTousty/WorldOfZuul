@@ -151,6 +151,61 @@ namespace WorldOfZuul.Entities
 
 
 
+
+        public void TryUseItem(string itemName)
+
+        {
+            var item = Inventory.GetItem(itemName);    //supposed to check for and get the item from inventory
+            if (item == null)
+            {
+                Console.WriteLine($"You don't have that item in your inventory.");
+                return;
+            }
+
+            item.Use();
+        }
+
+        
+        public void TryDropItem(string itemName)
+
+        {
+            var item = Inventory.GetItem(itemName);
+            if (item == null)
+            {
+                Console.WriteLine($"You don't have that item in your inventory.");
+                return;
+            }
+
+            Inventory.RemoveItem(item);
+            //TODO: When dropping the item, it needs to put the item into the room it was dropped in.
+            item.Drop();
+        }
+
+
+        public void TryInspectItem(string itemName)
+
+        {
+            var item = Inventory.GetItem(itemName);
+            if (item == null)
+            {
+                
+                Console.WriteLine($"You don't have that item in your inventory.");
+                return;
+                
+            }
+
+            item.Inspect();
+        }
+
+
+
+
+
+
+
+
+
+
         /*
         * Attempts to unlock an exit using the items inside players inventory.
         */

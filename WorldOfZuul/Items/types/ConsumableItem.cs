@@ -4,20 +4,26 @@ public class ConsumableItem : Item
     {
         public int Uses { get; private set; }
 
-        public ConsumableItem(string id, string name, string description, int uses)
-            : base(id, name, description)
+        public ConsumableItem(string id, string name, string description, int uses, string? useText = null)
+            : base(id, name, description, useText)
         {
-            Uses = uses;
+            Uses = uses;   // can assig multiple uses to an item before its consumed.
         }
 
 
-        // Consumes one use of the item.
+
         public override void Use()
         {
             if (Uses > 0)
             {
             Uses--;
+
+            if (!string.IsNullOrWhiteSpace(UseText))
+                Console.WriteLine(UseText);
+                Console.WriteLine();
                 Console.WriteLine($"{Name} has {Uses} uses left.");
+                
+            
 
                 if (Uses == 0)
                 {
@@ -27,7 +33,7 @@ public class ConsumableItem : Item
             }
             else
             {
-                Console.WriteLine($"The {Name} is already used up.");
+                Console.WriteLine("nothing happens...");
             }
             
         }

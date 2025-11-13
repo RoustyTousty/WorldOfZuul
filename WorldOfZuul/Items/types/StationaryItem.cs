@@ -4,8 +4,8 @@ public class StationaryItem : Item
     {
         public override bool CanPickUp => false;
         
-        public StationaryItem(string id, string name, string description)
-            : base(id, name, description)
+        public StationaryItem(string id, string name, string description, string? useText = null)
+            : base(id, name, description, useText)
         {
         }
 
@@ -14,9 +14,6 @@ public class StationaryItem : Item
             Console.WriteLine($"You interact with the {Name}.");
         }
 
-        public override void Use() => Interact();
-
-
-        //Needs some work, I don't think stationary items can use the 'Use' command. But so far you can't pick them up.
+        //this item cannot be picked up, so it can't use the Use method.
     }
 }
