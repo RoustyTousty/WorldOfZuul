@@ -131,8 +131,78 @@ namespace WorldOfZuul.Entities
         */
         public void TryTakeItem(string itemName)
         {
-            // TODO: Implement method when item interactions are added.
+            var item = CurrentRoom.GetItem(itemName);
+            if (item == null)
+            {
+                Console.WriteLine($"There is no item named {itemName} here.");
+                return;
+            }
+
+            if (!item.CanPickUp)
+            {
+                Console.WriteLine($"You can't pick up the {item.Name}.");
+                return;
+            }
+
+            Inventory.AddItem(item);
+            //TODO: Remove item from room
+            Console.WriteLine($"You picked up the {item.Name}.");
         }
+
+
+
+
+        public void TryUseItem(string itemName)
+
+        {
+            var item = Inventory.GetItem(itemName);    //supposed to check for and get the item from inventory
+            if (item == null)
+            {
+                Console.WriteLine($"You don't have that item in your inventory.");
+                return;
+            }
+
+            item.Use();
+        }
+
+        
+        public void TryDropItem(string itemName)
+
+        {
+            var item = Inventory.GetItem(itemName);
+            if (item == null)
+            {
+                Console.WriteLine($"You don't have that item in your inventory.");
+                return;
+            }
+
+            Inventory.RemoveItem(item);
+            //TODO: When dropping the item, it needs to put the item into the room it was dropped in.
+            item.Drop();
+        }
+
+
+        public void TryInspectItem(string itemName)
+
+        {
+            var item = Inventory.GetItem(itemName);
+            if (item == null)
+            {
+                
+                Console.WriteLine($"You don't have that item in your inventory.");
+                return;
+                
+            }
+
+            item.Inspect();
+        }
+
+
+
+
+
+
+
 
 
 
