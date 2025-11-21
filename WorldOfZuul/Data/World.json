@@ -1,79 +1,180 @@
 {
-  "startinglocationid": "backrooms",
-  "locations": [
+  "locations": [ 
     {
-      "id": "backrooms",
-      "name": "Backrooms",
-      "description": "Mafia backrooms.",
-      "startingroomid": "entrence",
+      "id": "Court House",
+      "name": "Court House",
       "rooms": [
         {
-          "id": "entrence",
-          "name": "Entrence",
-          "description": "You are in the bright hospital lobby. A reception desk stands before you.",
+          "id": "City",
+          "name": "City",
+          "description": "You are in the City lobby. Here is the center of the game.",
           "exits": [
-            { "id": "ward", "name": "ward", "targetRoomId": "ward" },
-            { "id": "cafeteria", "name": "cafeteria", "targetRoomId": "cafeteria", "isLocked": true },
-            { "id": "emergency", "name": "emergency", "targetRoomId": "emergency" }
-          ],
-          "Items": [
-            { "id": "mask", "name": "Surgical Mask", "description": "A disposable surgical mask to protect against germs." },
-            { "id": "gloves", "name": "Latex Gloves", "description": "A pair of latex gloves for hygiene." }
-          ],
-          "npcs": [
-            {
-              "id": "nurse_anna",
-              "name": "Nurse Anna",
-              "description": "A tired but kind nurse checking on the patients.",
-              "dialogue": [
-                {
-                  "id": "greeting",
-                  "text": "Hello! Please keep quiet in the ward. People are resting.",
-                  "responses": [
-                    { "text": "Sorry, I’ll be quiet.", "next": "end" },
-                    { "text": "Can you help me find the doctor?", "next": "help_doctor" }
-                  ]
-                },
-                {
-                  "id": "help_doctor",
-                  "text": "You can usually find Dr. Smith in the emergency room.",
-                  "responses": [
-                    { "text": "Thanks!", "next": "end" }
-                  ]
-                }
-              ]
-            }
+            { "name": "Montedison", "targetRoomId": "Montedison" },
+            { "name": "ENI", "targetRoomId": "ENI" },
+            { "name": "Bank", "targetRoomId": "Bank" },
+            { "name": "Backrooms", "targetRoomId": "Backrooms" },
+            { "name": "Political Offices", "targetRoomId": "Political Offices" }
           ]
         },
         {
-          "id": "ward",
-          "name": "Ward",
-          "description": "A quiet hospital ward with several beds.",
+          "id": "Montedison",
+          "name": "Montedison",
+          "description": "You are inside Montedison corporate office. Look for documents, safes, and hidden compartments revealing the company's connection to shell corporations.",
           "exits": [
-            { "id": "entrence", "name": "entrence", "targetRoomId": "entrence" }
-          ],
-          "Items": [],
-          "npcs": []
+            { "name": "City", "targetRoomId": "City" },
+            { "name": "CEO Office 1", "targetRoomId": "CEO Office 1" }
+          ]
         },
         {
-          "id": "cafeteria",
-          "name": "Cafeteria",
-          "description": "The hospital cafeteria, currently closed for cleaning.",
+          "id": "CEO Office 1",
+          "name": "CEO Office 1",
+          "description": "You are inside the CEO Office",
           "exits": [
-            { "id": "entrence", "name": "entrence", "targetRoomId": "entrence" }
-          ],
-          "Items": [],
-          "npcs": []
+            {"name":"Montedison", "targetRoomId":"Montedison"}
+          ]
         },
         {
-          "id": "emergency",
-          "name": "Emergency Room",
-          "description": "The bustling emergency room with doctors and nurses attending to patients.",
+          "id": "ENI",
+          "name": "ENI",
+          "description": "You step into the ENI corporate office. The air feels tense and quiet.",
           "exits": [
-            { "id": "entrence", "name": "entrence", "targetRoomId": "entrence" }
-          ],
-          "Items": [],
-          "npcs": []
+            {"name":"City", "targetRoomId":"City"},
+            {"name":"CEO Office 2", "targetRoomId":"CEO Office 2"}
+          ]
+        },
+        {
+          "id": "CEO Office 2",
+          "name": "CEO Office 2",
+          "description": "You are inside the CEO Office ",
+          "exits": [
+            { "name": "ENI", "targetRoomId": "ENI" }
+          ]
+        },
+        {
+          "id": "Bank",
+          "name": "Bank",
+          "description": "you are in the Bank where offshore money flows",
+          "exits": [
+             {"name":"City", "targetRoomId":"City"},
+             {"name":"Lobby", "targetRoomId":"Lobby"},
+             {"name":"Office Bank", "targetRoomId":"Office Bank"},
+             {"name":"Break room", "targetRoomId":"Break room"},
+             {"name":"Meeting room", "targetRoomId":"Meeting room"}
+          ]
+        },
+        {
+          "id": "Lobby",
+          "name": "Lobby",
+          "description": "You are in the Lobby",
+          "exits": [
+            { "name": "Bank", "targetRoomId": "Bank" },
+            { "name": "Office Bank", "targetRoomId": "Office Bank" },
+            { "name": "Break room", "targetRoomId": "Break room" },
+            {"name":"Meeting room", "targetRoomId":"Meeting room"}
+          ]
+        },
+        {
+          "id": "Office Bank",
+          "name": "Office Bank",
+          "description": "You are in the Office bank",
+          "exits": [
+            { "name": "Bank", "targetRoomId": "Bank" },
+            { "name": "Lobby", "targetRoomId": "Lobby" },
+            { "name": "Break room", "targetRoomId": "Break room" },
+            { "name": "Meeting room", "targetRoomId": "Meeting room" }
+          ]
+        },
+        {
+          "id": "Break room",
+          "name": "Break room",
+          "description": "You are in the Break room",
+          "exits": [
+            { "name": "Bank", "targetRoomId": "Bank" },
+            { "name": "Lobby", "targetRoomId": "Lobby" },
+            { "name": "Office Bank", "targetRoomId": "Office Bank" },
+            { "name": "Meeting room", "targetRoomId": "Meeting room" }
+          ]
+        },
+        {
+          "id": "Meeting room",
+          "name": "Meeting room",
+          "description": "You are in the Meeting room",
+          "exits": [
+            { "name": "Bank", "targetRoomId": "Bank" },
+            { "name": "Lobby", "targetRoomId": "Lobby" },
+            { "name": "Office Bank", "targetRoomId": "Office Bank" },
+            { "name": "Break room", "targetRoomId": "Break room" }
+          ]
+        },
+        {
+          "id": "Backrooms",
+          "name": "Backrooms",
+          "description": "You are in the Backrooms of ministries where loyalty is bought and sold.",
+          "exits": [
+            {"name":"City", "targetRoomId":"City"},
+            {"name":"Office 3", "targetRoomId":"Office 3"},
+            {"name":"Party room", "targetRoomId":"Party room"}
+          ]
+        },
+        {
+          "id": "Office 3",
+          "name": "Office 3",
+          "description": " You are inside of the Office 3",
+          "exits": [
+            { "name": "Backrooms", "targetRoomId":"Backrooms" },
+            {"name":"Party room", "targetRoomId": "Party room"}
+          ]
+        },
+        {
+          "id": "Party room",
+          "name": "Party room",
+          "description": "You are inside of the Party room",
+          "exits": [
+            { "name": "Backrooms", "targetRoomId": "Backrooms" },
+            { "name": "Office 3", "targetRoomId": "Office 3" }
+            
+          ]
+        },
+        {
+          "id": "Political Offices",
+          "name": "Political Offices",
+          "description": "You are inside of Political Offices where deals are sealed with whispers.",
+          "exits": [
+            {"name":"City", "targetRoomId":"City"},
+            {"name":"Office 01", "targetRoomId":"Office 01"},
+            {"name":"Office 02", "targetRoomId":"Office 02"},
+            {"name":"Office 03", "targetRoomId":"Office 03"}
+          ]
+        },
+        {
+          "id": "Office 01",
+          "name": "Office 01",
+          "description": "You are in the Office 01",
+          "exits": [
+            { "name": "Political Offices", "targetRoomId": "Political Offices" },
+            { "name": "Office 02", "targetRoomId": "Office 02" },
+            { "name": "Office 03", "targetRoomId": "Office 03" }
+          ]
+        },
+        {
+          "id": "Office 02",
+          "name": "Office 02",
+          "description": "You are in the office 02",
+          "exits": [
+            { "name": "Political Offices", "targetRoomId": "Political Offices" },
+            { "name": "Office 01", "targetRoomId": "Office 01" },
+            { "name": "Office 03", "targetRoomId": "Office 03" }
+          ]
+        },
+        {
+          "id": "Office 03",
+          "name": "Office 03",
+          "description": "You are in the Office 03",
+          "exits": [
+            { "name": "Political Offices", "targetRoomId": "Political Offices" },
+            { "name": "Office 01", "targetRoomId": "Office 01" },
+            { "name": "Office 02", "targetRoomId": "Office 02" }
+          ]
         }
       ]
     }
