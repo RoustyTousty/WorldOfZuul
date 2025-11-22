@@ -23,9 +23,6 @@ namespace WorldOfZuul.World
 
 
 
-
-        
-
         /*
         * Unlocks the exit.
         */

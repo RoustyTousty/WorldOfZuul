@@ -75,6 +75,7 @@ namespace WorldOfZuul
                                     targetRoom,
                                     exitData.IsLocked ?? false
                                 );
+                                Console.WriteLine($"Created exit {exit.Id} in room {room.Id} to target room {targetRoom.Id}");
                                 room.SetExit(exit);
                             }
                         }

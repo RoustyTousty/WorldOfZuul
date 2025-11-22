@@ -12,25 +12,25 @@ public class ConsumableItem : Item
 
 
 
-
-
         public override void Use()
         {
             if (Uses > 0)
             {
-            Uses--;
+                Uses--;
 
-            if (!string.IsNullOrWhiteSpace(UseText))
-                Console.WriteLine(UseText);
-                Console.WriteLine();
-                Console.WriteLine($"{Name} has {Uses} uses left.");
-                
-            
-
-                if (Uses == 0)
+                if (!string.IsNullOrWhiteSpace(UseText))
                 {
-                    Console.WriteLine($"The {Name} has been fully consumed.");
-                    // TODO: remove from inventory here
+                    Console.WriteLine(UseText);
+                    Console.WriteLine();
+                    Console.WriteLine($"{Name} has {Uses} uses left.");
+                    
+                
+
+                    if (Uses == 0)
+                    {
+                        Console.WriteLine($"The {Name} has been fully consumed.");
+                        // TODO: remove from inventory here
+                    }
                 }
             }
             else

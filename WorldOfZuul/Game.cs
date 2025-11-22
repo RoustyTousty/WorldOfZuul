@@ -78,7 +78,7 @@ namespace WorldOfZuul
             switch (command.Name)
             {
                 case "look":
-                    player?.PrintRoom();
+                    player.PrintRoom();
                     break;
 
 
@@ -86,38 +86,59 @@ namespace WorldOfZuul
                     if (command.SecondWord == null)
                     {
                         Console.WriteLine("Inspect what?");
+                        break;
                     }
-                    
+                    player.TryInspectItem(command.SecondWord);
+                    break;
+
+
+                case "use":
+                    if (command.SecondWord == null)
+                    {
+                        Console.WriteLine("Use what?");
+                        break;
+                    }
+                    player.TryUseItem(command.SecondWord);
                     break;
 
 
                 case "take":
-                    // if (command.SecondWord == null)
-                    // {
-                    //     Console.WriteLine("Take what?");
-                    //     break;
-                    // }
-                    // player?.TryTakeItem(command.SecondWord);
+                    if (command.SecondWord == null)
+                    {
+                        Console.WriteLine("Take what?");
+                        break;
+                    }
+                    player.TryTakeItem(command.SecondWord);
+                    break;
+
+
+                case "drop":
+                    if (command.SecondWord == null)
+                    {
+                        Console.WriteLine("Drop what?");
+                        break;
+                    }
+                    player.TryDropItem(command.SecondWord);
                     break;
 
 
                 case "inventory":
-                    player?.PrintInventory();
+                    player.PrintInventory();
                     break;
 
 
                 case "back":
-                    player?.BackToRoom();
+                    player.BackToRoom();
                     break;
 
 
                 case "move":
-                    player?.MoveToRoom(command.SecondWord);
+                    player.MoveToRoom(command.SecondWord);
                     break;
 
 
                 case "travel":
-                    player?.MoveToLocation(command.SecondWord, map);
+                    player.MoveToLocation(command.SecondWord, map);
                     break;
 
 
@@ -127,7 +148,7 @@ namespace WorldOfZuul
                         Console.WriteLine("Talk to who?");
                         break;
                     }
-                    player?.TryTalkToNpc(command.SecondWord);
+                    player.TryTalkToNpc(command.SecondWord);
                     break;
 
 
@@ -136,7 +157,7 @@ namespace WorldOfZuul
 
 
                 case "help":
-                    player?.PrintHelp();
+                    player.PrintHelp();
                     break;
 
 

@@ -16,6 +16,7 @@ namespace WorldOfZuul.Entities
 
         public Player(Location startingLocation)
         {
+            Console.WriteLine($"Starting location set to {startingLocation}.");
             CurrentLocation = startingLocation;
             CurrentRoom = startingLocation.GetRoom(startingLocation.StartingRoomId)!;
         }
@@ -121,6 +122,7 @@ namespace WorldOfZuul.Entities
 
             Console.WriteLine($"You travel to {newLocation.Name} and arrive at {CurrentRoom.Name}.");
             PrintRoom();
+
             return true;
         }
 
@@ -131,7 +133,7 @@ namespace WorldOfZuul.Entities
         */
         public void TryTakeItem(string itemName)
         {
-            var item = CurrentRoom.GetItem(itemName);
+            Item? item = CurrentRoom.GetItem(itemName);
             if (item == null)
             {
                 Console.WriteLine($"There is no item named {itemName} here.");
@@ -145,17 +147,19 @@ namespace WorldOfZuul.Entities
             }
 
             Inventory.AddItem(item);
-            //TODO: Remove item from room
+            CurrentRoom.RemoveItem(item);
+
             Console.WriteLine($"You picked up the {item.Name}.");
         }
 
 
 
-
+        /*
+        * Attempts to use an item from the player's inventory.
+        */
         public void TryUseItem(string itemName)
-
         {
-            var item = Inventory.GetItem(itemName);    //supposed to check for and get the item from inventory
+            Item? item = Inventory.GetItem(itemName);
             if (item == null)
             {
                 Console.WriteLine($"You don't have that item in your inventory.");
@@ -165,11 +169,14 @@ namespace WorldOfZuul.Entities
             item.Use();
         }
 
-        
-        public void TryDropItem(string itemName)
 
+
+        /*
+        * Attempts to drop an item from the player's inventory into the current room.
+        */
+        public void TryDropItem(string itemName)
         {
-            var item = Inventory.GetItem(itemName);
+            Item? item = Inventory.GetItem(itemName);
             if (item == null)
             {
                 Console.WriteLine($"You don't have that item in your inventory.");
@@ -177,18 +184,21 @@ namespace WorldOfZuul.Entities
             }
 
             Inventory.RemoveItem(item);
-            //TODO: When dropping the item, it needs to put the item into the room it was dropped in.
+            CurrentRoom.SetItem(item);
+
             item.Drop();
         }
 
 
-        public void TryInspectItem(string itemName)
 
+        /*
+        * Attempts to drop an item from the player's inventory into the current room.
+        */
+        public void TryInspectItem(string itemName)
         {
-            var item = Inventory.GetItem(itemName);
+            Item? item = Inventory.GetItem(itemName);
             if (item == null)
             {
-                
                 Console.WriteLine($"You don't have that item in your inventory.");
                 return;
                 
@@ -199,28 +209,25 @@ namespace WorldOfZuul.Entities
 
 
 
-
-
-
-
-
-
-
         /*
         * Attempts to unlock an exit using the items inside players inventory.
         */
         private bool TryUnlockExit(Exit exit)
         {
-            List<Item> items = Inventory.GetItems();
-            foreach (var item in items)
+            if (string.IsNullOrWhiteSpace(exit.KeyItemId))
             {
-                if (item.Id == exit.KeyItemId)
-                {
-                    exit.Unlock();
-                    return true;
-                }
+                return false;
             }
-            return false;
+
+            Item? keyItem = Inventory.GetItem(exit.KeyItemId);
+            List<Item> inventoryItems = Inventory.GetAllItems();
+
+            if (keyItem == null || !inventoryItems.Contains(keyItem))
+            {
+                return false;
+            }
+
+            return true;
         }
 
 
@@ -233,7 +240,7 @@ namespace WorldOfZuul.Entities
             /*
             * Look for an npc with a matching or close to matching name to the input.
             */
-            var npc = CurrentRoom.Npcs.Values.FirstOrDefault(n => n.Name.Contains(npcName, StringComparison.OrdinalIgnoreCase));
+            Npc? npc = CurrentRoom.Npcs.Values.FirstOrDefault(n => n.Name.Contains(npcName, StringComparison.OrdinalIgnoreCase));
 
             if (npc == null)
             {
@@ -321,7 +328,7 @@ namespace WorldOfZuul.Entities
         */
         public void PrintInventory()
         {
-            List<Item> items = Inventory.GetItems();
+            List<Item> items = Inventory.GetAllItems();
             if (items.Count == 0)
             {
                 Console.WriteLine("Your inventory is empty.");

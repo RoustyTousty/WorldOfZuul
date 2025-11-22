@@ -5,7 +5,7 @@
         public List<string> ValidCommands { get; } = new List<string> {
             "quit", "help", "look", // General commands
             "back", "move", "travel", // Movement commands
-            "take", "inspect", "inventory", // Item commands
+            "take", "inspect", "drop", "use", "inventory", // Item commands
             "talk", "talkto" // NPC commands
         };
 

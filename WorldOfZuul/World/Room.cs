@@ -72,8 +72,7 @@ namespace WorldOfZuul.World
         */
         public void SetExit(Exit exit)
         {
-            if (exit == null) return;
-            Exits[exit.Id] = exit;
+            Exits.Add(exit.Id, exit);
         }
 
 
@@ -83,8 +82,7 @@ namespace WorldOfZuul.World
         */
         public void SetItem(Item item)
         {
-            if (item == null) return;
-            Items[item.Id] = item;
+            Items.Add(item.Id, item);
         }
 
 
@@ -94,8 +92,37 @@ namespace WorldOfZuul.World
         */
         public void SetNpc(Npc npc)
         {
-            if (npc == null) return;
-            Npcs[npc.Id] = npc;
+            Npcs.Add(npc.Id, npc);
+        }
+
+
+
+        /*
+        * Remove Exit from the room.
+        */
+        public void RemoveExit(Exit exit)
+        {
+            Exits.Remove(exit.Id);
+        }
+
+
+
+        /*
+        * Remove item from the room.
+        */
+        public void RemoveItem(Item item)
+        {
+            Items.Remove(item.Id);
+        }
+
+
+
+        /*
+        * Remove Npc from the room.
+        */
+        public void RemoveNpc(Npc npc)
+        {
+            Npcs.Remove(npc.Id);
         }
     }
 }
