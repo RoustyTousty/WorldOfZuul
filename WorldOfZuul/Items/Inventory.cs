@@ -8,7 +8,7 @@ namespace WorldOfZuul.Items {
     /*creates a public class (acessible from other classes) called Inventory */
     {
         private Item[] items;
-        /*creates a private array of that stores each item called items */
+        /*creates a private array that stores each item called items */
         public Inventory(Item[] items) // Constructor that takes an array of items as parameter
         {
             this.items = items; //This.items refers to the private array(above line 10) and it is assigned the value of the parameter items(line 12)
@@ -62,10 +62,23 @@ namespace WorldOfZuul.Items {
 
         public void PrintInventory() // creates a public empty method that displays the items in the inventory
         {
+            if (items.Length == 0)
+            {
+                Console.WriteLine("Your inventory is empty.");
+                return;
+            }
+            else
+            {
             Console.WriteLine("Inventory:"); // Prints the header "Inventory:"
             foreach (Item item in items) // Loops through each item in the array(items)
             {
+                if (item == items[0])
+                {
+                    Console.WriteLine(item); // Prints the first item without extra line
+                }
+                else
                 Console.WriteLine(" - " + item);// Prints each intem with a dash in front
+            }
             }
         }
         private bool Contains(Item[] items, Item item)
@@ -75,6 +88,15 @@ namespace WorldOfZuul.Items {
                 if (candidateItem == item) return true;
             }
             return false;
+        }
+        public Item? GetItem(string itemName)
+        {
+            foreach (Item item in items)
+            {
+                if (item.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase))
+                    return item;
+            }
+            return null;
         }
     }
 }
