@@ -1,7 +1,8 @@
 namespace WorldOfZuul.Items
 {
-
-    
+    /*
+     * Represents an item that can be used by the player.
+     */
     public class UsableItem : Item
         {
 
@@ -11,14 +12,20 @@ namespace WorldOfZuul.Items
         {
         }
 
-        public override void Use()
+        public override bool Use()
         {
             if (!string.IsNullOrWhiteSpace(UseText))
+                {
                 Console.WriteLine(UseText);
+                return true;      // Use succeeded - item has text to display
+                }
             else
+                {
                 Console.WriteLine("nothing happens...");
+                return false;     // Use failed - no text, nothing happened
+                }
         }
-    }
 
+        }
 }
 

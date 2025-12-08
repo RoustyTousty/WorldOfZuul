@@ -28,21 +28,16 @@ namespace WorldOfZuul.Items
             return Description;
         }
 
-        public virtual void Use()
+        public virtual bool Use()
         {
             Console.WriteLine("nothing happens...");
+            return false;
         }
 
         public virtual void Drop()
         {
             Console.WriteLine($"You drop the {Name}.");
         }
-
-
-        // TODO: Add item pickup/use/drop methods.
-
-
-
-
     }
 }
+
