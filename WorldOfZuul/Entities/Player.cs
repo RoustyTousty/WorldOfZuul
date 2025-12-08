@@ -93,6 +93,27 @@ namespace WorldOfZuul.Entities
             PrintRoom();
             return true;
         }
+        public void PrintInventory() // creates a public empty method that displays the items in the inventory
+        {
+            if (items.Length == 0)
+            {
+                Console.WriteLine("Your inventory is empty.");
+                return;
+            }
+            else
+            {
+            Console.WriteLine("Inventory:"); // Prints the header "Inventory:"
+            foreach (Item item in items) // Loops through each item in the array(items)
+            {
+                if (item == items[0])
+                {
+                    Console.WriteLine(item); // Prints the first item without extra line
+                }
+                else
+                Console.WriteLine(" - " + item);// Prints each intem with a dash in front
+            }
+            }
+        }
 
 
 
