@@ -98,5 +98,13 @@ namespace WorldOfZuul.Items {
             }
             return null;
         }
+        public bool HasItemWithId(string id)
+        {
+            foreach (var it in items)
+            {
+                if (it != null && it.Id == id) return true;
+            }
+            return false;
+            }
     }
 }

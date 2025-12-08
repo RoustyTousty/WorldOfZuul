@@ -211,15 +211,13 @@ namespace WorldOfZuul.Entities
         */
         private bool TryUnlockExit(Exit exit)
         {
-            List<Item> items = Inventory.GetItems();
-            foreach (var item in items)
+            if (Inventory.HasItemWithId(exit.KeyItemId))
             {
-                if (item.Id == exit.KeyItemId)
-                {
-                    exit.Unlock();
-                    return true;
-                }
+                exit.Unlock();
+                Console.WriteLine($"You unlocked the {exit.Name}!");
+                return true;
             }
+            Console.WriteLine("You might need a key or an item to unlock it.");
             return false;
         }
 
@@ -313,28 +311,6 @@ namespace WorldOfZuul.Entities
 
             Console.WriteLine();
         }
-
-
-
-        /*
-        * Prints a list of items in the player's inventory.
-        */
-        public void PrintInventory()
-        {
-            List<Item> items = Inventory.GetItems();
-            if (items.Count == 0)
-            {
-                Console.WriteLine("Your inventory is empty.");
-                return;
-            }
-
-            Console.WriteLine("You are carrying:");
-            foreach (var item in items)
-            {
-                Console.WriteLine($" - {item.Name}");
-            }
-        }
-
 
 
         /*        
