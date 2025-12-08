@@ -1,6 +1,7 @@
 ﻿using WorldOfZuul.World;
 using WorldOfZuul.Entities;
 using WorldOfZuul.Commands;
+using WorldOfZuul.Items;
 
 namespace WorldOfZuul
 {
@@ -86,8 +87,7 @@ namespace WorldOfZuul
                     {
                         Console.WriteLine("Inspect what?");
                     }
-
-
+                    
                     break;
 
 
