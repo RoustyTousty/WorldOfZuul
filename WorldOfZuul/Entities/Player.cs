@@ -211,6 +211,12 @@ namespace WorldOfZuul.Entities
         */
         private bool TryUnlockExit(Exit exit)
         {
+            if (string.IsNullOrEmpty(exit.KeyItemId))
+            {
+                Console.WriteLine("This exit cannot be unlocked.");
+                return false;
+            }
+
             if (Inventory.HasItemWithId(exit.KeyItemId))
             {
                 exit.Unlock();
@@ -219,8 +225,8 @@ namespace WorldOfZuul.Entities
             }
             Console.WriteLine("You might need a key or an item to unlock it.");
             return false;
+            
         }
-
 
 
         /*
