@@ -7,7 +7,7 @@ namespace WorldOfZuul.Items {
     public class Inventory
     /*creates a public class (acessible from other classes) called Inventory */
     {
-        private Item[] items;
+        public Item[] items;
         /*creates a private array that stores each item called items */
         public Inventory(Item[] items) // Constructor that takes an array of items as parameter
         {

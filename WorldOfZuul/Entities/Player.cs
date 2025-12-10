@@ -12,7 +12,7 @@ namespace WorldOfZuul.Entities
 
         public Inventory Inventory { get; } = new();
 
-        private const string DEFAULT_PLAYER_NAME = "Bob the 'great' investigator";
+        private const string DEFAULT_PLAYER_NAME = "Detective Conan";
 
         public Player(Location startingLocation)
         {
@@ -93,27 +93,7 @@ namespace WorldOfZuul.Entities
             PrintRoom();
             return true;
         }
-        public void PrintInventory() // creates a public empty method that displays the items in the inventory
-        {
-            if (items.Length == 0)
-            {
-                Console.WriteLine("Your inventory is empty.");
-                return;
-            }
-            else
-            {
-            Console.WriteLine("Inventory:"); // Prints the header "Inventory:"
-            foreach (Item item in items) // Loops through each item in the array(items)
-            {
-                if (item == items[0])
-                {
-                    Console.WriteLine(item); // Prints the first item without extra line
-                }
-                else
-                Console.WriteLine(" - " + item);// Prints each intem with a dash in front
-            }
-            }
-        }
+        
 
 
 
@@ -200,8 +180,28 @@ namespace WorldOfZuul.Entities
             Inventory.RemoveItem(item);
             //TODO: When dropping the item, it needs to put the item into the room it was dropped in.
             item.Drop();
+    
         }
-
+    public void PrintInventory() // creates a public empty method that displays the items in the inventory
+        {
+            if (Inventory.items.Length == 0)
+            {
+                Console.WriteLine("Your inventory is empty.");
+                return;
+            }
+            else
+            {
+            Console.WriteLine("Inventory:"); // Prints the header "Inventory:"
+            foreach (Item item in Inventory.items) // Loops through each item in the array(items)
+            {
+                if (item == Inventory.items[0])
+                {
+                    Console.WriteLine(item); // Prints the first item without extra line
+                }
+                else
+                Console.WriteLine(" - " + item);// Prints each intem with a dash in front
+            }
+            }}
 
         public void TryInspectItem(string itemName)
 
@@ -346,8 +346,8 @@ namespace WorldOfZuul.Entities
         public void PrintWelcome()
         {
             Console.WriteLine();
-            Console.WriteLine("Welcome to the World of Zuul!");
-            Console.WriteLine("World of Zuul is a new, incredibly boring adventure game.");
+            Console.WriteLine($"Welcome {Name} to the Clean Hands!");
+            Console.WriteLine("An investigative text game inspired by the Tangentopoli scandal.");                                                                                                 
             Console.WriteLine();
             PrintHelp();
             Console.WriteLine();
@@ -364,7 +364,7 @@ namespace WorldOfZuul.Entities
             Console.WriteLine(" - move [exitName]");
             Console.WriteLine(" - back");
             Console.WriteLine(" - look");
-            Console.WriteLine(" - inevntory");
+            Console.WriteLine(" - inventory");
             Console.WriteLine(" - help");
             Console.WriteLine(" - quit");
         }

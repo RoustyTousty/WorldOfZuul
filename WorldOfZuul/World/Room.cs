@@ -15,6 +15,8 @@ namespace WorldOfZuul.World
         public Dictionary<string, Exit> Exits { get; } = new();
         public Dictionary<string, Item> Items { get; } = new();
         public Dictionary<string, Npc> Npcs { get; } = new();
+        public Dictionary<string, InteractiveObject> InteractiveObjects { get; } = new();
+        public RoomState State { get; } = new();
 
         public Room(string id, string name, string description)
         {
@@ -96,6 +98,20 @@ namespace WorldOfZuul.World
         {
             if (npc == null) return;
             Npcs[npc.Id] = npc;
+        }
+
+        /*
+        * Handles a player action on an interactive object in this room.
+        * Returns the response text and applies any side effects to the room state.
+        */
+        public string HandleInteractiveAction(string objectId, string verb)
+        {
+            if (!InteractiveObjects.TryGetValue(objectId, out var obj))
+                return $"There's no '{objectId}' here.";
+
+            var (response, sideEffect) = obj.Execute(State, verb);
+            sideEffect?.Invoke(State);
+            return response;
         }
     }
 }

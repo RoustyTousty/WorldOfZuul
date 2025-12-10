@@ -6,7 +6,8 @@
             "quit", "help", "look", // General commands
             "back", "move", "travel", // Movement commands
             "take", "inspect", "inventory", // Item commands
-            "talk", "talkto" // NPC commands
+            "talk", "talkto", // NPC commands
+            "open", "read", "answer", "push" // Interactive object commands
         };
 
         public bool IsValidCommand(string command)
