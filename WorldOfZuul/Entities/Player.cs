@@ -346,8 +346,8 @@ namespace WorldOfZuul.Entities
         public void PrintWelcome()
         {
             Console.WriteLine();
-            Console.WriteLine($"Welcome {Name} to the Clean Hands!");
-            Console.WriteLine("An investigative text game inspired by the Tangentopoli scandal.");                                                                                                 
+            Console.WriteLine($"Welcome {Name} to Clean Hands!");
+            Console.WriteLine("An investigative text-based game inspired by the Tangentopoli scandal.");                                                                                                 
             Console.WriteLine();
             PrintHelp();
             Console.WriteLine();
