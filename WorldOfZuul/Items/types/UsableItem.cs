@@ -10,17 +10,17 @@ namespace WorldOfZuul.Items
 
 
 
-        public override void Use()
-        {
-            if (!string.IsNullOrWhiteSpace(UseText))
-            {
-                Console.WriteLine(UseText);
-            }
-            else
-            {
-                Console.WriteLine("nothing happens...");
-            }
-        }
+        // public override void Use()
+        // {
+        //     if (!string.IsNullOrWhiteSpace(UseText))
+        //     {
+        //         Console.WriteLine(UseText);
+        //     }
+        //     else
+        //     {
+        //         Console.WriteLine("nothing happens...");
+        //     }
+        // }
     }
 
 }

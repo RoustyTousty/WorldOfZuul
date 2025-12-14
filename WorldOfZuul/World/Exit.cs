@@ -24,6 +24,16 @@ namespace WorldOfZuul.World
 
 
         /*
+        * Locks the exit.
+        */
+        public void Lock()
+        {
+            IsLocked = true;
+        }
+
+
+
+        /*
         * Unlocks the exit.
         */
         public void Unlock()

@@ -1,3 +1,5 @@
+using WorldOfZuul.Events;
+
 namespace WorldOfZuul.Items
 {
     /*
@@ -10,15 +12,16 @@ namespace WorldOfZuul.Items
         public string Description { get; set; }
 
         public string? UseText { get; set; }
+        public string? EventId { get; set; }
         public virtual bool CanPickUp => true;
 
-        // TODO: Add types.
-        public Item(string id, string name, string description, string? useText = null)
+        public Item(string id, string name, string description, string? useText = null, string? eventId = null)
         {
             Id = id;
             Name = name;
             Description = description;
             UseText = useText;
+            EventId = eventId;
         }
 
 
@@ -30,19 +33,18 @@ namespace WorldOfZuul.Items
 
         public virtual void Use()
         {
-            Console.WriteLine("nothing happens...");
+            if (EventId != null)
+            {
+                EventManager.Instance.Trigger(EventId);
+                return;
+            }
+
+            Console.WriteLine("Nothing happens...");
         }
 
         public virtual void Drop()
         {
             Console.WriteLine($"You drop the {Name}.");
         }
-
-
-        // TODO: Add item pickup/use/drop methods.
-
-
-
-
     }
 }

@@ -2,6 +2,8 @@ using System.Text.Json;
 using WorldOfZuul.World;
 using WorldOfZuul.Items;
 using WorldOfZuul.Entities;
+using WorldOfZuul.Events;
+using WorldOfZuul.Factories;
 
 namespace WorldOfZuul
 {
@@ -91,17 +93,31 @@ namespace WorldOfZuul
                     Room room = roomLookup[roomData.Id];
                     if (roomData.Items != null)
                     {
+                        // foreach (var itemData in roomData.Items)
+                        // {
+                        //     Item item = new Item(
+                        //         itemData.Id,
+                        //         itemData.Name,
+                        //         itemData.Description
+                        //     );
+                        //     room.SetItem(item);
+                        // }
                         foreach (var itemData in roomData.Items)
                         {
-                            Item item = new Item(
-                                itemData.Id,
-                                itemData.Name,
-                                itemData.Description
-                            );
+                            Item item = ItemFactory.Create(itemData);
+
+                            if (itemData.Event != null)
+                            {
+                                IEvent ev = EventFactory.Create(itemData.Event);
+                                EventManager.Instance.Register(ev);
+                            }
+
                             room.SetItem(item);
                         }
                     }
                 }
+    
+
 
                 /*
                 * Reads NPCs from JSON and places them in the appropriate rooms.
@@ -176,6 +192,17 @@ namespace WorldOfZuul
         public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public string? Type { get; set; }
+        public string? UseText { get; set; }
+        public bool? CanUse { get; set; }
+
+        public EventData? Event { get; set; }
+    }
+    public class EventData
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
+        public Dictionary<string, JsonElement>? Params { get; set; }
     }
     public class ExitData
     {

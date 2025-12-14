@@ -1,6 +1,6 @@
 namespace WorldOfZuul.Items
 {
-public class ConsumableItem : Item
+    public class ConsumableItem : Item
     {
         public int Uses { get; private set; }
 
@@ -29,7 +29,6 @@ public class ConsumableItem : Item
                     if (Uses == 0)
                     {
                         Console.WriteLine($"The {Name} has been fully consumed.");
-                        // TODO: remove from inventory here
                     }
                 }
             }
@@ -37,7 +36,6 @@ public class ConsumableItem : Item
             {
                 Console.WriteLine("nothing happens...");
             }
-            
         }
     }
 }
