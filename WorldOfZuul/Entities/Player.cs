@@ -206,15 +206,10 @@ namespace WorldOfZuul.Entities
             {
                 Console.WriteLine($"You don't have that item in your inventory.");
                 return;
-<<<<<<< Updated upstream
-                
-            }       
-=======
-            }
 
-            item.Inspect();
->>>>>>> Stashed changes
+            }
         }
+        
         private bool TryUnlockExit(Exit exit)
         {
             if (string.IsNullOrEmpty(exit.KeyItemId))
