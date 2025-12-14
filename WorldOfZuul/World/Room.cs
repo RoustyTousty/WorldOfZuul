@@ -42,14 +42,25 @@ namespace WorldOfZuul.World
 
 
         /*
-        * Returns an item by its ID.
+        * Returns an item by its ID or by name (case-insensitive).
         */
         public Item? GetItem(string id)
         {
+            // First try exact ID match
             if (Items.TryGetValue(id, out var item))
             {
                 return item;
             }
+
+            // If no ID match, search by name (case-insensitive)
+            foreach (var kvp in Items)
+            {
+                if (kvp.Value.Name.Equals(id, StringComparison.OrdinalIgnoreCase))
+                {
+                    return kvp.Value;
+                }
+            }
+
             return null;
         }
 

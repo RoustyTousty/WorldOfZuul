@@ -191,29 +191,29 @@ namespace WorldOfZuul.Entities
             }
             else
             {
-            Console.WriteLine("Inventory:"); // Prints the header "Inventory:"
-            foreach (Item item in Inventory.items) // Loops through each item in the array(items)
-            {
-                if (item == Inventory.items[0])
+                Console.WriteLine("Inventory:"); // Prints the header "Inventory:"
+                foreach (Item item in Inventory.items) // Loops through each item in the array(items)
                 {
-                    Console.WriteLine(item); // Prints the first item without extra line
+                    Console.WriteLine($" - {item.Name} ({item.Description})"); // Prints each item with name and description
                 }
-                else
-                Console.WriteLine(" - " + item);// Prints each intem with a dash in front
             }
-            }}
+        }
 
         public void TryInspectItem(string itemName)
-
         {
             var item = Inventory.GetItem(itemName);
             if (item == null)
             {
-                
                 Console.WriteLine($"You don't have that item in your inventory.");
                 return;
+<<<<<<< Updated upstream
                 
             }       
+=======
+            }
+
+            item.Inspect();
+>>>>>>> Stashed changes
         }
         private bool TryUnlockExit(Exit exit)
         {
