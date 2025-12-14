@@ -213,23 +213,8 @@ namespace WorldOfZuul.Entities
                 Console.WriteLine($"You don't have that item in your inventory.");
                 return;
                 
-            }
-
-            item.Inspect();
+            }       
         }
-
-
-
-
-
-
-
-
-
-
-        /*
-        * Attempts to unlock an exit using the items inside players inventory.
-        */
         private bool TryUnlockExit(Exit exit)
         {
             if (string.IsNullOrEmpty(exit.KeyItemId))
