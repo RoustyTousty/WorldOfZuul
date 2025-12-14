@@ -9,7 +9,11 @@
             if (string.IsNullOrWhiteSpace(inputLine))
                 return null;
 
-            string[] words = inputLine.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+            // Normalize input to be case-insensitive by lowercasing
+            string[] words = inputLine
+                .Trim()
+                .ToLowerInvariant()
+                .Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
 
             if (words.Length == 0 || !commandWords.IsValidCommand(words[0]))
                 return null;

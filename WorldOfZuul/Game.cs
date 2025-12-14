@@ -45,6 +45,20 @@ namespace WorldOfZuul
                         }
                     }
                 }
+                
+                // Set up exit targets from the ENI room to other rooms in the map
+                var courtHouseLocation = map.GetLocation("Court House");
+                if (courtHouseLocation != null)
+                {
+                    foreach (var exit in eniOffice.Exits.Values)
+                    {
+                        var targetRoom = courtHouseLocation.GetRoom(exit.Name);
+                        if (targetRoom != null)
+                        {
+                            exit.TargetRoom = targetRoom;
+                        }
+                    }
+                }
             }
             else
             {
@@ -131,12 +145,12 @@ namespace WorldOfZuul
 
 
                 case "take":
-                    // if (command.SecondWord == null)
-                    // {
-                    //     Console.WriteLine("Take what?");
-                    //     break;
-                    // }
-                    // player?.TryTakeItem(command.SecondWord);
+                    if (command.SecondWord == null)
+                    {
+                        Console.WriteLine("Take what?");
+                        break;
+                    }
+                    player?.TryTakeItem(command.SecondWord);
                     break;
 
 
@@ -147,7 +161,14 @@ namespace WorldOfZuul
                     }
                     else
                     {
-                        string response = player?.CurrentRoom.HandleInteractiveAction(command.SecondWord, $"open {command.SecondWord}") ?? "You can't open that.";
+                        // Map multi-word commands to the correct object
+                        // e.g., "open drawer left" → object "desk", verb "open drawer left"
+                        string objectId = command.SecondWord;
+                        if (command.SecondWord.Contains("drawer", StringComparison.OrdinalIgnoreCase))
+                        {
+                            objectId = "desk";
+                        }
+                        string response = player?.CurrentRoom.HandleInteractiveAction(objectId, $"open {command.SecondWord}") ?? "You can't open that.";
                         Console.WriteLine(response);
                     }
                     break;
@@ -211,7 +232,6 @@ namespace WorldOfZuul
                 case "travel":
                     player?.MoveToLocation(command.SecondWord, map);
                     break;
-
 
                 case "talk" or "talkto":
                     if (command.SecondWord == null)

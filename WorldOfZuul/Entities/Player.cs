@@ -201,15 +201,13 @@ namespace WorldOfZuul.Entities
                 else
                 Console.WriteLine(" - " + item);// Prints each intem with a dash in front
             }
-            }}
+        }}
 
         public void TryInspectItem(string itemName)
-
         {
             var item = Inventory.GetItem(itemName);
             if (item == null)
             {
-                
                 Console.WriteLine($"You don't have that item in your inventory.");
                 return;
                 
@@ -296,9 +294,42 @@ namespace WorldOfZuul.Entities
 
         /*
         * Prints the description of the current room, its exits, npcs and any items inside.
+        * Displays an ASCII command box in the top-right corner.
         */
         public void PrintRoom()
         {
+            Console.Clear();
+            
+            // Command box for top-right corner
+            string[] commandBox = new string[]
+            {
+                "╔═══════════════════════╗",
+                "║   AVAILABLE COMMANDS  ║",
+                "╠═══════════════════════╣",
+                "║ move [ExitName]       ║",
+                "║ back                  ║",
+                "║ look                  ║",
+                "║ take [ItemName]       ║",
+                "║ inspect [Object]      ║",
+                "║ open [Object]         ║",
+                "║ inventory             ║",
+                "║ help                  ║",
+                "║ quit                  ║",
+                "╚═══════════════════════╝"
+            };
+
+            // Print command box in top-right corner (console width - box width)
+            int boxWidth = 25;
+            int rightPos = Math.Max(0, Console.WindowWidth - boxWidth - 2);
+            for (int i = 0; i < commandBox.Length; i++)
+            {
+                Console.SetCursorPosition(rightPos, i);
+                Console.Write(commandBox[i]);
+            }
+
+            // Reset to left side for room description
+            Console.SetCursorPosition(0, commandBox.Length + 1);
+            
             Console.WriteLine();
             Console.WriteLine($"--- {CurrentRoom.Name} ---");
             Console.WriteLine(CurrentRoom.Description);
@@ -316,15 +347,6 @@ namespace WorldOfZuul.Entities
             else
             {
                 Console.WriteLine("There are no visible exits.");
-            }
-
-            if (CurrentRoom.Items.Count > 0)
-            {
-                Console.WriteLine("\nYou see:");
-                foreach (var item in CurrentRoom.Items.Values)
-                {
-                    Console.WriteLine($" - {item.Name} ({item.Description})");
-                }
             }
 
             if (CurrentRoom.Npcs.Count > 0)

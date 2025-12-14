@@ -46,6 +46,19 @@ namespace WorldOfZuul.World
             // Add SECRET COMPARTMENT (revealed by painting)
             room.InteractiveObjects["compartment"] = BuildSecretCompartment();
 
+            // Add actual Item objects so they can be taken with the normal "take" command
+            var redFolder = new Item("Red folder", "Red Folder (M.P.)", "A red folder marked 'M.P.' containing wire transfers and offshore banking evidence.");
+            room.SetItem(redFolder);
+
+            var briefcase = new Item("briefcase", "Leather Briefcase", "A leather briefcase stuffed with stacks of US dollars and confidential documents.");
+            room.SetItem(briefcase);
+
+            var ledger = new Item("ledger", "Bound Ledger (IOR)", "A leather-bound ledger labeled 'IOR channel — Zug (Switzerland)' listing offshore transactions.");
+            room.SetItem(ledger);
+
+            // Add exit back to City (TargetRoom will be set by Game.cs after all rooms are loaded)
+            room.Exits["City"] = new Exit("City", "City", room); // Placeholder room, will be updated by Game.cs
+
             return room;
         }
 
