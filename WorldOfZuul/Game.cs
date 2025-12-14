@@ -233,24 +233,6 @@ namespace WorldOfZuul
                     player?.MoveToLocation(command.SecondWord, map);
                     break;
 
-
-                case "map":
-                    if (command.SecondWord == null || command.SecondWord.Equals("local", StringComparison.OrdinalIgnoreCase))
-                    {
-                        MapDisplay.DisplayCurrentLocationMap(player?.CurrentLocation!);
-                    }
-                    else if (command.SecondWord.Equals("world", StringComparison.OrdinalIgnoreCase))
-                    {
-                        MapDisplay.DisplayWorldMap(map);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Usage: 'map' or 'map local' - Shows current location's rooms and exits");
-                        Console.WriteLine("       'map world' - Shows all locations and rooms in the game world");
-                    }
-                    break;
-
-
                 case "talk" or "talkto":
                     if (command.SecondWord == null)
                     {
