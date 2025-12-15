@@ -109,7 +109,7 @@ namespace WorldOfZuul.World
                         );
                     }
 
-                    if (verb == "open drawer center" || verb == "open center drawer")
+                    if (verb.StartsWith("open drawer center") || verb.StartsWith("open center drawer"))
                     {
                         if (state.GetFlag("desk_center_opened"))
                             return ("The center drawer is already open.", null);
@@ -118,12 +118,30 @@ namespace WorldOfZuul.World
                             return ("The center drawer is locked. You need a code from somewhere...\n" +
                                     "HINT: Check the other drawers for clues.", null);
 
-                        return (
-                            "Using the code from the planner, you unlock the center drawer.\n" +
-                            "Inside you find an envelope stamped 'Zug' (Switzerland) with several bank codes and account numbers. " +
-                            "This confirms the connection between ENI and offshore banking.",
-                            s => s.SetFlag("desk_center_opened")
-                        );
+                        // Extract code from verb (e.g., "open drawer center 7-4-2" or "open drawer center 742")
+                        string code = verb.Replace("open drawer center", "").Replace("open center drawer", "").Trim();
+                        
+                        if (string.IsNullOrEmpty(code))
+                        {
+                            return ("The center drawer is locked. You found a code in the planner: 7-4-2.\n" +
+                                    "Try: open drawer center 7-4-2", null);
+                        }
+
+                        // Accept both "7-4-2" and "742" formats
+                        if (code == "7-4-2" || code == "742" || code == "7 4 2")
+                        {
+                            return (
+                                "You carefully dial the combination 7-4-2. With a soft click, the center drawer swings open!\n" +
+                                "Inside you find an envelope stamped 'Zug' (Switzerland) with several bank codes and account numbers. " +
+                                "This confirms the connection between ENI and offshore banking.",
+                                s => s.SetFlag("desk_center_opened")
+                            );
+                        }
+                        else
+                        {
+                            return ($"You try the code '{code}' but the drawer doesn't open. That's not the right combination.\n" +
+                                    "HINT: The planner in the right drawer ", null);
+                        }
                     }
 
                     return ("You can't do that with the desk.", null);
@@ -183,24 +201,42 @@ namespace WorldOfZuul.World
                         return ("A steel safe with a worn dial. Numbers around 2 and 4 show heavy wear. You need a combination to open it.\n" +
                                 "HINT: Look for clues in the desk drawers, especially the planner.", null);
 
-                    if (verb == "open safe" || verb == "unlock safe")
+                    if (verb.StartsWith("open safe") || verb.StartsWith("unlock safe"))
                     {
-                        if (!state.GetFlag("desk_right_opened"))
+                        if (!state.GetFlag("desk_left_opened"))
                             return ("You spin the dial, but it doesn't open. You need the combination from somewhere...\n" +
-                                    "HINT: The planner in the desk might have what you need.", null);
+                                    "HINT: The receipts in the left desk drawer might have what you need.", null);
 
                         if (state.GetFlag("safe_open"))
                             return ("The safe is already wide open.", null);
 
-                        return (
-                            "You carefully dial the combination 7-4-2 from the planner. With a soft click, the safe swings open.\n" +
-                            "Inside you find:\n" +
-                            " • Classified ENI Documents (stamped CONFIDENTIAL)\n" +
-                            " • A bank statement linking IOR (Vatican Bank) accounts to Caribbean transfers\n" +
-                            " • A sealed photograph (evidence of a suspicious handoff)\n" +
-                            "These documents prove the connection between ENI, the Vatican, and offshore accounts.",
-                            s => { s.SetFlag("safe_open"); s.StoreData("classified_docs", "Classified ENI Documents"); s.StoreData("bank_statement", "Bank Statement - IOR Accounts"); }
-                        );
+                        // Extract code from verb (e.g., "open safe 2-1-4")
+                        string code = verb.Replace("open safe", "").Replace("unlock safe", "").Trim();
+                        
+                        if (string.IsNullOrEmpty(code))
+                        {
+                            return ("The safe is locked. You found circled digits on a receipt in the left drawer: 2-1-4.\n" +
+                                    "Try: open safe 2-1-4", null);
+                        }
+
+                        // Accept both "2-1-4" and "214" formats
+                        if (code == "2-1-4" || code == "214" || code == "2 1 4")
+                        {
+                            return (
+                                "You carefully dial the combination 2-1-4. With a soft click, the safe swings open!\n" +
+                                "Inside you find:\n" +
+                                " • Classified ENI Documents (stamped CONFIDENTIAL)\n" +
+                                " • A bank statement linking IOR (Vatican Bank) accounts to Caribbean transfers\n" +
+                                " • A sealed photograph (evidence of a suspicious handoff)\n" +
+                                "These documents prove the connection between ENI, the Vatican, and offshore accounts.",
+                                s => { s.SetFlag("safe_open"); s.StoreData("classified_docs", "Classified ENI Documents"); s.StoreData("bank_statement", "Bank Statement - IOR Accounts"); }
+                            );
+                        }
+                        else
+                        {
+                            return ($"You try the code '{code}' but the safe doesn't open. That's not the right combination.\n" +
+                                    "HINT: The receipt in the left drawer showed: 2-1-4", null);
+                        }
                     }
 
                     return ("The safe remains locked.", null);

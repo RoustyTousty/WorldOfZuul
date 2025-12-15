@@ -62,7 +62,6 @@ namespace WorldOfZuul
             player = new Player(map.GetLocation(map.StartingLocationId)!);
             player.PrintEmptySpace(50);
             player.PromptPlayerName();
-            player.PrintWelcome();
         }
 
 
@@ -73,10 +72,8 @@ namespace WorldOfZuul
         */
         public void Play()
         {
+            player.PrintWelcome();
             Parser parser = new();
-
-            player?.PrintEmptySpace(50);
-            player?.PrintWelcome(); 
 
             bool continuePlaying = true;
             while (continuePlaying)
@@ -103,7 +100,7 @@ namespace WorldOfZuul
                 Console.WriteLine();
             }
 
-            Console.WriteLine("Thank you for playing World of Zuul!");
+            Console.WriteLine("Thank you for playing Clean Hands! Goodbye.");
         }
         
 
@@ -129,15 +126,15 @@ namespace WorldOfZuul
                     }
                     
                     // First try to inspect an interactive object in the room
-                    string response = player?.CurrentRoom.HandleInteractiveAction(command.SecondWord, "inspect") ?? "";
-                    if (!string.IsNullOrEmpty(response) && response != "You can't do that." && response != "You can't inspect that.")
+                    string inspectResponse = player?.CurrentRoom.HandleInteractiveAction(command.SecondWord, "inspect") ?? "";
+                    if (!string.IsNullOrEmpty(inspectResponse) && !inspectResponse.Contains("You can't"))
                     {
-                        Console.WriteLine(response);
+                        Console.WriteLine(inspectResponse);
                     }
                     else
                     {
                         // If no interactive object found, try inspecting an item in inventory
-                        player.TryInspectItem(command.SecondWord);
+                        player?.TryInspectItem(command.SecondWord);
                     }
                     break;
 
@@ -169,6 +166,93 @@ namespace WorldOfZuul
                         break;
                     }
                     player.TryDropItem(command.SecondWord);
+                    break;
+
+
+                case "read":
+                    if (command.SecondWord == null)
+                    {
+                        Console.WriteLine("Read what?");
+                        break;
+                    }
+                    
+                    // Try to read an interactive object in the room
+                    string readResponse = player?.CurrentRoom.HandleInteractiveAction(command.SecondWord, $"read {command.SecondWord}") ?? "";
+                    if (!string.IsNullOrEmpty(readResponse) && readResponse != "You can't do that.")
+                    {
+                        Console.WriteLine(readResponse);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"You can't read that.");
+                    }
+                    break;
+
+
+                case "open":
+                    if (command.SecondWord == null)
+                    {
+                        Console.WriteLine("Open what?");
+                        break;
+                    }
+                    
+                    // Map multi-word commands to the correct object
+                    string objectId = command.SecondWord;
+                    if (command.SecondWord.Contains("drawer", StringComparison.OrdinalIgnoreCase))
+                    {
+                        objectId = "desk";
+                    }
+                    
+                    string openResponse = player?.CurrentRoom.HandleInteractiveAction(objectId, $"open {command.SecondWord}") ?? "";
+                    if (!string.IsNullOrEmpty(openResponse) && openResponse != "You can't do that.")
+                    {
+                        Console.WriteLine(openResponse);
+                    }
+                    else
+                    {
+                        Console.WriteLine("You can't open that.");
+                    }
+                    break;
+
+
+                case "answer":
+                    string answerResponse = "";
+                    if (command.SecondWord == null)
+                    {
+                        answerResponse = player?.CurrentRoom.HandleInteractiveAction("phone", "answer") ?? "";
+                    }
+                    else
+                    {
+                        answerResponse = player?.CurrentRoom.HandleInteractiveAction(command.SecondWord, "answer") ?? "";
+                    }
+                    
+                    if (!string.IsNullOrEmpty(answerResponse) && answerResponse != "You can't do that.")
+                    {
+                        Console.WriteLine(answerResponse);
+                    }
+                    else
+                    {
+                        Console.WriteLine("You can't answer that.");
+                    }
+                    break;
+
+
+                case "push":
+                    if (command.SecondWord == null)
+                    {
+                        Console.WriteLine("Push what?");
+                        break;
+                    }
+                    
+                    string pushResponse = player?.CurrentRoom.HandleInteractiveAction(command.SecondWord, $"push {command.SecondWord}") ?? "";
+                    if (!string.IsNullOrEmpty(pushResponse) && pushResponse != "You can't do that.")
+                    {
+                        Console.WriteLine(pushResponse);
+                    }
+                    else
+                    {
+                        Console.WriteLine("You can't push that.");
+                    }
                     break;
 
 

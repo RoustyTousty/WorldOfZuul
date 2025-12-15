@@ -307,12 +307,14 @@ namespace WorldOfZuul.Entities
         */
         public void PrintWelcome()
         {
+
+            Console.Clear();      
+            int boxHeight = DrawCommandBox();  
+            Console.SetCursorPosition(0, boxHeight + 1);    
             Console.WriteLine();
             Console.WriteLine($"Welcome {Name} to Clean Hands!");
             Console.WriteLine("An investigative text-based game inspired by the Tangentopoli scandal.");                                                                                                 
-            Console.WriteLine("Start by taking a look around your current location.");  
-            Console.WriteLine();
-            PrintHelp();
+            Console.WriteLine("Start by taking a \"look\" around your current location.");  
             Console.WriteLine();
         }
 
