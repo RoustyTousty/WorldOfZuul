@@ -17,7 +17,33 @@ namespace WorldOfZuul
             */
             Builder builder = new Builder();
             map = builder.BuildMapFromJSON();
+ /*
+            * Add the Montedison Executive Office room (interactive demonstration).
+            */
+             Room montedisonOffice = MontedisonRoomBuilder.BuildMontedisonOffice();
+              var locationWithMontedison = map.Locations.Values
+        .FirstOrDefault(loc => loc.Rooms.ContainsKey("Montedison"));
+        if (locationWithMontedison != null)
+    {
+        // 4️⃣ Reemplazar la habitación creada por JSON
+        Room oldRoom = locationWithMontedison.GetRoom("Montedison")!;
+        locationWithMontedison.SetRoom(montedisonOffice);
 
+        // 5️⃣ Redirigir todas las salidas que apuntaban a la antigua Montedison
+        foreach (var location in map.Locations.Values)
+        {
+            foreach (var room in location.Rooms.Values)
+            {
+                foreach (var exit in room.Exits.Values)
+                {
+                    if (exit.TargetRoom == oldRoom)
+                    {
+                        exit.TargetRoom = montedisonOffice;
+                    }
+                }
+            }
+        }
+    }
             /*
             * Add the ENI Executive Office room (interactive demonstration).
             */
