@@ -19,11 +19,50 @@ namespace WorldOfZuul
             map = builder.BuildMapFromJSON();
 
             /*
+            * Add the ENI Executive Office room (interactive demonstration).
+            */
+            Room eniOffice = ENIRoomBuilder.BuildENIExecutiveOffice();
+
+            // Replace the JSON ENI room with the interactive version
+            var courtHouseLocation = map.GetLocation("Court House");
+            if (courtHouseLocation != null && courtHouseLocation.Rooms.ContainsKey("ENI"))
+            {
+                Room oldEniRoom = courtHouseLocation.GetRoom("ENI")!;
+                courtHouseLocation.SetRoom(eniOffice);
+                
+                // Update all exits in the map that were pointing to the old ENI room to point to the new one
+                foreach (var location in map.Locations.Values)
+                {
+                    foreach (var room in location.Rooms.Values)
+                    {
+                        foreach (var exit in room.Exits.Values)
+                        {
+                            if (exit.TargetRoom == oldEniRoom)
+                            {
+                                exit.TargetRoom = eniOffice;
+                            }
+                        }
+                    }
+                }
+                
+                // Set up the ENI room's exit back to City
+                if (eniOffice.Exits.ContainsKey("City"))
+                {
+                    var cityRoom = courtHouseLocation.GetRoom("City");
+                    if (cityRoom != null)
+                    {
+                        eniOffice.Exits["City"].TargetRoom = cityRoom;
+                    }
+                }
+            }
+
+            /*
             * Initialize player and prompt for a name.
             */
             player = new Player(map.GetLocation(map.StartingLocationId)!);
             player.PrintEmptySpace(50);
             player.PromptPlayerName();
+            player.PrintWelcome();
         }
 
 
@@ -37,7 +76,7 @@ namespace WorldOfZuul
             Parser parser = new();
 
             player?.PrintEmptySpace(50);
-            player?.PrintWelcome();
+            player?.PrintWelcome(); 
 
             bool continuePlaying = true;
             while (continuePlaying)
@@ -88,7 +127,18 @@ namespace WorldOfZuul
                         Console.WriteLine("Inspect what?");
                         break;
                     }
-                    player.TryInspectItem(command.SecondWord);
+                    
+                    // First try to inspect an interactive object in the room
+                    string response = player?.CurrentRoom.HandleInteractiveAction(command.SecondWord, "inspect") ?? "";
+                    if (!string.IsNullOrEmpty(response) && response != "You can't do that." && response != "You can't inspect that.")
+                    {
+                        Console.WriteLine(response);
+                    }
+                    else
+                    {
+                        // If no interactive object found, try inspecting an item in inventory
+                        player.TryInspectItem(command.SecondWord);
+                    }
                     break;
 
 

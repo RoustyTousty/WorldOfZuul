@@ -375,7 +375,7 @@ namespace WorldOfZuul.Entities
         * Draws the command reference box in the top-right corner of the screen.
         * Returns the number of lines used by the box.
         */           
-        public int DrawCommandBox()
+        private int DrawCommandBox()
         {
             string[] commandBox = new string[]
             {
