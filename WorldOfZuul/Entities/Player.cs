@@ -302,12 +302,25 @@ namespace WorldOfZuul.Entities
             Console.WriteLine($"Welcome, {Name}!");
         }
 
-
+        /*
+        *Prints the Welcome message when the game starts.
+        */
+        public void PrintWelcome()
+        {
+            Console.WriteLine();
+            Console.WriteLine($"Welcome {Name} to Clean Hands!");
+            Console.WriteLine("An investigative text-based game inspired by the Tangentopoli scandal.");                                                                                                 
+            Console.WriteLine("Start by taking a look around your current location.");  
+            Console.WriteLine();
+            PrintHelp();
+            Console.WriteLine();
+        }
 
         /*
         * Prints the description of the current room, its exits, npcs and any items inside.
         * Displays an ASCII command box in the top-right corner.
         */
+
         public void PrintRoom()
         {
             Console.Clear();
@@ -362,7 +375,7 @@ namespace WorldOfZuul.Entities
         * Draws the command reference box in the top-right corner of the screen.
         * Returns the number of lines used by the box.
         */           
-        private int DrawCommandBox()
+        public int DrawCommandBox()
         {
             string[] commandBox = new string[]
             {
