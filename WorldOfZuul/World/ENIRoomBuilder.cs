@@ -11,6 +11,7 @@ namespace WorldOfZuul.World
     {
         public static Room BuildENIExecutiveOffice()
         {
+            
             var room = new Room(
                 "ENI",
                 "ENI Executive Office – Milan, 1992",

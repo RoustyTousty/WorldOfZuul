@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using WorldOfZuul.World;
+﻿using WorldOfZuul.World;
 using WorldOfZuul.Entities;
 using WorldOfZuul.Commands;
 using WorldOfZuul.Items;
@@ -18,54 +17,6 @@ namespace WorldOfZuul
             */
             Builder builder = new Builder();
             map = builder.BuildMapFromJSON();
-
-            /*
-            * Add the ENI Executive Office room (interactive demonstration).
-            */
-            Room eniOffice = ENIRoomBuilder.BuildENIExecutiveOffice();
-
-            // If the JSON already created a room with id "ENI", replace it and update all exits pointing to it.
-            var existingLocationWithEni = map.Locations.Values.FirstOrDefault(loc => loc.Rooms.ContainsKey("ENI"));
-            if (existingLocationWithEni != null)
-            {
-                Room oldEniRoom = existingLocationWithEni.GetRoom("ENI")!;
-                existingLocationWithEni.SetRoom(eniOffice);
-                
-                // Update all exits in the map that were pointing to the old ENI room to point to the new one.
-                foreach (var location in map.Locations.Values)
-                {
-                    foreach (var room in location.Rooms.Values)
-                    {
-                        foreach (var exit in room.Exits.Values)
-                        {
-                            if (exit.TargetRoom == oldEniRoom)
-                            {
-                                exit.TargetRoom = eniOffice;
-                            }
-                        }
-                    }
-                }
-                
-                // Set up exit targets from the ENI room to other rooms in the map
-                var courtHouseLocation = map.GetLocation("Court House");
-                if (courtHouseLocation != null)
-                {
-                    foreach (var exit in eniOffice.Exits.Values)
-                    {
-                        var targetRoom = courtHouseLocation.GetRoom(exit.Name);
-                        if (targetRoom != null)
-                        {
-                            exit.TargetRoom = targetRoom;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                Location milanLocation = map.GetLocation("milan") ?? new Location("milan", "Milan", "A bustling city in Italy.", "ENI");
-                milanLocation.SetRoom(eniOffice);
-                map.SetLocation(milanLocation);
-            }
 
             /*
             * Initialize player and prompt for a name.
@@ -127,7 +78,7 @@ namespace WorldOfZuul
             switch (command.Name)
             {
                 case "look":
-                    player?.PrintRoom();
+                    player.PrintRoom();
                     break;
 
 
@@ -135,12 +86,19 @@ namespace WorldOfZuul
                     if (command.SecondWord == null)
                     {
                         Console.WriteLine("Inspect what?");
+                        break;
                     }
-                    else
+                    player.TryInspectItem(command.SecondWord);
+                    break;
+
+
+                case "use":
+                    if (command.SecondWord == null)
                     {
-                        string response = player?.CurrentRoom.HandleInteractiveAction(command.SecondWord, "inspect") ?? "You can't inspect that.";
-                        Console.WriteLine(response);
+                        Console.WriteLine("Use what?");
+                        break;
                     }
+                    player.TryUseItem(command.SecondWord);
                     break;
 
 
@@ -150,88 +108,39 @@ namespace WorldOfZuul
                         Console.WriteLine("Take what?");
                         break;
                     }
-                    player?.TryTakeItem(command.SecondWord);
+                    player.TryTakeItem(command.SecondWord);
                     break;
 
 
-                case "open":
+                case "drop":
                     if (command.SecondWord == null)
                     {
-                        Console.WriteLine("Open what?");
+                        Console.WriteLine("Drop what?");
+                        break;
                     }
-                    else
-                    {
-                        // Map multi-word commands to the correct object
-                        // e.g., "open drawer left" → object "desk", verb "open drawer left"
-                        string objectId = command.SecondWord;
-                        if (command.SecondWord.Contains("drawer", StringComparison.OrdinalIgnoreCase))
-                        {
-                            objectId = "desk";
-                        }
-                        string response = player?.CurrentRoom.HandleInteractiveAction(objectId, $"open {command.SecondWord}") ?? "You can't open that.";
-                        Console.WriteLine(response);
-                    }
-                    break;
-
-
-                case "read":
-                    if (command.SecondWord == null)
-                    {
-                        Console.WriteLine("Read what?");
-                    }
-                    else
-                    {
-                        string response = player?.CurrentRoom.HandleInteractiveAction(command.SecondWord, $"read {command.SecondWord}") ?? "You can't read that.";
-                        Console.WriteLine(response);
-                    }
-                    break;
-
-
-                case "answer":
-                    if (command.SecondWord == null)
-                    {
-                        string response = player?.CurrentRoom.HandleInteractiveAction("phone", "answer") ?? "There's nothing to answer.";
-                        Console.WriteLine(response);
-                    }
-                    else
-                    {
-                        string response = player?.CurrentRoom.HandleInteractiveAction(command.SecondWord, "answer") ?? "You can't answer that.";
-                        Console.WriteLine(response);
-                    }
-                    break;
-
-
-                case "push":
-                    if (command.SecondWord == null)
-                    {
-                        Console.WriteLine("Push what?");
-                    }
-                    else
-                    {
-                        string response = player?.CurrentRoom.HandleInteractiveAction(command.SecondWord, $"push {command.SecondWord}") ?? "You can't push that.";
-                        Console.WriteLine(response);
-                    }
+                    player.TryDropItem(command.SecondWord);
                     break;
 
 
                 case "inventory":
-                    player?.PrintInventory();
+                    player.PrintInventory();
                     break;
 
 
                 case "back":
-                    player?.BackToRoom();
+                    player.BackToRoom();
                     break;
 
 
                 case "move":
-                    player?.MoveToRoom(command.SecondWord);
+                    player.MoveToRoom(command.SecondWord);
                     break;
 
 
                 case "travel":
-                    player?.MoveToLocation(command.SecondWord, map);
+                    player.MoveToLocation(command.SecondWord, map);
                     break;
+
 
                 case "talk" or "talkto":
                     if (command.SecondWord == null)
@@ -239,7 +148,7 @@ namespace WorldOfZuul
                         Console.WriteLine("Talk to who?");
                         break;
                     }
-                    player?.TryTalkToNpc(command.SecondWord);
+                    player.TryTalkToNpc(command.SecondWord);
                     break;
 
 
@@ -248,7 +157,7 @@ namespace WorldOfZuul
 
 
                 case "help":
-                    player?.PrintHelp();
+                    player.PrintHelp();
                     break;
 
 
