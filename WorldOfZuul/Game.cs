@@ -196,9 +196,11 @@ namespace WorldOfZuul
                         break;
                     }
                     
-                    // Map multi-word commands to the correct object
-                    string objectId = command.SecondWord;
-                    if (command.SecondWord.Contains("drawer", StringComparison.OrdinalIgnoreCase))
+                    // Extract object id (first word) from potentially multi-word input like "safe 214"
+                    string[] parts = command.SecondWord.Split(' ', 2);
+                    string objectId = parts[0];
+                    
+                    if (objectId.Contains("drawer", StringComparison.OrdinalIgnoreCase))
                     {
                         objectId = "desk";
                     }

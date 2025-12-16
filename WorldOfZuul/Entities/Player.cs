@@ -145,9 +145,56 @@ namespace WorldOfZuul.Entities
                 return;
             }
 
+            // Add to inventory
             Inventory.AddItem(item);
-            //TODO: Remove item from room
-            Console.WriteLine($"You picked up the {item.Name}.");
+            
+            // Remove from the room so it can't be taken again
+            if (CurrentRoom.Items.ContainsKey(item.Id))
+            {
+                CurrentRoom.Items.Remove(item.Id);
+            }
+            else
+            {
+                // Fallback: remove by reference if id key differs
+                var kvp = CurrentRoom.Items.FirstOrDefault(k => ReferenceEquals(k.Value, item));
+                if (!string.IsNullOrEmpty(kvp.Key))
+                {
+                    CurrentRoom.Items.Remove(kvp.Key);
+                }
+            }
+
+            // Special narrative for compartment evidence bundle
+            if (item.Id == "evidence")
+            {
+                Console.WriteLine("You carefully remove the briefcase and ledger from the compartment and place them in your bag.\n"
+                                  + "Your heart is pounding. If anyone discovers these are missing, they'll know someone was here.\n"
+                                  + "These documents link ENI, the Vatican Bank (IOR), and offshore accounts in Switzerland. This is THE evidence.");
+                return;
+            }
+
+            // Special narrative for the red folder
+            if (item.Id == "folder")
+            {
+                Console.WriteLine("You take the red folder and tuck it into your bag. You have a gut feeling someone will notice it's missing...");
+                return;
+            }
+
+            // Special narrative for the safe documents bundle
+            if (item.Id == "documents")
+            {
+                Console.WriteLine("You collect the entire evidence bundle from the safe: documents, bank statement, and the sealed photograph."
+                                  + "\nIf anyone checks the safe, they'll know this trove is gone.");
+                return;
+            }
+
+            // Friendly grammar: avoid "the" if name already starts with an article
+            string name = item.Name;
+            bool startsWithArticle = name.StartsWith("a ", StringComparison.OrdinalIgnoreCase)
+                                     || name.StartsWith("an ", StringComparison.OrdinalIgnoreCase)
+                                     || name.StartsWith("the ", StringComparison.OrdinalIgnoreCase);
+            string printable = startsWithArticle ? name : $"the {name}";
+
+            Console.WriteLine($"You picked up {printable}.");
         }
 
 
@@ -186,34 +233,25 @@ namespace WorldOfZuul.Entities
             item.Drop();
     
         }
-    public void PrintInventory() // creates a public empty method that displays the items in the inventory
+        public void PrintInventory()
         {
             Console.Clear();
             
-            // Draw command box and get its height
             int boxHeight = DrawCommandBox();
-            
-            // Reset to left side for inventory content
             Console.SetCursorPosition(0, boxHeight + 1);
-            
+
             if (Inventory.items.Length == 0)
             {
                 Console.WriteLine("Your inventory is empty.");
                 return;
             }
-            else
+
+            Console.WriteLine("Inventory:");
+            foreach (Item item in Inventory.items)
             {
-            Console.WriteLine("Inventory:"); // Prints the header "Inventory:"
-            foreach (Item item in Inventory.items) // Loops through each item in the array(items)
-            {
-                if (item == Inventory.items[0])
-                {
-                    Console.WriteLine(item); // Prints the first item without extra line
-                }
-                else
-                Console.WriteLine(" - " + item);// Prints each intem with a dash in front
+                Console.WriteLine($" - {item.Name}");
             }
-        }}
+        }
 
         public void TryInspectItem(string itemName)
         {

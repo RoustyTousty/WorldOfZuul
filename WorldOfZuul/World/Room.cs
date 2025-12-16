@@ -144,6 +144,7 @@ namespace WorldOfZuul.World
 
             var (response, sideEffect) = obj.Execute(State, verb);
             sideEffect?.Invoke(State);
+
             return response;
         }
     }
