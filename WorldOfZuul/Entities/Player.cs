@@ -352,15 +352,6 @@ namespace WorldOfZuul.Entities
                 Console.WriteLine("There are no visible exits.");
             }
 
-            if (CurrentRoom.Items.Count > 0)
-            {
-                Console.WriteLine("\nYou see:");
-                foreach (var item in CurrentRoom.Items.Values)
-                {
-                    Console.WriteLine($" - {item.Name} ({item.Description})");
-                }
-            }
-
             if (CurrentRoom.Npcs.Count > 0)
             {
                 Console.WriteLine("\nNpcs:");
