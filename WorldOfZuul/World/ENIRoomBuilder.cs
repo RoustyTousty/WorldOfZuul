@@ -30,16 +30,16 @@ namespace WorldOfZuul.World
             );
 
             // Add DESK
-            room.InteractiveObjects["desk"] = BuildDesk();
+            room.InteractiveObjects["desk"] = BuildDesk(room);
 
             // Add RED FOLDER
             room.InteractiveObjects["folder"] = BuildRedFolder();
 
             // Add SAFE
-            room.InteractiveObjects["safe"] = BuildSafe();
+            room.InteractiveObjects["safe"] = BuildSafe(room);
 
             // Add PAINTING
-            room.InteractiveObjects["painting"] = BuildPainting();
+            room.InteractiveObjects["painting"] = BuildPainting(room);
 
             // Add PHONE
             room.InteractiveObjects["phone"] = BuildPhone();
@@ -48,7 +48,7 @@ namespace WorldOfZuul.World
             room.InteractiveObjects["compartment"] = BuildSecretCompartment();
 
             // Add actual Item objects so they can be taken with the normal "take" command
-            var redFolder = new Item("Red folder", "Red Folder (M.P.)", "A red folder marked 'M.P.' containing wire transfers and offshore banking evidence.");
+            var redFolder = new Item("folder", "A Red Folder (M.P.)", "A red folder marked 'M.P.' containing wire transfers and offshore banking evidence.");
             room.SetItem(redFolder);
 
             var briefcase = new Item("briefcase", "Leather Briefcase", "A leather briefcase stuffed with stacks of US dollars and confidential documents.");
@@ -56,6 +56,8 @@ namespace WorldOfZuul.World
 
             var ledger = new Item("ledger", "Bound Ledger (IOR)", "A leather-bound ledger labeled 'IOR channel — Zug (Switzerland)' listing offshore transactions.");
             room.SetItem(ledger);
+            // Alias so commands like "take registry" work
+            room.Items["registry"] = ledger;
 
             // Add exit back to City (TargetRoom will be set by Game.cs after all rooms are loaded)
             room.Exits["City"] = new Exit("City", "City", room); // Placeholder room, will be updated by Game.cs
@@ -63,13 +65,13 @@ namespace WorldOfZuul.World
             return room;
         }
 
-        private static InteractiveObject BuildDesk()
+        private static InteractiveObject BuildDesk(Room room)
         {
             return new InteractiveObject(
                 "desk",
                 "Mahogany Desk",
                 "A heavy mahogany desk, lacquered to a mirror sheen.",
-                "A heavy mahogany desk, lacquered to a mirror sheen. Two shallow drawers and a crimson folder splayed on top. " +
+                "A heavy mahogany desk, lacquered to a mirror sheen. Three shallow drawers and a crimson folder splayed on top. " +
                 "You notice the drawers are labeled left and right, with a center space that looks like it could open. " +
                 "HINT: Try opening different drawers to find clues.",
                 (state, verb) =>
@@ -84,7 +86,7 @@ namespace WorldOfZuul.World
                     if (verb == "open drawer left" || verb == "open left drawer")
                     {
                         if (state.GetFlag("desk_left_opened"))
-                            return ("The left drawer is now empty.", null);
+                            return ("The left drawer is now empty.... the code was 214", null);
 
                         return (
                             "You open the left drawer and find several receipts for inflated payments and a scrap of paper with circled digits: '214'.\n" +
@@ -96,7 +98,7 @@ namespace WorldOfZuul.World
                     if (verb == "open drawer right" || verb == "open right drawer")
                     {
                         if (state.GetFlag("desk_right_opened"))
-                            return ("The right drawer is now empty.", null);
+                            return ("The right drawer is now empty. The code was 742, but do you remember where it goes?", null);
 
                         return (
                             "You open the right drawer and find a leather-bound planner filled with entries.\n" +
@@ -109,7 +111,7 @@ namespace WorldOfZuul.World
                         );
                     }
 
-                    if (verb == "open drawer center" || verb == "open center drawer")
+                    if (verb.StartsWith("open drawer center") || verb.StartsWith("open center drawer"))
                     {
                         if (state.GetFlag("desk_center_opened"))
                             return ("The center drawer is already open.", null);
@@ -118,12 +120,43 @@ namespace WorldOfZuul.World
                             return ("The center drawer is locked. You need a code from somewhere...\n" +
                                     "HINT: Check the other drawers for clues.", null);
 
-                        return (
-                            "Using the code from the planner, you unlock the center drawer.\n" +
-                            "Inside you find an envelope stamped 'Zug' (Switzerland) with several bank codes and account numbers. " +
-                            "This confirms the connection between ENI and offshore banking.",
-                            s => s.SetFlag("desk_center_opened")
-                        );
+                        // Extract code from verb (e.g., "open drawer center 7-4-2" or "open drawer center 742")
+                        string code = verb.Replace("open drawer center", "").Replace("open center drawer", "").Trim();
+                        
+                        if (string.IsNullOrEmpty(code))
+                        {
+                            return ("The center drawer is locked.\n"
+                            + "TRY:open drawer center <code>.\n"
+                            + "You found a code in one of the drawers, don't you remember? (TRY: inspect desk)", null);
+                        }
+
+                        // Accept both "7-4-2" and "742" formats
+                        if (code == "7-4-2" || code == "742" || code == "7 4 2")
+                        {
+                            return (
+                                "You carefully dial the combination 7-4-2. With a soft click, the center drawer swings open!\n" +
+                                "Inside you find an envelope stamped 'Zug' (Switzerland) with several bank codes and account numbers. " +
+                                "This confirms the connection between ENI and offshore banking.\n"+
+                                "TRY: take envelope.",
+                                s =>
+                                {
+                                    s.SetFlag("desk_center_opened");
+                                    if (!room.Items.ContainsKey("envelope"))
+                                    {
+                                        room.SetItem(new Item(
+                                            "envelope",
+                                            "Envelope 'Zug' (Bank Codes)",
+                                            "An envelope stamped 'Zug' containing several bank codes and account numbers linking ENI to offshore accounts."
+                                        ));
+                                    }
+                                }
+                            );
+                        }
+                        else
+                        {
+                            return ($"You try the code '{code}' but the drawer doesn't open. That's not the right combination.\n" +
+                                    "HINT: The planner in the right drawer ", null);
+                        }
                     }
 
                     return ("You can't do that with the desk.", null);
@@ -157,20 +190,12 @@ namespace WorldOfZuul.World
                         );
                     }
 
-                    if (verb == "take folder" || verb == "grab folder")
-                    {
-                        return (
-                            "You take the red folder and tuck it into your bag. You have a gut feeling someone will notice it's missing...",
-                            s => s.SetFlag("evidence_taken")
-                        );
-                    }
-
                     return ("You can't do that.", null);
                 }
             );
         }
 
-        private static InteractiveObject BuildSafe()
+        private static InteractiveObject BuildSafe(Room room)
         {
             return new InteractiveObject(
                 "safe",
@@ -181,26 +206,62 @@ namespace WorldOfZuul.World
                 {
                     if (verb == "inspect")
                         return ("A steel safe with a worn dial. Numbers around 2 and 4 show heavy wear. You need a combination to open it.\n" +
-                                "HINT: Look for clues in the desk drawers, especially the planner.", null);
+                                "HINT: Look for clues in the desk drawers, especially the planner.\n"+
+                                "TRY: open safe <code>", null);
 
-                    if (verb == "open safe" || verb == "unlock safe")
+                    if (verb.StartsWith("open safe") || verb.StartsWith("unlock safe"))
                     {
-                        if (!state.GetFlag("desk_right_opened"))
+                        if (!state.GetFlag("desk_left_opened"))
                             return ("You spin the dial, but it doesn't open. You need the combination from somewhere...\n" +
-                                    "HINT: The planner in the desk might have what you need.", null);
+                                    "HINT: The receipts in the left desk drawer might have what you need.\n"+
+                                    "TRY: open drawer left.", null);
 
                         if (state.GetFlag("safe_open"))
                             return ("The safe is already wide open.", null);
 
-                        return (
-                            "You carefully dial the combination 7-4-2 from the planner. With a soft click, the safe swings open.\n" +
-                            "Inside you find:\n" +
-                            " • Classified ENI Documents (stamped CONFIDENTIAL)\n" +
-                            " • A bank statement linking IOR (Vatican Bank) accounts to Caribbean transfers\n" +
-                            " • A sealed photograph (evidence of a suspicious handoff)\n" +
-                            "These documents prove the connection between ENI, the Vatican, and offshore accounts.",
-                            s => { s.SetFlag("safe_open"); s.StoreData("classified_docs", "Classified ENI Documents"); s.StoreData("bank_statement", "Bank Statement - IOR Accounts"); }
-                        );
+                        // Extract code from verb (e.g., "open safe 2-1-4")
+                        string code = verb.Replace("open safe", "").Replace("unlock safe", "").Trim();
+                        
+                        if (string.IsNullOrEmpty(code))
+                        {
+                            return ("The safe is locked. You found circled digits on a receipt in the left drawer\n"+
+                                    "TRY: open drawer left.", null);
+                        }
+
+                        // Accept both "2-1-4" and "214" formats
+                        if (code == "2-1-4" || code == "214" || code == "2 1 4")
+                        {
+                            return (
+                                "You carefully dial the combination 2-1-4. With a soft click, the safe swings open!\n" +
+                                "Inside you find a bundle of evidence:\n" +
+                                " • Classified ENI Documents (stamped CONFIDENTIAL)\n" +
+                                " • Bank Statement - IOR Accounts (Caribbean transfers)\n" +
+                                " • Sealed Photograph (suspicious handoff)\n" +
+                                "These are treated as one set of documents.\n" +
+                                "HINT: try: take documents, take statement or take photograph",
+                                s => {
+                                    s.SetFlag("safe_open");
+                                    // Create a single pickable item representing the whole bundle
+                                    if (!room.Items.ContainsKey("documents"))
+                                    {
+                                        var evidence = new Item(
+                                            "documents",
+                                            "Classified ENI Documents",
+                                            "A bundle containing: Classified ENI Documents, Bank Statement - IOR Accounts, and a Sealed Photograph."
+                                        );
+                                        room.SetItem(evidence);
+                                        // Aliases so any of these verbs pick the same bundle
+                                        room.Items["statement"] = evidence;
+                                        room.Items["photograph"] = evidence;
+                                    }
+                                }
+                            );
+                        }
+                        else
+                        {
+                            return ($"You try the code '{code}' but the safe doesn't open. That's not the right combination.\n" +
+                                    "HINT: The receipt in the left drawer showed: 2-1-4", null);
+                        }
                     }
 
                     return ("The safe remains locked.", null);
@@ -208,7 +269,7 @@ namespace WorldOfZuul.World
             );
         }
 
-        private static InteractiveObject BuildPainting()
+        private static InteractiveObject BuildPainting(Room room)
         {
             return new InteractiveObject(
                 "painting",
@@ -220,7 +281,8 @@ namespace WorldOfZuul.World
                     if (verb == "inspect")
                         return ("A massive abstraction of black and gold swirls. Up close, you notice a small seam on the right side of the frame. " +
                                 "The canvas doesn't sit flush against the wall behind it.\n" +
-                                "HINT: This painting might hide something. Try pushing or pulling it.", null);
+                                "HINT: This painting might hide something. Try pushing or pulling it.\n"+
+                                "TRY: push painting", null);
 
                     if (verb == "push painting" || verb == "pull frame" || verb == "push seam" || verb == "push")
                     {
@@ -232,7 +294,20 @@ namespace WorldOfZuul.World
                             "revealing a narrow compartment carved into the wall.\n" +
                             "Inside the compartment you can see a LEATHER BRIEFCASE and a BOUND LEDGER.\n" +
                             "HINT: Try to inspect or take items from the compartment (try: inspect compartment).",
-                            s => { s.SetFlag("painting_switch_found"); s.SetFlag("secret_compartment_revealed"); }
+                            s => {
+                                s.SetFlag("painting_switch_found");
+                                s.SetFlag("secret_compartment_revealed");
+                                // Combine compartment items into a single pickable bundle with aliases
+                                var evidence = new Item(
+                                    "evidence",
+                                    "Compartment Evidence (Briefcase + Ledger)",
+                                    "A combined set: a leather briefcase stuffed with US dollars and a bound ledger (IOR) with offshore transactions."
+                                );
+                                room.Items["evidence"] = evidence;
+                                room.Items["briefcase"] = evidence;
+                                room.Items["ledger"] = evidence;
+                                room.Items["registry"] = evidence;
+                            }
                         );
                     }
 
