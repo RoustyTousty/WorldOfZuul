@@ -69,7 +69,7 @@ namespace WorldOfZuul.World
                 "desk",
                 "Mahogany Desk",
                 "A heavy mahogany desk, lacquered to a mirror sheen.",
-                "A heavy mahogany desk, lacquered to a mirror sheen. Two shallow drawers and a crimson folder splayed on top. " +
+                "A heavy mahogany desk, lacquered to a mirror sheen. Three shallow drawers and a crimson folder splayed on top. " +
                 "You notice the drawers are labeled left and right, with a center space that looks like it could open. " +
                 "HINT: Try opening different drawers to find clues.",
                 (state, verb) =>
