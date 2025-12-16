@@ -80,8 +80,16 @@ namespace WorldOfZuul
             {
                 // Ensure the command box is always visible
                 player!.ShowCommandBox();
-                // Position the input cursor on the bottom line of the window
-                int promptRow = Console.WindowTop + Console.WindowHeight - 1;
+                // Draw a status line with current room above the prompt
+                int bottom = Console.WindowTop + Console.WindowHeight;
+                int statusRow = bottom - 2;
+                int promptRow = bottom - 1;
+                // Clear status and prompt lines cleanly
+                Console.SetCursorPosition(0, statusRow);
+                Console.Write(new string(' ', Math.Max(0, Console.WindowWidth - 1)));
+                Console.SetCursorPosition(0, statusRow);
+                Console.Write($"Current room: {player.CurrentRoom.Name}");
+
                 Console.SetCursorPosition(0, promptRow);
                 Console.Write(new string(' ', Math.Max(0, Console.WindowWidth - 1))); // clear line without wrapping
                 Console.SetCursorPosition(0, promptRow);

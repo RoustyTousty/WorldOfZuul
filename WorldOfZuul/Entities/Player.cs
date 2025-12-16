@@ -43,6 +43,72 @@ namespace WorldOfZuul.Entities
                 return false;
             }
 
+            // Special check: Block exit from ENI to City until all evidence is collected
+            if (CurrentRoom.Id == "ENI" && exit.Id == "City")
+            {
+                bool hasFolder = Inventory.HasItemWithId("folder");
+                bool hasEnvelope = Inventory.HasItemWithId("envelope");
+                bool hasDocuments = Inventory.HasItemWithId("documents");
+                bool hasEvidence = Inventory.HasItemWithId("evidence");
+
+                if (!hasFolder || !hasEnvelope || !hasDocuments || !hasEvidence)
+                {
+                    Console.WriteLine("You can't leave yet. You need to gather all the evidence first:\n");
+                    if (!hasFolder) Console.WriteLine(" - Red folder with wire transfers");
+                    if (!hasEnvelope) Console.WriteLine(" - Envelope from the center drawer");
+                    if (!hasDocuments) Console.WriteLine(" - Documents from the safe");
+                    if (!hasEvidence) Console.WriteLine(" - Evidence from the hidden compartment");
+                    Console.WriteLine("\nYour investigation isn't complete. Keep searching the office.");
+                    return false;
+                }
+                else
+                {
+                    // Player has all evidence - process completion
+                    if (!CurrentRoom.State.GetFlag("eni_investigation_complete"))
+                    {
+                        // Remove evidence items from inventory
+                        var folderItem = Inventory.GetItem("folder");
+                        var envelopeItem = Inventory.GetItem("envelope");
+                        var documentsItem = Inventory.GetItem("documents");
+                        var evidenceItem = Inventory.GetItem("evidence");
+
+                        if (folderItem != null) Inventory.RemoveItem(folderItem);
+                        if (envelopeItem != null) Inventory.RemoveItem(envelopeItem);
+                        if (documentsItem != null) Inventory.RemoveItem(documentsItem);
+                        if (evidenceItem != null) Inventory.RemoveItem(evidenceItem);
+
+                        // Award completion medal
+                        var medal = new Item(
+                            "eni_medal",
+                            "Medal of Investigation Excellence",
+                            "A prestigious medal awarded for successfully completing the ENI Executive Office investigation. " +
+                            "You gathered all critical evidence linking ENI to the Tangentopoli corruption scandal."
+                        );
+                        Inventory.AddItem(medal);
+
+                        // Mark investigation as complete
+                        CurrentRoom.State.SetFlag("eni_investigation_complete");
+
+                        // Display completion message
+                        Console.Clear();
+                        Console.WriteLine("\n╔══════════════════════════════════════════════════════════════════╗");
+                        Console.WriteLine("║                   INVESTIGATION COMPLETE!                        ║");
+                        Console.WriteLine("╚══════════════════════════════════════════════════════════════════╝\n");
+                        Console.WriteLine("You carefully secure all the evidence in your briefcase:");
+                        Console.WriteLine(" ✓ Red folder with wire transfer records");
+                        Console.WriteLine(" ✓ Sealed envelope from the desk");
+                        Console.WriteLine(" ✓ Documents from the safe");
+                        Console.WriteLine(" ✓ Hidden compartment evidence\n");
+                        Console.WriteLine("This evidence will be crucial in exposing the corruption network.");
+                        Console.WriteLine("Your superiors will be impressed with your thorough investigation.\n");
+                        Console.WriteLine("🏅 You have been awarded: Medal of Investigation Excellence\n");
+                        Console.WriteLine("Continue fighting against corruption and bringing justice to light through exploring the other rooms of the city.\n");
+                        Console.WriteLine("Continue your journey by typing 'look'.");
+                        Console.ReadLine();
+                    }
+                }
+            }
+
             if (exit.IsLocked)
             {
                 Console.WriteLine($"The {exit.Name} is locked.");
