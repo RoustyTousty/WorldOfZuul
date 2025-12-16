@@ -29,7 +29,7 @@ namespace WorldOfZuul.World
                 "Tall filing cabinets stand against both side walls. A wall calendar hangs beside the door. " +
                 "The furniture appears older and more substantial than in other offices. " +
                 "Papers are stacked in organized piles. Everything is orderly but dense with documentation. " +
-                "You notice a metal trash bin with a shredder beside it, rows of labeled files, and a calendar covered in entries.\n\n" +
+                "You notice a metal trash bin with a shredder beside it, rows of labeled files, and a calendar covered in entries.\n" +
                 "INTERACTIVE OBJECTS IN THIS ROOM:\n" +
                 " • desk - A heavy wooden desk with three drawers (try: inspect desk, open drawer left, open drawer right, open drawer center)\n" +
                 " • trash - A metal trash bin beside a paper shredder (try: inspect trash, search trash)\n" +
@@ -81,10 +81,10 @@ namespace WorldOfZuul.World
                             return ("The left drawer remains open. The political coordination files are still inside.", null);
 
                         return (
-                            "You open the left drawer and examine the political coordination files. Each document is typed and formally structured.\n\n" +
+                            "You open the left drawer and examine the political coordination files. Each document is typed and formally structured.\n" +
                             " • File labeled 'Strategic Coordination Memo March 1992': Contains references to aligning legislative priorities with party leadership guidance. Language describes facilitating communication between council members and regional coordinators. No specific instructions given. Outcome described as collaborative consensus.\n" +
                             " • File labeled 'Influence Assessment Regional Development': Lists council members and their positions on infrastructure funding. Notes who is receptive to party direction. Uses phrases like anticipated cooperation and aligned interests. No explicit pressure documented.\n" +
-                            " • File labeled 'Coalition Building Notes': Describes meetings between party representatives and independent councillors. References discussions of mutual benefit and shared objectives. Outcomes framed as voluntary agreements reached through dialogue.\n\n" +
+                            " • File labeled 'Coalition Building Notes': Describes meetings between party representatives and independent councillors. References discussions of mutual benefit and shared objectives. Outcomes framed as voluntary agreements reached through dialogue.\n" +
                             "The documents describe coordination and influence. Language is formal but indirect. " +
                             "No explicit instructions appear. No illegal actions documented. " +
                             "Everything is framed as legitimate political activity within party structures.",
@@ -99,11 +99,11 @@ namespace WorldOfZuul.World
                             return ("The right drawer is still open. The personal correspondence remains inside.", null);
 
                         return (
-                            "You open the right drawer and find personal notes and correspondence. The writing is careful and measured.\n\n" +
+                            "You open the right drawer and find personal notes and correspondence. The writing is careful and measured.\n" +
                             " • Handwritten note dated 8 Feb: Reminder to follow up on discussions regarding contractor selection processes. Ensure party interests are considered within legal frameworks. Maintain documented procedures.\n" +
                             " • Letter from regional party office dated 15 Mar: References need for greater coordination on municipal contracts. Suggests regular consultation meetings. Emphasizes importance of documented decision making.\n" +
                             " • Draft response dated 22 Mar: Acknowledges coordination responsibilities. Confirms commitment to aligning local decisions with regional party priorities where legally permissible. Notes all actions will follow established procedures.\n" +
-                            " • Personal memo dated 10 Apr: Lists upcoming discussions with council members. Describes desired outcomes without specifying methods. Uses phrases like encouraging favorable consideration and promoting alignment.\n\n" +
+                            " • Personal memo dated 10 Apr: Lists upcoming discussions with council members. Describes desired outcomes without specifying methods. Uses phrases like encouraging favorable consideration and promoting alignment.\n" +
                             "The wording feels restrained and deliberate. Nothing promises exchanges or illegal actions. " +
                             "Everything references legal frameworks and documented procedures. " +
                             "The content suggests influence but provides no evidence of corruption.",
@@ -123,12 +123,12 @@ namespace WorldOfZuul.World
                                     "HINT: Examine other objects in the room first.", null);
 
                         return (
-                            "You try the center drawer again. The lock opens. Inside are personal financial records.\n\n" +
+                            "You try the center drawer again. The lock opens. Inside are personal financial records.\n" +
                             "You find:\n" +
                             " • Bank statement showing salary of €3,200 per month as senior coordinator. Additional income listed as €2,400 from party consulting work with attached contract specifying advisory services on legislative strategy. Total matches declared income on financial disclosure form.\n" +
                             " • Receipts for dinners and meetings. Amounts range from €80 to €250. Each receipt lists attendees. All appear to be party officials or council members. Notes on receipts reference discussion topics like budget priorities and coalition strategy.\n" +
                             " • Investment account statement showing moderate savings accumulated over years. No large unexplained deposits. Growth consistent with declared income and standard returns.\n" +
-                            " • Copy of annual financial disclosure form filed with municipal ethics office. All income sources documented. Party consulting work listed. Form stamped as reviewed.\n\n" +
+                            " • Copy of annual financial disclosure form filed with municipal ethics office. All income sources documented. Party consulting work listed. Form stamped as reviewed.\n" +
                             "Income matches disclosed sources. Consulting work has documentation. Dinner expenses align with political coordination role. " +
                             "No unexplained wealth appears. Financial records show consistency with declared earnings. " +
                             "Everything can be explained within the scope of legitimate political work.",
@@ -157,13 +157,13 @@ namespace WorldOfZuul.World
                             return ("You have already searched the trash. Only shredded fragments and draft documents remain.", null);
 
                         return (
-                            "You examine the trash bin and shredder carefully. Most material has been destroyed or discarded.\n\n" +
+                            "You examine the trash bin and shredder carefully. Most material has been destroyed or discarded.\n" +
                             "You find:\n" +
                             " • Shredded paper strips in the shredder bin. You can make out partial words: coordination, discussed, committee, outcome, aligned. Nothing forms complete sentences. Context is impossible to reconstruct.\n" +
                             " • Crumpled draft memo with crossed out text. Visible portions reference scheduling conflicts and meeting logistics. Heavy editing obscures original content. Final version not present.\n" +
                             " • Torn envelope from regional party headquarters. Empty. No contents remain.\n" +
                             " • Discarded coffee cups and food wrappers from meetings.\n" +
-                            " • Ball of crumpled notes with fragments visible: ensure, coordinate, priority, discuss further. No complete thoughts preserved.\n\n" +
+                            " • Ball of crumpled notes with fragments visible: ensure, coordinate, priority, discuss further. No complete thoughts preserved.\n" +
                             "The shredded material prevents reconstruction. Fragments suggest political work but reveal nothing specific. " +
                             "Draft documents are incomplete and heavily edited. No intact correspondence exists. " +
                             "The destruction of documents raises questions but provides no answers.",
@@ -197,12 +197,12 @@ namespace WorldOfZuul.World
                             return ("You have already examined the cabinets. The files remain generic and collectively focused.", null);
 
                         return (
-                            "You open the filing cabinets and review the political coordination files. The documents are complete but carefully worded.\n\n" +
+                            "You open the filing cabinets and review the political coordination files. The documents are complete but carefully worded.\n" +
                             "You find:\n" +
                             " • Folder labeled 'Party Coordination Framework': Contains procedural guidelines for aligning municipal decisions with party positions. Describes consultation processes and communication protocols. Emphasizes collective decision making and documented procedures. No individual directives given.\n" +
                             " • Folder labeled 'Legislative Planning Sessions': Meeting minutes from party strategy sessions. Lists participants and discussion topics. Decisions described as consensus outcomes. Individual positions not attributed. Responsibility diffused across committees.\n" +
                             " • Folder labeled 'Council Member Profiles': Information on voting patterns and policy positions of all council members. Notes areas of alignment with party priorities. Suggests coordination opportunities. Does not document pressure or inducements.\n" +
-                            " • Folder labeled 'Coalition Building Records': Correspondence regarding coalition agreements and policy negotiations. Language focuses on mutual interests and shared objectives. Outcomes framed as voluntary cooperation. No evidence of coercion or exchange.\n\n" +
+                            " • Folder labeled 'Coalition Building Records': Correspondence regarding coalition agreements and policy negotiations. Language focuses on mutual interests and shared objectives. Outcomes framed as voluntary cooperation. No evidence of coercion or exchange.\n" +
                             "Files are complete and systematically maintained. Language is generic and collective. " +
                             "Decisions appear as group outcomes. Individual responsibility is unclear. " +
                             "Everything describes legitimate political coordination but feels carefully constructed.",
@@ -231,16 +231,16 @@ namespace WorldOfZuul.World
                             return ("You have already examined the calendar. The frequency of meetings and dinners remains notable.", null);
 
                         return (
-                            "You examine the calendar closely. The density of entries is striking.\n\n" +
+                            "You examine the calendar closely. The density of entries is striking.\n" +
                             "Patterns you observe:\n" +
                             " • Dinner meetings occur three to four times per week. Labeled as informal discussion with party members, strategy session with regional coordinators, coalition planning dinner. Restaurants vary. No single location repeats frequently.\n" +
                             " • Office meetings scheduled nearly daily. Participants listed include council members, party officials, regional representatives. Topics noted as coordination, planning, consultation.\n" +
                             " • Evening appointments marked phone consultation or private discussion appear regularly. No locations given. No participant names listed.\n" +
-                            " • Weekend entries include party committee sessions and strategy retreats.\n\n" +
+                            " • Weekend entries include party committee sessions and strategy retreats.\n" +
                             "You cross reference the calendar with other documents in the office. " +
                             "Dinner dates align with major council votes documented in the filing cabinet. " +
                             "Strategy sessions precede legislative decisions by days or weeks. " +
-                            "Phone consultations cluster around controversial budget approvals.\n\n" +
+                            "Phone consultations cluster around controversial budget approvals.\n" +
                             "The frequency suggests constant coordination. Timing correlates with political events. " +
                             "All entries can be explained as normal political work. None explicitly document illegal activity. " +
                             "The pattern raises suspicion but provides no proof.",

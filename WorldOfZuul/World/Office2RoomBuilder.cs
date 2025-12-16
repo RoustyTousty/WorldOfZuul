@@ -5,14 +5,6 @@ namespace WorldOfZuul.World
 {
     /*
      * Builder for Political Office 02 — Infrastructure Councillor's Office, Italy, early 1990s (Mani Pulite era).
-     *
-     * NARRATIVE GOAL:
-     * Create initial suspicion of corruption, but provide no concrete evidence.
-     * All findings have legitimate explanations.
-     * Final impression: suspicion alone is not proof. This councillor appears to follow the law.
-     *
-     * TONE: Neutral, factual, observant. No emotional language, no metaphors, no moral judgments.
-     *
      * Contains interactive objects: desk with three drawers, trash bin, filing cabinet, wall calendar.
      * NPC: Assistant Bianchi (professional, calm, direct).
      */
@@ -27,7 +19,7 @@ namespace WorldOfZuul.World
                 "Two tall windows face the street. A metal desk occupies the center of the room. " +
                 "Filing cabinets line one wall. A wall calendar hangs near the door. Overhead lights provide even illumination. " +
                 "The space is tidy and organized. Nothing stands out as unusual. " +
-                "You notice a metal trash bin beside the desk, folders stacked neatly on shelves, and a calendar marked with appointments.\n\n" +
+                "You notice a metal trash bin beside the desk, folders stacked neatly on shelves, and a calendar marked with appointments.\n" +
                 "INTERACTIVE OBJECTS IN THIS ROOM:\n" +
                 " • desk - A standard metal desk with three drawers (try: inspect desk, open drawer left, open drawer right, open drawer center)\n" +
                 " • trash - A metal trash bin beside the desk (try: inspect trash, search trash)\n" +
@@ -79,10 +71,10 @@ namespace WorldOfZuul.World
                             return ("The left drawer remains open. The infrastructure project files are still inside.", null);
 
                         return (
-                            "You open the left drawer and examine the infrastructure project files. Each folder contains project documentation with official stamps and dates.\n\n" +
+                            "You open the left drawer and examine the infrastructure project files. Each folder contains project documentation with official stamps and dates.\n" +
                             " • Via Roma Bridge Repair (Delayed 4 months): Attached memo from regional engineering office states structural assessment required additional time due to unexpected foundation issues. Approved by council vote 8 to 2.\n" +
                             " • Public Transit Expansion (Delayed 5 months): Environmental impact study mandated by national law. Delay documented with reference to Legislative Decree 152/2006. Three different contractors submitted bids.\n" +
-                            " • Water Infrastructure Upgrade (Delayed 7 months): Budget reallocation required council approval. Meeting minutes attached showing debate and vote. Contractor selected through public tender process with five participants.\n\n" +
+                            " • Water Infrastructure Upgrade (Delayed 7 months): Budget reallocation required council approval. Meeting minutes attached showing debate and vote. Contractor selected through public tender process with five participants.\n" +
                             "Each delay has a documented cause. Different companies appear across the projects. " +
                             "Council votes are recorded. Public tender procedures are followed. " +
                             "Nothing here suggests preferential treatment or unexplained decisions.",
@@ -97,11 +89,11 @@ namespace WorldOfZuul.World
                             return ("The right drawer is still open. The meeting notes remain inside.", null);
 
                         return (
-                            "You open the right drawer and find a notebook containing meeting records. The entries are dated and detailed.\n\n" +
+                            "You open the right drawer and find a notebook containing meeting records. The entries are dated and detailed.\n" +
                             " • 12 Feb: Meeting with Strade Sicure srl. Discussed Via Roma bridge timeline. Reviewed engineering report sections 4.2 and 4.3. Confirmed compliance with safety code article 28.\n" +
                             " • 18 Mar: Council session. Presented water infrastructure budget proposal. Addressed questions regarding cost overruns. Provided breakdown of material price increases documented in attachment C.\n" +
                             " • 5 Apr: Site visit to transit expansion zone. Accompanied by regional transportation inspector and two council members. Inspected proposed route. Noted concerns about traffic flow during construction phase.\n" +
-                            " • 22 May: Dinner meeting with infrastructure committee members. Discussed upcoming projects for next fiscal year. Logged as official meeting. Receipts filed with administration office.\n\n" +
+                            " • 22 May: Dinner meeting with infrastructure committee members. Discussed upcoming projects for next fiscal year. Logged as official meeting. Receipts filed with administration office.\n" +
                             "The language is specific and technical. Meetings reference documents and regulations. " +
                             "No vague wording appears. Decisions are tied to procedures. Dinner meetings are officially logged. " +
                             "Everything appears transparent and recorded.",
@@ -121,12 +113,12 @@ namespace WorldOfZuul.World
                                     "HINT: Examine other objects in the room first.", null);
 
                         return (
-                            "You try the center drawer again. This time the lock opens. Inside are personal financial documents.\n\n" +
+                            "You try the center drawer again. This time the lock opens. Inside are personal financial documents.\n" +
                             "You find:\n" +
                             " • Bank statement showing monthly salary of €2,600. No additional unexplained deposits. One entry marked consulting fee for €1,200 with attached invoice from professional engineering association for technical review work performed outside office hours.\n" +
                             " • Receipts for dinners at modest restaurants. Amounts range from €45 to €120. Each receipt has a note on the back listing attendees and meeting purpose. All match entries in official meeting logs.\n" +
                             " • Property tax statement for a small apartment. Purchase price and mortgage details indicate modest means. No evidence of unexplained wealth.\n" +
-                            " • Annual financial disclosure form filed with municipal ethics office. All income sources listed. Form signed and dated. Stamped as reviewed and approved.\n\n" +
+                            " • Annual financial disclosure form filed with municipal ethics office. All income sources listed. Form signed and dated. Stamped as reviewed and approved.\n" +
                             "Income and expenses appear consistent with declared salary. Consulting work is documented and invoiced. " +
                             "Dinner expenses match official records. No unexplained deposits exist. " +
                             "The financial picture shows a civil servant living within ordinary means.",
@@ -154,13 +146,13 @@ namespace WorldOfZuul.World
                             return ("You have already searched the trash bin. It contains only ordinary office waste.", null);
 
                         return (
-                            "You examine the contents of the trash bin. The items inside are typical office waste.\n\n" +
+                            "You examine the contents of the trash bin. The items inside are typical office waste.\n" +
                             "You find:\n" +
                             " • Several crumpled draft memos with crossed out text and corrections\n" +
                             " • An empty espresso cup\n" +
                             " • A torn envelope from the municipal budget office\n" +
                             " • Discarded printouts of spreadsheet pages showing project cost calculations\n" +
-                            " • A newspaper folded to the local news section\n\n" +
+                            " • A newspaper folded to the local news section\n" +
                             "No gift packaging. No luxury items. No hidden correspondence. " +
                             "The trash contains exactly what you would expect from a working office. " +
                             "Nothing here raises questions or suggests anything beyond routine administrative work.",
@@ -194,12 +186,12 @@ namespace WorldOfZuul.World
                             return ("You have already examined the cabinet. The files remain complete and organized.", null);
 
                         return (
-                            "You open the filing cabinet and review the contents. The folders are complete and systematically arranged.\n\n" +
+                            "You open the filing cabinet and review the contents. The folders are complete and systematically arranged.\n" +
                             "You find:\n" +
                             " • Folder labeled 'Via Roma Bridge Repair Tender Process': Contains all 73 pages as listed in the index. Five company bids included. Evaluation matrix showing scoring criteria. Selection committee notes. Winning bid clearly justified by technical specifications and price.\n" +
                             " • Folder labeled 'Public Transit Environmental Review': Complete environmental impact assessment. All required signatures present. Third party consultant reports attached. Public comment period documentation included. No missing sections.\n" +
                             " • Folder labeled 'Citizen Complaint Log': Detailed entries for each complaint received. Response letters attached. Resolution documentation present. Complaints addressed within standard timeframes. No gaps in the record.\n" +
-                            " • Folder labeled 'Council Meeting Minutes': Complete set of minutes from infrastructure committee meetings. Attendance recorded. Votes documented. Decisions clearly stated with supporting rationale.\n\n" +
+                            " • Folder labeled 'Council Meeting Minutes': Complete set of minutes from infrastructure committee meetings. Attendance recorded. Votes documented. Decisions clearly stated with supporting rationale.\n" +
                             "No files are missing. No pages are removed. Tender processes show multiple bidders. " +
                             "Complaints are addressed and documented. Decisions reference specific criteria and regulations. " +
                             "The filing system appears complete, transparent, and properly maintained.",
@@ -228,17 +220,17 @@ namespace WorldOfZuul.World
                             return ("You have already examined the calendar. The appointments are logged and correspond to official records.", null);
 
                         return (
-                            "You examine the calendar entries. The appointments are clearly marked and detailed.\n\n" +
+                            "You examine the calendar entries. The appointments are clearly marked and detailed.\n" +
                             "Entries include:\n" +
                             " • Regular council meetings every second Tuesday at 15:00\n" +
                             " • Site inspection visits marked with locations and accompanying staff names\n" +
                             " • Dinner meetings with infrastructure committee: Jan 20, Feb 24, Mar 30, Apr 27. Each marked with asterisk and note 'Official logged meeting'.\n" +
                             " • Budget review sessions with finance office\n" +
-                            " • Public consultation events with times and venues listed\n\n" +
+                            " • Public consultation events with times and venues listed\n" +
                             "You compare the dinner meeting dates with other documents in the office. " +
                             "Each dinner appears in the official meeting notebook in the right desk drawer. " +
                             "Each has corresponding entries in the council meeting minutes in the filing cabinet. " +
-                            "Receipts for these dinners are in the center drawer, with attendee lists matching official records.\n\n" +
+                            "Receipts for these dinners are in the center drawer, with attendee lists matching official records.\n" +
                             "The calendar shows a schedule of documented official activities. " +
                             "Dinner meetings are not hidden. They are marked as official and logged properly. " +
                             "All entries correspond to records elsewhere in the office. Nothing appears concealed or irregular.",

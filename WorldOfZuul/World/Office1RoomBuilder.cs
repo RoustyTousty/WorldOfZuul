@@ -13,7 +13,7 @@ namespace WorldOfZuul.World
         {
             var room = new Room(
                 "office_01",
-                "Office 01 – Housing Councillor",
+                "Department of Housing and Urban Development",
                 "The office of the Department of Housing and Urban Development is located on the third floor of the Palazzo Comunale." +
                 "The walls are painted white with two beautiful old windows." +
                 "The windows look out onto a beautiful garden with a lake. " +
