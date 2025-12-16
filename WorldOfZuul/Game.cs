@@ -78,7 +78,13 @@ namespace WorldOfZuul
             bool continuePlaying = true;
             while (continuePlaying)
             {
-                Console.WriteLine($"Current room: {player?.CurrentRoom.Name}");
+                // Ensure the command box is always visible
+                player!.ShowCommandBox();
+                // Position the input cursor on the bottom line of the window
+                int promptRow = Console.WindowTop + Console.WindowHeight - 1;
+                Console.SetCursorPosition(0, promptRow);
+                Console.Write(new string(' ', Math.Max(0, Console.WindowWidth - 1))); // clear line without wrapping
+                Console.SetCursorPosition(0, promptRow);
                 Console.Write("> ");
 
                 string? input = Console.ReadLine();
@@ -95,7 +101,6 @@ namespace WorldOfZuul
                     continue;
                 }
 
-                player?.PrintEmptySpace(50);
                 continuePlaying = HandleCommand(command);
                 Console.WriteLine();
             }
@@ -111,6 +116,15 @@ namespace WorldOfZuul
         */
         private bool HandleCommand(Command command)
         {
+            if (player == null)
+            {
+                Console.WriteLine("Player not initialized.");
+                return true;
+            }
+
+            // Clear screen and redraw command box for every command response
+            player!.ClearAndBeginContentArea();
+
             switch (command.Name)
             {
                 case "look":
@@ -121,15 +135,15 @@ namespace WorldOfZuul
                 case "inspect":
                     if (command.SecondWord == null)
                     {
-                        Console.WriteLine("Inspect what?");
+                        player!.PrintResponse("Inspect what?");
                         break;
                     }
-                    
+
                     // First try to inspect an interactive object in the room
                     string inspectResponse = player?.CurrentRoom.HandleInteractiveAction(command.SecondWord, "inspect") ?? "";
                     if (!string.IsNullOrEmpty(inspectResponse) && !inspectResponse.Contains("You can't"))
                     {
-                        Console.WriteLine(inspectResponse);
+                        player!.PrintResponse(inspectResponse);
                     }
                     else
                     {
@@ -142,49 +156,53 @@ namespace WorldOfZuul
                 case "use":
                     if (command.SecondWord == null)
                     {
-                        Console.WriteLine("Use what?");
+                        player!.PrintResponse("Use what?");
                         break;
                     }
-                    player.TryUseItem(command.SecondWord);
+                    player!.ClearAndBeginContentArea();
+                    player!.TryUseItem(command.SecondWord);
                     break;
 
 
                 case "take":
                     if (command.SecondWord == null)
                     {
-                        Console.WriteLine("Take what?");
+                        player!.PrintResponse("Take what?");
                         break;
                     }
-                    player.TryTakeItem(command.SecondWord);
+                    // Clear and draw the command box, then print take messages beneath it
+                    player!.ClearAndBeginContentArea();
+                    player!.TryTakeItem(command.SecondWord);
                     break;
 
 
                 case "drop":
                     if (command.SecondWord == null)
                     {
-                        Console.WriteLine("Drop what?");
+                        player!.PrintResponse("Drop what?");
                         break;
                     }
-                    player.TryDropItem(command.SecondWord);
+                    player!.ClearAndBeginContentArea();
+                    player!.TryDropItem(command.SecondWord);
                     break;
 
 
                 case "read":
                     if (command.SecondWord == null)
                     {
-                        Console.WriteLine("Read what?");
+                        player!.PrintResponse("Read what?");
                         break;
                     }
-                    
+
                     // Try to read an interactive object in the room
                     string readResponse = player?.CurrentRoom.HandleInteractiveAction(command.SecondWord, $"read {command.SecondWord}") ?? "";
                     if (!string.IsNullOrEmpty(readResponse) && readResponse != "You can't do that.")
                     {
-                        Console.WriteLine(readResponse);
+                        player!.PrintResponse(readResponse);
                     }
                     else
                     {
-                        Console.WriteLine($"You can't read that.");
+                        player!.PrintResponse($"You can't read that.");
                     }
                     break;
 
@@ -192,7 +210,7 @@ namespace WorldOfZuul
                 case "open":
                     if (command.SecondWord == null)
                     {
-                        Console.WriteLine("Open what?");
+                        player!.PrintResponse("Open what?");
                         break;
                     }
                     
@@ -204,15 +222,15 @@ namespace WorldOfZuul
                     {
                         objectId = "desk";
                     }
-                    
+
                     string openResponse = player?.CurrentRoom.HandleInteractiveAction(objectId, $"open {command.SecondWord}") ?? "";
                     if (!string.IsNullOrEmpty(openResponse) && openResponse != "You can't do that.")
                     {
-                        Console.WriteLine(openResponse);
+                        player!.PrintResponse(openResponse);
                     }
                     else
                     {
-                        Console.WriteLine("You can't open that.");
+                        player!.PrintResponse("You can't open that.");
                     }
                     break;
 
@@ -230,11 +248,11 @@ namespace WorldOfZuul
                     
                     if (!string.IsNullOrEmpty(answerResponse) && answerResponse != "You can't do that.")
                     {
-                        Console.WriteLine(answerResponse);
+                        player!.PrintResponse(answerResponse);
                     }
                     else
                     {
-                        Console.WriteLine("You can't answer that.");
+                        player!.PrintResponse("You can't answer that.");
                     }
                     break;
 
@@ -242,49 +260,50 @@ namespace WorldOfZuul
                 case "push":
                     if (command.SecondWord == null)
                     {
-                        Console.WriteLine("Push what?");
+                        player!.PrintResponse("Push what?");
                         break;
                     }
                     
                     string pushResponse = player?.CurrentRoom.HandleInteractiveAction(command.SecondWord, $"push {command.SecondWord}") ?? "";
                     if (!string.IsNullOrEmpty(pushResponse) && pushResponse != "You can't do that.")
                     {
-                        Console.WriteLine(pushResponse);
+                        player!.PrintResponse(pushResponse);
                     }
                     else
                     {
-                        Console.WriteLine("You can't push that.");
+                        player!.PrintResponse("You can't push that.");
                     }
                     break;
 
 
                 case "inventory":
-                    player.PrintInventory();
+                    player!.PrintInventory();
                     break;
 
 
                 case "back":
-                    player.BackToRoom();
+                    player!.BackToRoom();
                     break;
 
 
                 case "move":
-                    player.MoveToRoom(command.SecondWord);
+                    player!.MoveToRoom(command.SecondWord);
                     break;
 
 
                 case "travel":
-                    player.MoveToLocation(command.SecondWord, map);
+                    player!.MoveToLocation(command.SecondWord, map);
                     break;
 
 
                 case "talk" or "talkto":
                     if (command.SecondWord == null)
                     {
-                        Console.WriteLine("Talk to who?");
+                        player!.PrintResponse("Talk to who?");
                         break;
                     }
-                    player.TryTalkToNpc(command.SecondWord);
+                    player!.ClearAndBeginContentArea();
+                    player!.TryTalkToNpc(command.SecondWord);
                     break;
 
 
@@ -293,14 +312,15 @@ namespace WorldOfZuul
 
 
                 case "help":
-                    player.PrintHelp();
+                    player!.PrintHelp();
                     break;
 
 
                 default:
-                    Console.WriteLine("I don't know that command.");
+                    player!.PrintResponse("I don't know that command.");
                     break;
             }
+            // Next loop iteration will reposition the prompt at the bottom
             return true;
         }
     }

@@ -175,6 +175,8 @@ namespace WorldOfZuul.Entities
             // Special narrative for the red folder
             if (item.Id == "folder")
             {
+                // Preserve flag that was previously set in the interactive object
+                CurrentRoom.State.SetFlag("evidence_taken");
                 Console.WriteLine("You take the red folder and tuck it into your bag. You have a gut feeling someone will notice it's missing...");
                 return;
             }
@@ -430,7 +432,8 @@ namespace WorldOfZuul.Entities
             int rightPos = Math.Max(0, Console.WindowWidth - boxWidth - 2);
             for (int i = 0; i < commandBox.Length; i++)
             {
-                Console.SetCursorPosition(rightPos, i);
+                int row = Console.WindowTop + 1 + i; // one-line margin to avoid top cropping
+                Console.SetCursorPosition(rightPos, row);
                 Console.Write(commandBox[i]);
             }
 
@@ -460,6 +463,46 @@ namespace WorldOfZuul.Entities
             Console.WriteLine(" - inventory - View your inventory");
             Console.WriteLine(" - help - Show this help message");
             Console.WriteLine(" - quit - Exit the game");
+        }
+
+        // Draw the command box without clearing existing content
+        public void ShowCommandBox()
+        {
+            int savedLeft = Console.CursorLeft;
+            int savedTop = Console.CursorTop;
+            DrawCommandBox();
+            // Restore cursor so the input prompt stays after the last output
+            Console.SetCursorPosition(savedLeft, savedTop);
+        }
+
+        // Draws the command box and moves the cursor to the content area below it
+        public void BeginContentArea()
+        {
+            int boxHeight = DrawCommandBox();
+            Console.SetCursorPosition(0, Console.WindowTop + boxHeight + 1);
+        }
+
+        // Clears the screen, redraws the command box, and positions cursor in the content area
+        public void ClearAndBeginContentArea()
+        {
+            Console.Clear();
+            int boxHeight = DrawCommandBox();
+            Console.SetCursorPosition(0, Console.WindowTop + boxHeight + 1);
+        }
+
+        // Ensure there's space at the bottom for the status line and prompt
+        public void EnsurePromptArea(int reservedLines = 2)
+        {
+            int bottom = Console.WindowTop + Console.WindowHeight;
+            int targetTop = bottom - reservedLines;
+            if (Console.CursorTop < targetTop)
+            {
+                int needed = targetTop - Console.CursorTop;
+                for (int i = 0; i < needed; i++)
+                {
+                    Console.WriteLine();
+                }
+            }
         }
 
         /*
