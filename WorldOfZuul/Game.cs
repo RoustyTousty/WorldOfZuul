@@ -21,15 +21,14 @@ namespace WorldOfZuul
             * Add the Montedison Executive Office room (interactive demonstration).
             */
              Room montedisonOffice = MontedisonRoomBuilder.BuildMontedisonOffice();
+             // Replace the JSON Montedison room with the interactive version
               var locationWithMontedison = map.Locations.Values
         .FirstOrDefault(loc => loc.Rooms.ContainsKey("Montedison"));
         if (locationWithMontedison != null)
     {
-        // 4️⃣ Reemplazar la habitación creada por JSON
         Room oldRoom = locationWithMontedison.GetRoom("Montedison")!;
         locationWithMontedison.SetRoom(montedisonOffice);
-
-        // 5️⃣ Redirigir todas las salidas que apuntaban a la antigua Montedison
+ // Update all exits in the map that were pointing to the old Montedison room to point to the new one
         foreach (var location in map.Locations.Values)
         {
             foreach (var room in location.Rooms.Values)
