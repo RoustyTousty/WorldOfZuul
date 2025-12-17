@@ -37,6 +37,7 @@ namespace WorldOfZuul.World
             room.InteractiveObjects["usb_drive"] = BuildUsbDrive();
 
             room.Npcs["contini"] = BuildContiniNPC();
+            room.Exits["City"] = new Exit("City", "City", room);
 
             return room;
         }
@@ -294,6 +295,7 @@ Paper verification is advised.",
         }
 
         // ───────── CONTINI NPC ─────────
+
        private static Npc BuildContiniNPC()
 {
     return new Npc
