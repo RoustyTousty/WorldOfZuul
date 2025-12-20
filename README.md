@@ -261,10 +261,4 @@ This project is created for educational purposes as part of the SDU Software Eng
 
 ---
 
-## 📞 Support
-
-For questions or issues related to this project, please contact the development team or your course instructor.
-
----
-
 **Happy Investigating! 🕵️**
