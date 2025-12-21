@@ -69,18 +69,24 @@ namespace WorldOfZuul
                     {
                         foreach (var exitData in roomData.Exits)
                         {
-                            if (roomLookup.TryGetValue(exitData.TargetRoomId, out var targetRoom))
+                            if (!string.IsNullOrEmpty(exitData.TargetRoomId))
                             {
-                                Exit exit = new Exit(
-                                    exitData.Id,
-                                    exitData.Name,
-                                    targetRoom,
-                                    exitData.IsLocked ?? false
-                                );
-                                Console.WriteLine($"Created exit {exit.Id} in room {room.Id} to target room {targetRoom.Id}");
+                                var targetRoom = roomLookup[exitData.TargetRoomId];
+                                Exit exit = new Exit(exitData.Id, exitData.Name, targetRoom, null, exitData.IsLocked ?? false);
                                 room.SetExit(exit);
                             }
+                            else if (!string.IsNullOrEmpty(exitData.TargetLocationId))
+                            {
+                                var targetLocation = world.GetLocation(exitData.TargetLocationId);
+                                Exit exit = new Exit(exitData.Id, exitData.Name, null, targetLocation, exitData.IsLocked ?? false);
+                                room.SetExit(exit);
+                            }
+                            else
+                            {
+                                throw new Exception($"Exit {exitData.Id} has no target.");
+                            }
                         }
+
                     }
                 }
 
@@ -93,15 +99,6 @@ namespace WorldOfZuul
                     Room room = roomLookup[roomData.Id];
                     if (roomData.Items != null)
                     {
-                        // foreach (var itemData in roomData.Items)
-                        // {
-                        //     Item item = new Item(
-                        //         itemData.Id,
-                        //         itemData.Name,
-                        //         itemData.Description
-                        //     );
-                        //     room.SetItem(item);
-                        // }
                         foreach (var itemData in roomData.Items)
                         {
                             Item item = ItemFactory.Create(itemData);
@@ -208,7 +205,8 @@ namespace WorldOfZuul
     {
         public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
-        public string TargetRoomId { get; set; } = string.Empty;
+        public string? TargetRoomId { get; set; } = string.Empty;
+        public string? TargetLocationId { get; set; } = string.Empty;
         public bool? IsLocked { get; set; }
     }
     public class NpcData

@@ -8,17 +8,17 @@ namespace WorldOfZuul.World
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public Room TargetRoom { get; set; }
+        public Room? TargetRoom { get; set; }
+        public Location? TargetLocation { get; }
         public bool IsLocked { get; private set; } = false;
-        public string? KeyItemId { get; set; }
 
-        public Exit(string id, string name, Room targetRoom, bool isLocked = false, string? keyItemId = null)
+        public Exit(string id, string name, Room? targetRoom = null, Location? targetLocation = null, bool isLocked = false)
         {
             Id = id;
             Name = name;
             TargetRoom = targetRoom;
+            TargetLocation = targetLocation;
             IsLocked = isLocked;
-            KeyItemId = keyItemId;
         }
 
 

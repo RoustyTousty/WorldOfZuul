@@ -1,207 +1,189 @@
 {
-  "startinglocationid": "Court House",
+  "startingLocationId": "city",
   "locations": [
     {
-      "id": "Court House",
-      "name": "Court House",
-      "startingroomid": "City",
+      "id": "city",
+      "name": "Milan – City Hub",
+      "description": "Milan, 1992. The epicenter of power, money, and fear. Every road leads back here.",
+      "startingRoomId": "city_square",
       "rooms": [
         {
-          "id": "City",
-          "name": "City",
-          "description": "You are in the City lobby. Here is the center of the game.",
-          "exits": []
-        }
-      ]
-    },
-
-
-
-    {
-      "id": "Montedison",
-      "name": "Montedison",
-      "startingroomid": "Montedison",
-      "rooms": [
-        {
-          "id": "Montedison",
-          "name": "Montedison",
-          "description": "You are inside Montedison corporate office. Look for documents, safes, and hidden compartments revealing the company's connection to shell corporations.",
+          "id": "city_square",
+          "name": "City Square",
+          "description": "Traffic hums, newspapers shout headlines about arrests. This is where your investigation begins.",
           "exits": [
-            { "id": "CEOOffice1", "name": "CEO Office 1", "targetRoomId": "CEO Office 1" }
-          ]
-        },
-        {
-          "id": "CEO Office 1",
-          "name": "CEO Office 1",
-          "description": "You are inside the CEO Office.",
-          "exits": [
-            { "id": "Montedison", "name": "Montedison", "targetRoomId": "Montedison" }
-          ]
-        }
-      ]
-    },
-
-
-
-    {
-      "id": "ENI",
-      "name": "ENI",
-      "startingroomid": "ENI",
-      "rooms": [
-        {
-          "id": "ENI",
-          "name": "ENI",
-          "description": "You step into the ENI corporate office. The air feels tense and quiet.",
-          "exits": [
-            { "id": "CEOOffice2", "name": "CEO Office 2", "targetRoomId": "CEO Office 2" }
-          ]
-        },
-        {
-          "id": "CEO Office 2",
-          "name": "CEO Office 2",
-          "description": "You are inside the CEO Office.",
-          "exits": [
-            { "id": "ENI", "name": "ENI", "targetRoomId": "ENI" }
+            { "id": "to_eni", "name": "ENI Headquarters", "targetLocationId": "eni" },
+            { "id": "to_montedison", "name": "Montedison Offices", "targetLocationId": "montedison" },
+            { "id": "to_bank", "name": "National Bank", "targetLocationId": "bank" },
+            { "id": "to_party", "name": "Party Headquarters", "targetLocationId": "party" },
+            { "id": "to_court", "name": "Courthouse", "targetLocationId": "court" }
+          ],
+          "npcs": [
+            {
+              "id": "guide",
+              "name": "Senior Magistrate",
+              "description": "A tired but determined judge from Mani Pulite.",
+              "dialogue": [
+                {
+                  "id": "start",
+                  "text": "Follow the money. Nothing else matters.",
+                  "responses": [
+                    { "text": "I understand.", "next": "end" }
+                  ]
+                }
+              ]
+            }
           ]
         }
       ]
     },
 
-
-
     {
-      "id": "Bank",
-      "name": "Bank",
-      "startingroomid": "Bank",
+      "id": "eni",
+      "name": "ENI Headquarters",
+      "description": "A symbol of Italian energy and hidden corruption.",
+      "startingRoomId": "eni_lobby",
       "rooms": [
         {
-          "id": "Bank",
-          "name": "Bank entrence",
-          "description": "You are in the Bank where offshore money flows.",
+          "id": "eni_lobby",
+          "name": "ENI Lobby",
+          "description": "Marble floors and hushed voices.",
           "exits": [
-            { "id": "Lobby", "name": "Lobby", "targetRoomId": "Lobby" }
+            { "id": "to_exec", "name": "Executive Office", "targetRoomId": "eni_exec" },
+            { "id": "back_city", "name": "Exit", "targetLocationId": "city" }
           ]
         },
         {
-          "id": "Lobby",
-          "name": "Lobby",
-          "description": "You are in the Lobby.",
+          "id": "eni_exec",
+          "name": "Executive Office",
+          "description": "A lavish office filled with secrets.",
+          "items": [
+            {
+              "id": "ledger",
+              "name": "Hidden Ledger",
+              "description": "Lists offshore transfers.",
+              "useText": "You photograph every page.",
+              "event": {
+                "id": "eni_ledger_clue",
+                "type": "AddClueEvent",
+                "params": { "clueId": "ledger" }
+              }
+            }
+          ],
           "exits": [
-            { "id": "Bank", "name": "Bank", "targetRoomId": "Bank" },
-            { "id": "OfficeBank", "name": "Office Bank", "targetRoomId": "Office Bank" },
-            { "id": "BreakRoom", "name": "Break room", "targetRoomId": "Break room" },
-            { "id": "MeetingRoom", "name": "Meeting room", "targetRoomId": "Meeting room" }
-          ]
-        },
-        {
-          "id": "Office Bank",
-          "name": "Office Bank",
-          "description": "You are in the Office bank.",
-          "exits": [
-            { "id": "Lobby", "name": "Lobby", "targetRoomId": "Lobby" }
-          ]
-        },
-        {
-          "id": "Break room",
-          "name": "Break room",
-          "description": "You are in the Break room.",
-          "exits": [
-            { "id": "Lobby", "name": "Lobby", "targetRoomId": "Lobby" }
-          ]
-        },
-        {
-          "id": "Meeting room",
-          "name": "Meeting room",
-          "description": "You are in the Meeting room.",
-          "exits": [
-            { "id": "Lobby", "name": "Lobby", "targetRoomId": "Lobby" }
+            { "id": "back_lobby", "name": "Lobby", "targetRoomId": "eni_lobby" }
           ]
         }
       ]
     },
 
-
-
     {
-      "id": "Backrooms",
-      "name": "Backrooms",
-      "startingroomid": "Backrooms",
+      "id": "montedison",
+      "name": "Montedison Offices",
+      "description": "Once proud, now rotting from within.",
+      "startingRoomId": "mont_lobby",
       "rooms": [
         {
-          "id": "Backrooms",
-          "name": "Backrooms",
-          "description": "You are in the Backrooms of ministries where loyalty is bought and sold.",
+          "id": "mont_lobby",
+          "name": "Montedison Lobby",
+          "description": "Cold corporate silence.",
           "exits": [
-            { "id": "Office3", "name": "Office 3", "targetRoomId": "Office 3" },
-            { "id": "PartyRoom", "name": "Party room", "targetRoomId": "Party room" }
+            { "id": "to_accounting", "name": "Accounting Office", "targetRoomId": "accounting" },
+            { "id": "back_city", "name": "Exit", "targetLocationId": "city" }
           ]
         },
         {
-          "id": "Office 3",
-          "name": "Office 3",
-          "description": "You are inside Office 3.",
+          "id": "accounting",
+          "name": "Accounting Office",
+          "description": "Rows of filing cabinets and ticking clocks.",
+          "items": [
+            {
+              "id": "bribe_note",
+              "name": "Fake Invoice Folder",
+              "description": "Consultancy fees for nothing.",
+              "useText": "You identify matching ENI payments.",
+              "event": {
+                "id": "mont_invoice_clue",
+                "type": "AddClueEvent",
+                "params": { "clueId": "bribe_note" }
+              }
+            }
+          ],
           "exits": [
-            { "id": "Backrooms", "name": "Backrooms", "targetRoomId": "Backrooms" },
-            { "id": "PartyRoom", "name": "Party room", "targetRoomId": "Party room" }
-          ]
-        },
-        {
-          "id": "Party room",
-          "name": "Party room",
-          "description": "You are inside the Party room.",
-          "exits": [
-            { "id": "Backrooms", "name": "Backrooms", "targetRoomId": "Backrooms" },
-            { "id": "Office3", "name": "Office 3", "targetRoomId": "Office 3" }
+            { "id": "back_lobby", "name": "Lobby", "targetRoomId": "mont_lobby" }
           ]
         }
       ]
     },
 
-
-    
     {
-      "id": "PoliticalOffices",
-      "name": "Political Offices",
-      "startingroomid": "Political Offices",
+      "id": "bank",
+      "name": "National Bank",
+      "description": "Money moves quietly here.",
+      "startingRoomId": "bank_lobby",
       "rooms": [
         {
-          "id": "Political Offices",
-          "name": "Political Offices",
-          "description": "You are inside Political Offices where deals are sealed with whispers.",
+          "id": "bank_lobby",
+          "name": "Bank Lobby",
+          "description": "Queues, whispers, fear.",
           "exits": [
-            { "id": "Office01", "name": "Office 01", "targetRoomId": "Office 01" },
-            { "id": "Office02", "name": "Office 02", "targetRoomId": "Office 02" },
-            { "id": "Office03", "name": "Office 03", "targetRoomId": "Office 03" }
+            { "id": "to_office", "name": "Manager Office", "targetRoomId": "bank_office" },
+            { "id": "back_city", "name": "Exit", "targetLocationId": "city" }
           ]
         },
         {
-          "id": "Office 01",
-          "name": "Office 01",
-          "description": "You are in Office 01.",
+          "id": "bank_office",
+          "name": "Manager Office",
+          "description": "A room where deals die.",
+          "items": [
+            {
+              "id": "witness_testimony",
+              "name": "Offshore Account List",
+              "description": "Complete list of shell accounts.",
+              "useText": "This confirms everything.",
+              "event": {
+                "id": "bank_account_clue",
+                "type": "AddClueEvent",
+                "params": { "clueId": "witness_testimony" }
+              }
+            }
+          ],
           "exits": [
-            { "id": "PoliticalOffices", "name": "Political Offices", "targetRoomId": "Political Offices" },
-            { "id": "Office02", "name": "Office 02", "targetRoomId": "Office 02" },
-            { "id": "Office03", "name": "Office 03", "targetRoomId": "Office 03" }
+            { "id": "back_lobby", "name": "Lobby", "targetRoomId": "bank_lobby" }
           ]
-        },
+        }
+      ]
+    },
+
+    {
+      "id": "party",
+      "name": "Party Headquarters",
+      "description": "Power behind closed doors.",
+      "startingRoomId": "party_office",
+      "rooms": [
         {
-          "id": "Office 02",
-          "name": "Office 02",
-          "description": "You are in Office 02.",
+          "id": "party_office",
+          "name": "Party Office",
+          "description": "Campaign posters and lies.",
           "exits": [
-            { "id": "PoliticalOffices", "name": "Political Offices", "targetRoomId": "Political Offices" },
-            { "id": "Office01", "name": "Office 01", "targetRoomId": "Office 01" },
-            { "id": "Office03", "name": "Office 03", "targetRoomId": "Office 03" }
+            { "id": "back_city", "name": "Exit", "targetLocationId": "city" }
           ]
-        },
+        }
+      ]
+    },
+
+    {
+      "id": "court",
+      "name": "Courthouse",
+      "description": "Justice waits.",
+      "startingRoomId": "court_hall",
+      "rooms": [
         {
-          "id": "Office 03",
-          "name": "Office 03",
-          "description": "You are in Office 03.",
+          "id": "court_hall",
+          "name": "Court Hall",
+          "description": "The final reckoning.",
           "exits": [
-            { "id": "PoliticalOffices", "name": "Political Offices", "targetRoomId": "Political Offices" },
-            { "id": "Office01", "name": "Office 01", "targetRoomId": "Office 01" },
-            { "id": "Office02", "name": "Office 02", "targetRoomId": "Office 02" }
+            { "id": "back_city", "name": "Exit", "targetLocationId": "city" }
           ]
         }
       ]

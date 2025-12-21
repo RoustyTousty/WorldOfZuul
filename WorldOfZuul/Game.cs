@@ -1,7 +1,7 @@
 ﻿using WorldOfZuul.World;
 using WorldOfZuul.Entities;
 using WorldOfZuul.Commands;
-using WorldOfZuul.Items;
+using WorldOfZuul.Events;
 
 namespace WorldOfZuul
 {
@@ -9,6 +9,7 @@ namespace WorldOfZuul
     {
         private Player player;
         private Map map;
+        public CaseState Case { get; } = new();
 
         public Game()
         {
@@ -22,6 +23,9 @@ namespace WorldOfZuul
             * Initialize player and prompt for a name.
             */
             player = new Player(map.GetLocation(map.StartingLocationId)!);
+
+            EventManager.Instance.Initialize(this, player, map);
+
             player.PrintEmptySpace(50);
             player.PromptPlayerName();
         }
@@ -137,11 +141,6 @@ namespace WorldOfZuul
                     break;
 
 
-                case "travel":
-                    player.MoveToLocation(command.SecondWord, map);
-                    break;
-
-
                 case "talk" or "talkto":
                     if (command.SecondWord == null)
                     {
@@ -150,6 +149,10 @@ namespace WorldOfZuul
                     }
                     player.TryTalkToNpc(command.SecondWord);
                     break;
+
+                
+                case "conclude" or "ending":
+                    return HandleEnding();
 
 
                 case "quit":
@@ -166,6 +169,42 @@ namespace WorldOfZuul
                     break;
             }
             return true;
+        }
+
+
+
+        /*
+        * Handles the game ending logic.
+        */
+        private bool HandleEnding()
+        {
+            if (Case.IsSolved)
+            {
+                Console.WriteLine("The case is already closed.");
+                return true;
+            }
+
+            Console.WriteLine("You prepare to conclude the investigation...");
+
+            if (Case.CanExposeTruth)
+            {
+                Console.WriteLine("\nYou release the evidence to the public.");
+                Console.WriteLine("The city trembles as the truth comes out.");
+                Console.WriteLine("Powerful figures fall. You made enemies.");
+                Console.WriteLine("\nJustice was worth the cost.");
+
+                Case.Solve();
+                return false; // END GAME
+            }
+            else
+            {
+                Console.WriteLine("\nYour evidence is incomplete.");
+                Console.WriteLine("Someone offers you a deal.");
+                Console.WriteLine("The case disappears.");
+
+                Case.Solve();
+                return false; // END GAME (bad ending)
+            }
         }
     }
 }

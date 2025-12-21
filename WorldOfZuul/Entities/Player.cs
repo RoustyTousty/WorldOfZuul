@@ -47,31 +47,37 @@ namespace WorldOfZuul.Entities
             if (exit.IsLocked)
             {
                 Console.WriteLine($"The {exit.Name} is locked.");
-
-                if (TryUnlockExit(exit))
-                {
-                    Console.WriteLine($"You unlocked the {exit.Name}!");
-                }
-                else
-                {
-                    Console.WriteLine("You might need a key or an item to unlock it.");
-                    return false;
-                }
-            }
-
-            if (exit.TargetRoom == null)
-            {
-                Console.WriteLine("That path seems to lead nowhere...");
                 return false;
             }
 
-            PreviousRoom = CurrentRoom;
-            CurrentRoom = exit.TargetRoom;
+            // 🔹 CASE 1: Exit leads to another LOCATION
+            if (exit.TargetLocation != null)
+            {
+                CurrentLocation = exit.TargetLocation;
+                PreviousRoom = null;
+                CurrentRoom = CurrentLocation.GetRoom(CurrentLocation.StartingRoomId)!;
 
-            Console.WriteLine($"You enter {CurrentRoom.Name}.");
-            PrintRoom();
-            return true;
+                Console.WriteLine($"You travel to {CurrentLocation.Name}.");
+                PrintRoom();
+                return true;
+            }
+
+            // 🔹 CASE 2: Exit leads to another ROOM
+            if (exit.TargetRoom != null)
+            {
+                PreviousRoom = CurrentRoom;
+                CurrentRoom = exit.TargetRoom;
+
+                Console.WriteLine($"You enter {CurrentRoom.Name}.");
+                PrintRoom();
+                return true;
+            }
+
+            Console.WriteLine(exit.TargetLocation);
+            Console.WriteLine("That path seems to lead nowhere...");
+            return false;
         }
+
 
 
 
@@ -92,37 +98,6 @@ namespace WorldOfZuul.Entities
 
             Console.WriteLine($"You return to {CurrentRoom.Name}.");
             PrintRoom();
-            return true;
-        }
-
-
-
-        /*
-        * Moves the player to a new locations starting room.
-        */
-        public bool MoveToLocation(string? locationName, Map map)
-        {
-            if (string.IsNullOrWhiteSpace(locationName))
-            {
-                Console.WriteLine("Travel where?");
-                return false;
-            }
-
-            Location? newLocation = map.GetLocation(locationName);
-
-            if (newLocation == null)
-            {
-                Console.WriteLine($"There is no location called '{locationName}'.");
-                return false;
-            }
-
-            CurrentLocation = newLocation;
-            PreviousRoom = null;
-            CurrentRoom = newLocation.GetRoom(newLocation.StartingRoomId)!;
-
-            Console.WriteLine($"You travel to {newLocation.Name} and arrive at {CurrentRoom.Name}.");
-            PrintRoom();
-
             return true;
         }
 
@@ -210,29 +185,6 @@ namespace WorldOfZuul.Entities
 
 
         /*
-        * Attempts to unlock an exit using the items inside players inventory.
-        */
-        private bool TryUnlockExit(Exit exit)
-        {
-            if (string.IsNullOrWhiteSpace(exit.KeyItemId))
-            {
-                return false;
-            }
-
-            Item? keyItem = Inventory.GetItem(exit.KeyItemId);
-            List<Item> inventoryItems = Inventory.GetAllItems();
-
-            if (keyItem == null || !inventoryItems.Contains(keyItem))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-
-
-        /*
         * Attempts to talk to an NPC in the current room.
         */
         public void TryTalkToNpc(string npcName)
@@ -282,44 +234,66 @@ namespace WorldOfZuul.Entities
         public void PrintRoom()
         {
             Console.WriteLine();
+
+            // LOCATION HEADER
+            Console.WriteLine($"=== {CurrentLocation.Name} ===");
+            Console.WriteLine(CurrentLocation.Description);
+            Console.WriteLine();
+
+            // ROOM HEADER
             Console.WriteLine($"--- {CurrentRoom.Name} ---");
             Console.WriteLine(CurrentRoom.Description);
             Console.WriteLine();
 
+            // EXITS
             if (CurrentRoom.Exits.Count > 0)
             {
                 Console.WriteLine("Exits:");
                 foreach (var exit in CurrentRoom.Exits)
                 {
-                    string lockInfo = exit.Value.IsLocked ? "(locked)" : "";
-                    Console.WriteLine($" - {exit.Key} {lockInfo}");
+                    string lockInfo = exit.Value.IsLocked ? " (locked)" : "";
+                    Console.WriteLine($" - {exit.Key}{lockInfo}");
                 }
             }
             else
             {
-                Console.WriteLine("There are no visible exits.");
+                Console.WriteLine("Exits:");
+                Console.WriteLine(" - None");
             }
 
+            // ITEMS
+            Console.WriteLine();
+            Console.WriteLine("Items:");
             if (CurrentRoom.Items.Count > 0)
             {
-                Console.WriteLine("\nYou see:");
                 foreach (var item in CurrentRoom.Items.Values)
                 {
-                    Console.WriteLine($" - {item.Name} ({item.Description})");
+                    Console.WriteLine($" - {item.Name}: {item.Description}");
                 }
             }
+            else
+            {
+                Console.WriteLine(" - None");
+            }
 
+            // NPCS
+            Console.WriteLine();
+            Console.WriteLine("NPCs:");
             if (CurrentRoom.Npcs.Count > 0)
             {
-                Console.WriteLine("\nNpcs:");
                 foreach (var npc in CurrentRoom.Npcs.Values)
                 {
-                    Console.WriteLine($" - {npc.Name} ({npc.Description})");
+                    Console.WriteLine($" - {npc.Name}: {npc.Description}");
                 }
+            }
+            else
+            {
+                Console.WriteLine(" - None");
             }
 
             Console.WriteLine();
         }
+
 
 
 

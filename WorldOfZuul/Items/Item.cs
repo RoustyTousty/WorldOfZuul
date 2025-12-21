@@ -33,6 +33,11 @@ namespace WorldOfZuul.Items
 
         public virtual void Use()
         {
+            if (!string.IsNullOrEmpty(UseText))
+            {
+                Console.WriteLine(UseText);
+            }
+
             if (EventId != null)
             {
                 EventManager.Instance.Trigger(EventId);
