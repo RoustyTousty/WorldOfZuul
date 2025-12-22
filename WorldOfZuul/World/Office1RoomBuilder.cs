@@ -60,9 +60,9 @@ namespace WorldOfZuul.World
                 {
                     if (verb == "inspect")
                         return ("A standard municipal desk with three drawers. You notice:\n" +
-                                " • A Left drawer: a bit open, seems to contain files (try: open drawer left)\n" +
-                                " • A Right drawer: closed, the handle shows fingerprint smudges (try: open drawer right)\n" +
-                                " • A Center drawer: has newer lock (try: open drawer center)\n", null);
+                                " - A Left drawer: a bit open, seems to contain files (try: open drawer left)\n" +
+                                " - A Right drawer: closed, the handle shows fingerprint smudges (try: open drawer right)\n" +
+                                " - A Center drawer: has newer lock (try: open drawer center)\n", null);
 
                     // LEFT DRAWER: Contains housing project files with repeated delays and handwritten "priority changes"
                     if (verb == "open drawer left" || verb == "open left drawer" || verb == "search drawer left")
@@ -74,9 +74,9 @@ namespace WorldOfZuul.World
                             "You opened the left drawer. " +
                             "It contains some documents about the housing projects. " +
                             "As you read through them, you notice that many construction projects are delayed. " +
-                            "• Via Garibaldi Social Housing (Delayed 6 months). Handwritten note: 'Priority revised -> see meeting notes.'\n" + 
-                            " • Poplar Reconstruction Quarters (Delayed 8 months). Handwritten note: 'Firm change -> Edilcoop preferred.'\n" + 
-                            " • Affordable Housing Initiative: Zone 4 (Delayed 11 months). Stamped 'REASSIGNED' with no explanation.\n" +
+                            " - Via Garibaldi Social Housing (Delayed 6 months). Handwritten note: 'Priority revised -> see meeting notes.'\n" + 
+                            " - Poplar Reconstruction Quarters (Delayed 8 months). Handwritten note: 'Firm change -> Edilcoop preferred.'\n" + 
+                            " - Affordable Housing Initiative: Zone 4 (Delayed 11 months). Stamped 'REASSIGNED' with no explanation.\n" +
                             "In most documents, the delay is due to a change in the construction company. " +
                             "In most cases, this change is in favor of the same construction company. " +
                             "The change from one construction company to another is usually not justified, which is very unusual. " +
@@ -106,10 +106,10 @@ namespace WorldOfZuul.World
                             "In the right drawer are a few copies of restaurant receipts. Nothing unusual." +
                             "There's also a notebook with notes from conversations. " +
                             "The entries are dated, but the wording stays vague:\n" +
-                            " • 14 Feb - Meeting with Edilcoop representatives. Project timelines discussed. = €8,500.\n" +
-                            " • 3 Mar - Lunch with Bertolini Construction. Will accelerate permits. = €15,000\n" +
-                            " • 22 Apr - Coffee with Assessore Mancini. Spoke him about delayed housing projects. Just agreed priority adjustments necessary.\n" +
-                            " • 18 May - Dinner with Conti & Figli. Discussion of civic partnership. Generous contribution to local festival fund.\n" +
+                            " - 14 Feb - Meeting with Edilcoop representatives. Project timelines discussed. = €8,500.\n" +
+                            " - 3 Mar - Lunch with Bertolini Construction. Will accelerate permits. = €15,000\n" +
+                            " - 22 Apr - Coffee with Assessore Mancini. Spoke him about delayed housing projects. Just agreed priority adjustments necessary.\n" +
+                            " - 18 May - Dinner with Conti & Figli. Discussion of civic partnership. Generous contribution to local festival fund.\n" +
                             "None of this is illegal. Politicians meet with contractors all the time. But the wording and the money are odd: " +
                             "€8,500,' '€15,000,' 'generous contribution.' Why not just say what was discussed?\n" +
                             "You notice the meetings with Edilcoop and Bertolini align with the dates when certain housing projects were " +
@@ -159,9 +159,9 @@ namespace WorldOfZuul.World
                             "You try the center drawer again. This time it opens.\n" +
                             "Inside you find several personal documents.\n" +
                             "Inside you find:\n" +
-                            " • Receipts for expensive dinners at Ristorante Savini in Milan, Hotel Excelsior in Rome, and a private golf club.\n" +
-                            " • A partially visible bank statement. The monthly salary: €2,400. Additional deposits: €8,500 without any description and €6,200 labeled as 'consulting fee'.\n" +
-                            " • A handwritten note on an official letterhead: 'Reminder: Festival fund donation €15,000(Conti & Figli). Permit approval by June.'\n" +
+                            " - Receipts for expensive dinners at Ristorante Savini in Milan, Hotel Excelsior in Rome, and a private golf club.\n" +
+                            " - A partially visible bank statement. The monthly salary: €2,400. Additional deposits: €8,500 without any description and €6,200 labeled as 'consulting fee'.\n" +
+                            " - A handwritten note on an official letterhead: 'Reminder: Festival fund donation €15,000(Conti & Figli). Permit approval by June.'\n" +
                             "None of these documents are illegal on their own. Municipal councillors may receive consulting fees, and companies can donate to public events. " +
                             "But the amounts do not match the declared income, and no invoices are attached.\n" +
                             "Compared to the other documents in the office, the picture becomes clearer. " +
@@ -271,9 +271,9 @@ namespace WorldOfZuul.World
                             "Most of them contains standard administrative documents such as zoneing permits, construction schedules, " +
                             "contractor agreements, and environmental reports.\n" +
                             "After a while, you began to notice inconsistencies.\n" +
-                            " • A labeled folder 'Via Mazzini Public Housing Tender Process' is empty. Inside, a short card states: 'Temporarily reassigned to regional office.'\n" +
-                            " • A labeled folder 'Edilcoop Contract Review from 1991' appears incomplete. The index lists 47 pages, but there are only 12 pages present.\n" +
-                            " • A labeled folder 'Complaint Log: Citizen Petitions' contains only a few pages. A note attached reads: 'Archive after resolution!'\n" +
+                            " - A labeled folder 'Via Mazzini Public Housing Tender Process' is empty. Inside, a short card states: 'Temporarily reassigned to regional office.'\n" +
+                            " - A labeled folder 'Edilcoop Contract Review from 1991' appears incomplete. The index lists 47 pages, but there are only 12 pages present.\n" +
+                            " - A labeled folder 'Complaint Log: Citizen Petitions' contains only a few pages. A note attached reads: 'Archive after resolution!'\n" +
                             "The missing documents are related to the key decisions, such as contractor changes, project reassignments, and citizen complaints. " +
                             "However, no explanations are included.\n" +
                             "The remaining files are formally correct, stamped and signed, but provide little information about how decisions were made. " +
@@ -307,8 +307,8 @@ namespace WorldOfZuul.World
                             "You look more closely at the calendar and read through the handwritten notes. " +
                             "Most of them are routine appointments such as 'Budget review at 10:00', 'Council meeting at 15:30', or 'Permit desk at 09:00'.\n" +
                             "Some entries, marked with red circles, appear at regular intervals.\n" +
-                            " • 'Cena Il Gabbiano at 21:30'\n" +
-                            " • Dates include January 14, January 28, February 11, February 25, March 10, March 24, April 7, and April 21.\n" +
+                            " - 'Cena Il Gabbiano at 21:30'\n" +
+                            " - Dates include January 14, January 28, February 11, February 25, March 10, March 24, April 7, and April 21.\n" +
                             "The location and time remain the same. The entries are always outside office hours and are not labeled as official meetings.\n" +
                             "When compared with the meeting notes and project files, several of these dates correspond closely with later changes in housing projects. " +
                             "Priority revisions and contractor reassignments occur shortly after some of the listed dinners.\n" +
