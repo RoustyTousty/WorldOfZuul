@@ -110,6 +110,70 @@ namespace WorldOfZuul.Entities
                 }
             }
 
+            //-Edris
+            // Special check: Block exit from Office 01  until all evidence is collected
+            if (CurrentRoom.Id == "Office 01" && exit.Id == "Political Offices")
+            {
+                bool hasRolexBox = Inventory.HasItemWithId("rolex_box");
+                bool hasNotebook = Inventory.HasItemWithId("notebook");
+                bool hasNote = Inventory.HasItemWithId("note");
+
+                if (!hasRolexBox || !hasNotebook || !hasNote)
+                {
+                    Console.WriteLine("You can't leave yet. You need to gather all the evidence first:\n");
+                    if (!hasRolexBox) Console.WriteLine(" - Rolex box with certificate");
+                    if (!hasNotebook) Console.WriteLine(" - Meeting notes notebook");
+                    if (!hasNote) Console.WriteLine(" - Handwritten note on letterhead");
+                    Console.WriteLine("\nYour investigation isn't complete. Keep searching the office.");
+                    return false;
+                }
+                else
+                {
+                    // Player has all evidence - process completion
+                    if (!CurrentRoom.State.GetFlag("office01_investigation_complete"))
+                    {
+                        // Remove evidence items from inventory
+                        var rolexBoxItem = Inventory.GetItem("rolex_box");
+                        var notebookItem = Inventory.GetItem("notebook");
+                        var noteItem = Inventory.GetItem("note");
+
+                        if (rolexBoxItem != null) Inventory.RemoveItem(rolexBoxItem);
+                        if (notebookItem != null) Inventory.RemoveItem(notebookItem);
+                        if (noteItem != null) Inventory.RemoveItem(noteItem);
+
+                        // Award completion medal
+                        var medal = new Item(
+                            "housing_medal",
+                            "Medal of Municipal Investigation",
+                            "A medal awarded for undercovering corruption evidence in the department of housing and urban development. " +
+                            "You exposed the connection between edilcoop and suspicious municipal contracts."
+                        );
+                        Inventory.AddItem(medal);
+
+                        // Mark investigation as complete
+                        CurrentRoom.State.SetFlag("office01_investigation_complete");
+
+                        // Display completion message
+                        Console.Clear();
+                        Console.WriteLine("\n╔══════════════════════════════════════════════════════════════════╗");
+                        Console.WriteLine("║                   HOUSING DEPARTMENT INVESTIGATION COMPLETE!                        ║");
+                        Console.WriteLine("╚══════════════════════════════════════════════════════════════════╝\n");
+                        Console.WriteLine("You carefully secure all the evidence in your briefcase:");
+                        Console.WriteLine(" ✓ Empty Rolex Box with Edilcoop certificate");
+                        Console.WriteLine(" ✓ Meeting notes linking politicians to construction firms");
+                        Console.WriteLine(" ✓ Handwritten note about festival donations and permits");
+                        Console.WriteLine("While no single document proves guilt, together they paint a troubling picture.");
+                        Console.WriteLine("Your superiors will be impressed with your thorough investigation.\n");
+                        Console.WriteLine("You have been awarded: Medal of Municipal Investigation\n");
+                        Console.WriteLine("Continue fighting corruption by investigating other rooms in the city.\n");
+                        Console.WriteLine("Continue your journey by typing 'look'.");
+                        Console.ReadLine();
+                    }
+                }
+            }
+
+            //-Edris
+
             if (exit.IsLocked)
             {
                 Console.WriteLine($"The {exit.Name} is locked.");

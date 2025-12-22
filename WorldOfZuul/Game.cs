@@ -82,6 +82,45 @@ namespace WorldOfZuul
                 }
             }
 
+            //---
+          /*
+            * Add the Department of Housing and Urban Development Office room (interactive demonstration).
+            */
+            Room HousingandUrbanDevelopment = Office1RoomBuilder.BuildPoliticalOffice01();
+
+            // Replace the JSON Office 01 room with the interactive version
+            if (courtHouseLocation != null && courtHouseLocation.Rooms.ContainsKey("Office 01"))
+            {
+                Room oldOffice1Room = courtHouseLocation.GetRoom("Office 01")!;
+                courtHouseLocation.SetRoom(HousingandUrbanDevelopment);
+
+                // Update all exits in the map that were pointing to the old Office 01 room to point to the new one
+                foreach (var location in map.Locations.Values)
+                {
+                    foreach (var room in location.Rooms.Values)
+                    {
+                        foreach (var exit in room.Exits.Values)
+                        {
+                            if (exit.TargetRoom == oldOffice1Room)
+                            {
+                                exit.TargetRoom = HousingandUrbanDevelopment;
+                            }
+                        }
+                    }
+                }
+
+                // Set up the Housing and Urban Development room's exit back to Political Offices
+                if (HousingandUrbanDevelopment.Exits.ContainsKey("Political Offices"))
+                {
+                    var politicalOfficesRoom = courtHouseLocation.GetRoom("Political Offices");
+                    if (politicalOfficesRoom != null)
+                    {
+                        HousingandUrbanDevelopment.Exits["Political Offices"].TargetRoom = politicalOfficesRoom;
+                    }
+                }
+            }
+           // ---
+
             /*
             * Initialize player and prompt for a name.
             */
