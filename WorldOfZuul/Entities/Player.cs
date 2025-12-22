@@ -43,8 +43,6 @@ namespace WorldOfZuul.Entities
                 return false;
             }
 
-<<<<<<< Updated upstream
-=======
             // Special check: Block exit from ENI to City until all evidence is collected
             if (CurrentRoom.Id == "ENI" && exit.Id == "City")
             {
@@ -175,7 +173,6 @@ namespace WorldOfZuul.Entities
 
             //-Edris
 
->>>>>>> Stashed changes
             if (exit.IsLocked)
             {
                 Console.WriteLine($"The {exit.Name} is locked.");

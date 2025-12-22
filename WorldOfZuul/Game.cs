@@ -53,46 +53,11 @@ namespace WorldOfZuul
                 map.SetLocation(milanLocation);
             }
 
-            /*
-            * Add Political Office 01 - Housing Councillor (interactive narrative room).
-            */
-            Room politicalOffice = Office1RoomBuilder.BuildPoliticalOffice01();
-
-            // If the JSON already created a room with id "office_01", replace it and update all exits pointing to it.
-            var existingLocationWithOffice01 = map.Locations.Values.FirstOrDefault(loc => loc.Rooms.ContainsKey("office_01"));
-            if (existingLocationWithOffice01 != null)
-            {
-                Room oldOfficeRoom = existingLocationWithOffice01.GetRoom("office_01")!;
-                existingLocationWithOffice01.SetRoom(politicalOffice);
-
-                // Update all exits in the map that were pointing to the old office_01 room to point to the new one.
-                foreach (var location in map.Locations.Values)
-                {
-                    foreach (var room in location.Rooms.Values)
-                    {
-                        foreach (var exit in room.Exits.Values)
-                        {
-                            if (exit.TargetRoom == oldOfficeRoom)
-                            {
-                                exit.TargetRoom = politicalOffice;
-                            }
-                        }
-                    }
-                }
-            }
-<<<<<<< Updated upstream
-            else
-            {
-                // Add to Milan location alongside ENI office
-                Location milanLocation = map.GetLocation("milan") ?? new Location("milan", "Milan", "A bustling city in Italy.", "office_01");
-                milanLocation.SetRoom(politicalOffice);
-                map.SetLocation(milanLocation);
-            }
-=======
             //---
           /*
             * Add the Department of Housing and Urban Development Office room (interactive demonstration).
             */
+            var courtHouseLocation = map.GetLocation("Court House");
             Room HousingandUrbanDevelopment = Office1RoomBuilder.BuildPoliticalOffice01();
 
             // Replace the JSON Office 01 room with the interactive version
@@ -137,7 +102,6 @@ namespace WorldOfZuul
                 }
             }
            // ---
->>>>>>> Stashed changes
 
             /*
             * Initialize player and prompt for a name.
