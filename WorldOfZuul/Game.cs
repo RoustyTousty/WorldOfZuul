@@ -93,17 +93,7 @@ namespace WorldOfZuul
                 Room oldOffice1Room = courtHouseLocation.GetRoom("Office 01")!;
                 courtHouseLocation.SetRoom(HousingandUrbanDevelopment);
 
-                // Set up the exit back to Political Offices
-                if (HousingandUrbanDevelopment.Exits.ContainsKey("Political Offices"))
-                {
-                    var politicalOfficesRoom = courtHouseLocation.GetRoom("Political Offices");
-                    if (politicalOfficesRoom != null)
-                    {
-                        HousingandUrbanDevelopment.Exits["Political Offices"].TargetRoom = politicalOfficesRoom;
-                    }
-                }
-
-                // Update all exits in the map that were pointing to the old office 01 room to point to the new one
+                // Update all exits in the map that were pointing to the old Office 01 room to point to the new one
                 foreach (var location in map.Locations.Values)
                 {
                     foreach (var room in location.Rooms.Values)
@@ -118,13 +108,13 @@ namespace WorldOfZuul
                     }
                 }
 
-                // Set up the Housing and Urban Development room's exit back to City
-                if (HousingandUrbanDevelopment.Exits.ContainsKey("City"))
+                // Set up the Housing and Urban Development room's exit back to Political Offices
+                if (HousingandUrbanDevelopment.Exits.ContainsKey("Political Offices"))
                 {
-                    var cityRoom = courtHouseLocation.GetRoom("City");
-                    if (cityRoom != null)
+                    var politicalOfficesRoom = courtHouseLocation.GetRoom("Political Offices");
+                    if (politicalOfficesRoom != null)
                     {
-                        HousingandUrbanDevelopment.Exits["City"].TargetRoom = cityRoom;
+                        HousingandUrbanDevelopment.Exits["Political Offices"].TargetRoom = politicalOfficesRoom;
                     }
                 }
             }

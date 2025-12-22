@@ -142,9 +142,7 @@
           "description": "You are inside of Political Offices where deals are sealed with whispers.",
           "exits": [
             {"name":"City", "targetRoomId":"City"},
-            {"name":"Office 01", "targetRoomId":"Office 01"},
-            {"name":"Office 02", "targetRoomId":"Office 02"},
-            {"name":"Office 03", "targetRoomId":"Office 03"}
+            {"name":"Office 01", "targetRoomId":"Office 01"}
           ]
         },
         {
@@ -152,29 +150,7 @@
           "name": "Office 01",
           "description": "You are in the Office 01",
           "exits": [
-            { "name": "Political Offices", "targetRoomId": "Political Offices" },
-            { "name": "Office 02", "targetRoomId": "Office 02" },
-            { "name": "Office 03", "targetRoomId": "Office 03" }
-          ]
-        },
-        {
-          "id": "Office 02",
-          "name": "Office 02",
-          "description": "You are in the office 02",
-          "exits": [
-            { "name": "Political Offices", "targetRoomId": "Political Offices" },
-            { "name": "Office 01", "targetRoomId": "Office 01" },
-            { "name": "Office 03", "targetRoomId": "Office 03" }
-          ]
-        },
-        {
-          "id": "Office 03",
-          "name": "Office 03",
-          "description": "You are in the Office 03",
-          "exits": [
-            { "name": "Political Offices", "targetRoomId": "Political Offices" },
-            { "name": "Office 01", "targetRoomId": "Office 01" },
-            { "name": "Office 02", "targetRoomId": "Office 02" }
+            { "name": "Political Offices", "targetRoomId": "Political Offices" }
           ]
         }
       ]
