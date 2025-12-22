@@ -8,11 +8,10 @@ namespace WorldOfZuul.Items
             
         }
 
-
-
-        public override void Use()
+        public override bool Use()
         {
             Console.WriteLine($"Can't use {Name}.");
+            return false; // Use failed - item cannot be used
         }
     }
 }

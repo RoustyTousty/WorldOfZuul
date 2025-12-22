@@ -15,10 +15,23 @@ namespace WorldOfZuul.Items {
 
         public void AddItem(Item item)
         {
-            if (items.Count >= Capacity)
+            if (items.Length == 0)
             {
-                Console.WriteLine("Inventory is full. Cannot add more items.");
+                Console.WriteLine("Your inventory is empty.");
                 return;
+            }
+            else
+            {
+                Console.WriteLine("Inventory:"); // Prints the header "Inventory:"
+                foreach (Item item in items) // Loops through each item in the array(items)
+                {
+                    if (item == items[0])
+                    {
+                        Console.WriteLine($" - {item.Name} ({item.Description})"); // Prints the first item with name and description
+                    }
+                    else
+                        Console.WriteLine($" - {item.Name} ({item.Description})"); // Prints each item with name and description
+                }
             }
             items.Add(item);
         }
@@ -43,5 +56,22 @@ namespace WorldOfZuul.Items {
         {
             return items.FirstOrDefault(i => i.Id == id);
         }
+        public Item? GetItem(string itemName)
+        {
+            foreach (Item item in items)
+            {
+                if (item.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase))
+                    return item;
+            }
+            return null;
+        }
+        public bool HasItemWithId(string id)
+        {
+            foreach (var it in items)
+            {
+                if (it != null && it.Id == id) return true;
+            }
+            return false;
+            }
     }
 }

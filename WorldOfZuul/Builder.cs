@@ -71,8 +71,14 @@ namespace WorldOfZuul
                         {
                             if (!string.IsNullOrEmpty(exitData.TargetRoomId))
                             {
-                                var targetRoom = roomLookup[exitData.TargetRoomId];
-                                Exit exit = new Exit(exitData.Id, exitData.Name, targetRoom, null, exitData.IsLocked ?? false);
+                                // Ensure exit has a usable id. If JSON omits 'id', fall back to the exit name.
+                                string exitId = string.IsNullOrWhiteSpace(exitData.Id) ? exitData.Name : exitData.Id;
+                                Exit exit = new Exit(
+                                    exitId,
+                                    exitData.Name,
+                                    targetRoom,
+                                    exitData.IsLocked ?? false
+                                );
                                 room.SetExit(exit);
                             }
                             else if (!string.IsNullOrEmpty(exitData.TargetLocationId))

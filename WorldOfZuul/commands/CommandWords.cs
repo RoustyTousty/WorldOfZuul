@@ -7,7 +7,8 @@
             "back", "move", // Movement commands
             "take", "inspect", "drop", "use", "inventory", // Item commands
             "talk", "talkto", // NPC commands
-            "conclude", "ending" // Case commands
+            "conclude", "ending", // Case commands
+            "open", "read", "answer", "push" // Interactive object commands
         };
 
         public bool IsValidCommand(string command)

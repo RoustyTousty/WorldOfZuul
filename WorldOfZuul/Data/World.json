@@ -1,16 +1,15 @@
 {
-  "startingLocationId": "city",
-  "locations": [
+  "startingLocationId": "Court House",
+  "locations": [ 
     {
-      "id": "city",
-      "name": "Milan – City Hub",
-      "description": "Milan, 1992. The epicenter of power, money, and fear. Every road leads back here.",
-      "startingRoomId": "city_square",
+      "id": "Court House",
+      "name": "Court House",
+      "startingRoomId": "City",
       "rooms": [
         {
-          "id": "city_square",
-          "name": "City Square",
-          "description": "Traffic hums, newspapers shout headlines about arrests. This is where your investigation begins.",
+          "id": "City",
+          "name": "City",
+          "description": "Italy is in turmoil.\nA hidden system of corruption so vast it touches every corner of politics, business, and finance is beginning to crack.\nJournalists call it Tangentopoli, 'Bribesville.' To the public, it's a scandal. To those inside, it's simply the way things are done.\nYou are an investigator, newly assigned to the Mani Pulite task force.\nYour mission: follow the money, uncover the truth, and bring to light the network of bribes, offshore accounts, and secret dealings that bind together businessmen, politicians, and even religious institutions.\nBut you are not welcome here. Every office, every hidden vault, every careless note left on a desk could hold the evidence you need—or the trap that ends your investigation.\nEach room is a fragment of a larger conspiracy. Piece them together, and you may unravel one of the greatest corruption scandals in Italian history.",
           "exits": [
             { "id": "to_eni", "name": "ENI Headquarters", "targetLocationId": "eni" },
             { "id": "to_montedison", "name": "Montedison Offices", "targetLocationId": "montedison" },
@@ -149,7 +148,7 @@
             }
           ],
           "exits": [
-            { "id": "back_lobby", "name": "Lobby", "targetRoomId": "bank_lobby" }
+            {"name":"City", "targetRoomId":"City"}
           ]
         }
       ]

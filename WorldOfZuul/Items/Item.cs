@@ -31,7 +31,7 @@ namespace WorldOfZuul.Items
             return Description;
         }
 
-        public virtual void Use()
+        public virtual bool Use()
         {
             if (!string.IsNullOrEmpty(UseText))
             {
@@ -53,3 +53,4 @@ namespace WorldOfZuul.Items
         }
     }
 }
+

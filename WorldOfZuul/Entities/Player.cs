@@ -12,7 +12,7 @@ namespace WorldOfZuul.Entities
 
         public Inventory Inventory { get; } = new();
 
-        private const string DEFAULT_PLAYER_NAME = "Bob the 'great' investigator";
+        private const string DEFAULT_PLAYER_NAME = "Detective Conan";
 
         public Player(Location startingLocation)
         {
@@ -42,6 +42,72 @@ namespace WorldOfZuul.Entities
             {
                 Console.WriteLine($"There is no exit called '{exitId}'.");
                 return false;
+            }
+
+            // Special check: Block exit from ENI to City until all evidence is collected
+            if (CurrentRoom.Id == "ENI" && exit.Id == "City")
+            {
+                bool hasFolder = Inventory.HasItemWithId("folder");
+                bool hasEnvelope = Inventory.HasItemWithId("envelope");
+                bool hasDocuments = Inventory.HasItemWithId("documents");
+                bool hasEvidence = Inventory.HasItemWithId("evidence");
+
+                if (!hasFolder || !hasEnvelope || !hasDocuments || !hasEvidence)
+                {
+                    Console.WriteLine("You can't leave yet. You need to gather all the evidence first:\n");
+                    if (!hasFolder) Console.WriteLine(" - Red folder with wire transfers");
+                    if (!hasEnvelope) Console.WriteLine(" - Envelope from the center drawer");
+                    if (!hasDocuments) Console.WriteLine(" - Documents from the safe");
+                    if (!hasEvidence) Console.WriteLine(" - Evidence from the hidden compartment");
+                    Console.WriteLine("\nYour investigation isn't complete. Keep searching the office.");
+                    return false;
+                }
+                else
+                {
+                    // Player has all evidence - process completion
+                    if (!CurrentRoom.State.GetFlag("eni_investigation_complete"))
+                    {
+                        // Remove evidence items from inventory
+                        var folderItem = Inventory.GetItem("folder");
+                        var envelopeItem = Inventory.GetItem("envelope");
+                        var documentsItem = Inventory.GetItem("documents");
+                        var evidenceItem = Inventory.GetItem("evidence");
+
+                        if (folderItem != null) Inventory.RemoveItem(folderItem);
+                        if (envelopeItem != null) Inventory.RemoveItem(envelopeItem);
+                        if (documentsItem != null) Inventory.RemoveItem(documentsItem);
+                        if (evidenceItem != null) Inventory.RemoveItem(evidenceItem);
+
+                        // Award completion medal
+                        var medal = new Item(
+                            "eni_medal",
+                            "Medal of Investigation Excellence",
+                            "A prestigious medal awarded for successfully completing the ENI Executive Office investigation. " +
+                            "You gathered all critical evidence linking ENI to the Tangentopoli corruption scandal."
+                        );
+                        Inventory.AddItem(medal);
+
+                        // Mark investigation as complete
+                        CurrentRoom.State.SetFlag("eni_investigation_complete");
+
+                        // Display completion message
+                        Console.Clear();
+                        Console.WriteLine("\n╔══════════════════════════════════════════════════════════════════╗");
+                        Console.WriteLine("║                   INVESTIGATION COMPLETE!                        ║");
+                        Console.WriteLine("╚══════════════════════════════════════════════════════════════════╝\n");
+                        Console.WriteLine("You carefully secure all the evidence in your briefcase:");
+                        Console.WriteLine(" ✓ Red folder with wire transfer records");
+                        Console.WriteLine(" ✓ Sealed envelope from the desk");
+                        Console.WriteLine(" ✓ Documents from the safe");
+                        Console.WriteLine(" ✓ Hidden compartment evidence\n");
+                        Console.WriteLine("This evidence will be crucial in exposing the corruption network.");
+                        Console.WriteLine("Your superiors will be impressed with your thorough investigation.\n");
+                        Console.WriteLine("🏅 You have been awarded: Medal of Investigation Excellence\n");
+                        Console.WriteLine("Continue fighting against corruption and bringing justice to light through exploring the other rooms of the city.\n");
+                        Console.WriteLine("Continue your journey by typing 'look'.");
+                        Console.ReadLine();
+                    }
+                }
             }
 
             if (exit.IsLocked)
@@ -100,6 +166,7 @@ namespace WorldOfZuul.Entities
             PrintRoom();
             return true;
         }
+        
 
 
 
@@ -121,10 +188,58 @@ namespace WorldOfZuul.Entities
                 return;
             }
 
+            // Add to inventory
             Inventory.AddItem(item);
-            CurrentRoom.RemoveItem(item);
+            
+            // Remove from the room so it can't be taken again
+            if (CurrentRoom.Items.ContainsKey(item.Id))
+            {
+                CurrentRoom.Items.Remove(item.Id);
+            }
+            else
+            {
+                // Fallback: remove by reference if id key differs
+                var kvp = CurrentRoom.Items.FirstOrDefault(k => ReferenceEquals(k.Value, item));
+                if (!string.IsNullOrEmpty(kvp.Key))
+                {
+                    CurrentRoom.Items.Remove(kvp.Key);
+                }
+            }
 
-            Console.WriteLine($"You picked up the {item.Name}.");
+            // Special narrative for compartment evidence bundle
+            if (item.Id == "evidence")
+            {
+                Console.WriteLine("You carefully remove the briefcase and ledger from the compartment and place them in your bag.\n"
+                                  + "Your heart is pounding. If anyone discovers these are missing, they'll know someone was here.\n"
+                                  + "These documents link ENI, the Vatican Bank (IOR), and offshore accounts in Switzerland. This is THE evidence.");
+                return;
+            }
+
+            // Special narrative for the red folder
+            if (item.Id == "folder")
+            {
+                // Preserve flag that was previously set in the interactive object
+                CurrentRoom.State.SetFlag("evidence_taken");
+                Console.WriteLine("You take the red folder and tuck it into your bag. You have a gut feeling someone will notice it's missing...");
+                return;
+            }
+
+            // Special narrative for the safe documents bundle
+            if (item.Id == "documents")
+            {
+                Console.WriteLine("You collect the entire evidence bundle from the safe: documents, bank statement, and the sealed photograph."
+                                  + "\nIf anyone checks the safe, they'll know this trove is gone.");
+                return;
+            }
+
+            // Friendly grammar: avoid "the" if name already starts with an article
+            string name = item.Name;
+            bool startsWithArticle = name.StartsWith("a ", StringComparison.OrdinalIgnoreCase)
+                                     || name.StartsWith("an ", StringComparison.OrdinalIgnoreCase)
+                                     || name.StartsWith("the ", StringComparison.OrdinalIgnoreCase);
+            string printable = startsWithArticle ? name : $"the {name}";
+
+            Console.WriteLine($"You picked up {printable}.");
         }
 
 
@@ -145,7 +260,6 @@ namespace WorldOfZuul.Entities
         }
 
 
-
         /*
         * Attempts to drop an item from the player's inventory into the current room.
         */
@@ -162,6 +276,26 @@ namespace WorldOfZuul.Entities
             CurrentRoom.SetItem(item);
 
             item.Drop();
+    
+        }
+        public void PrintInventory()
+        {
+            Console.Clear();
+            
+            int boxHeight = DrawCommandBox();
+            Console.SetCursorPosition(0, boxHeight + 1);
+
+            if (Inventory.items.Length == 0)
+            {
+                Console.WriteLine("Your inventory is empty.");
+                return;
+            }
+
+            Console.WriteLine("Inventory:");
+            foreach (Item item in Inventory.items)
+            {
+                Console.WriteLine($" - {item.Name}");
+            }
         }
 
 
@@ -180,6 +314,36 @@ namespace WorldOfZuul.Entities
             }
 
             item.Inspect();
+        }
+
+
+
+
+
+
+
+
+
+
+        /*
+        * Attempts to unlock an exit using the items inside players inventory.
+        */
+        private bool TryUnlockExit(Exit exit)
+        {
+            if (string.IsNullOrEmpty(exit.KeyItemId))
+            {
+                Console.WriteLine("This exit cannot be unlocked.");
+                return false;
+            }
+
+            if (Inventory.HasItemWithId(exit.KeyItemId))
+            {
+                exit.Unlock();
+                Console.WriteLine($"You unlocked the {exit.Name}!");
+                return true;
+            }
+            Console.WriteLine("You might need a key or an item to unlock it.");
+            return false;
         }
 
 
@@ -226,13 +390,37 @@ namespace WorldOfZuul.Entities
             Console.WriteLine($"Welcome, {Name}!");
         }
 
+        /*
+        *Prints the Welcome message when the game starts.
+        */
+        public void PrintWelcome()
+        {
 
+            Console.Clear();      
+            int boxHeight = DrawCommandBox();  
+            Console.SetCursorPosition(0, boxHeight + 1);    
+            Console.WriteLine();
+            Console.WriteLine($"Welcome {Name} to Clean Hands!");
+            Console.WriteLine("An investigative text-based game inspired by the Tangentopoli scandal.");                                                                                                 
+            Console.WriteLine("Start by taking a \"look\" around your current location.");  
+            Console.WriteLine();
+        }
 
         /*
         * Prints the description of the current room, its exits, npcs and any items inside.
+        * Displays an ASCII command box in the top-right corner.
         */
+
         public void PrintRoom()
         {
+            Console.Clear();
+            
+            // Draw command box and get its height
+            int boxHeight = DrawCommandBox();
+
+            // Reset to left side for room description
+            Console.SetCursorPosition(0, boxHeight + 1);
+            
             Console.WriteLine();
 
             // LOCATION HEADER
@@ -294,60 +482,106 @@ namespace WorldOfZuul.Entities
             Console.WriteLine();
         }
 
-
-
-
-        /*
-        * Prints a list of items in the player's inventory.
-        */
-        public void PrintInventory()
+        /*       
+        * Draws the command reference box in the top-right corner of the screen.
+        * Returns the number of lines used by the box.
+        */           
+        private int DrawCommandBox()
         {
-            List<Item> items = Inventory.GetAllItems();
-            if (items.Count == 0)
+            string[] commandBox = new string[]
             {
-                Console.WriteLine("Your inventory is empty.");
-                return;
+                "╔═══════════════════════╗",
+                "║   AVAILABLE COMMANDS  ║",
+                "╠═══════════════════════╣",
+                "║ move [ExitName]       ║",
+                "║ back                  ║",
+                "║ look                  ║",
+                "║ take [ItemName]       ║",
+                "║ inspect [Object]      ║",
+                "║ open [Object]         ║",
+                "║ inventory             ║",
+                "║ help                  ║",
+                "║ quit                  ║",
+                "╚═══════════════════════╝"
+            };
+
+            // Print command box in top-right corner (console width - box width)
+            int boxWidth = 25;
+            int rightPos = Math.Max(0, Console.WindowWidth - boxWidth - 2);
+            for (int i = 0; i < commandBox.Length; i++)
+            {
+                int row = Console.WindowTop + 1 + i; // one-line margin to avoid top cropping
+                Console.SetCursorPosition(rightPos, row);
+                Console.Write(commandBox[i]);
             }
 
-            Console.WriteLine("You are carrying:");
-            foreach (var item in items)
-            {
-                Console.WriteLine($" - {item.Name}");
-            }
+            return commandBox.Length;
         }
-
-
-
-        /*        
-        * Prints the welcome message.
-        */
-        public void PrintWelcome()
-        {
-            Console.WriteLine();
-            Console.WriteLine("Welcome to the World of Zuul!");
-            Console.WriteLine("World of Zuul is a new, incredibly boring adventure game.");
-            Console.WriteLine();
-            PrintHelp();
-            Console.WriteLine();
-        }
-
-
 
         /*
         * Prints the help message and lists available commands and their usage.
         */
         public void PrintHelp()
         {
+            Console.Clear();
+            
+            // Draw command box and get its height
+            int boxHeight = DrawCommandBox();
+            
+            // Reset to left side for help content
+            Console.SetCursorPosition(0, boxHeight + 1);
+            
             Console.WriteLine("Commands:");
-            Console.WriteLine(" - move [exitName]");
-            Console.WriteLine(" - back");
-            Console.WriteLine(" - look");
-            Console.WriteLine(" - inevntory");
-            Console.WriteLine(" - help");
-            Console.WriteLine(" - quit");
+            Console.WriteLine(" - move [exitName] - Move through an exit");
+            Console.WriteLine(" - back - Return to previous room");
+            Console.WriteLine(" - look - Look around the current room");
+            Console.WriteLine(" - take [itemName] - Pick up an item");
+            Console.WriteLine(" - inspect [object] - Examine an object or item");
+            Console.WriteLine(" - open [object] - Open drawers, doors, etc.");
+            Console.WriteLine(" - inventory - View your inventory");
+            Console.WriteLine(" - help - Show this help message");
+            Console.WriteLine(" - quit - Exit the game");
         }
 
+        // Draw the command box without clearing existing content
+        public void ShowCommandBox()
+        {
+            int savedLeft = Console.CursorLeft;
+            int savedTop = Console.CursorTop;
+            DrawCommandBox();
+            // Restore cursor so the input prompt stays after the last output
+            Console.SetCursorPosition(savedLeft, savedTop);
+        }
 
+        // Draws the command box and moves the cursor to the content area below it
+        public void BeginContentArea()
+        {
+            int boxHeight = DrawCommandBox();
+            Console.SetCursorPosition(0, Console.WindowTop + boxHeight + 1);
+        }
+
+        // Clears the screen, redraws the command box, and positions cursor in the content area
+        public void ClearAndBeginContentArea()
+        {
+            Console.Clear();
+            int boxHeight = DrawCommandBox();
+            Console.SetCursorPosition(0, Console.WindowTop + boxHeight + 1);
+        }
+
+        // Ensure there's space at the bottom for the status line and prompt
+        public void EnsurePromptArea(int reservedLines = 2)
+        {
+            int bottom = Console.WindowTop + Console.WindowHeight;
+            int targetTop = bottom - reservedLines;
+            if (Console.CursorTop < targetTop)
+            {
+                int needed = targetTop - Console.CursorTop;
+                for (int i = 0; i < needed; i++)
+                {
+                    Console.WriteLine();
+                }
+            }
+        }
 
         /*
         * Prints empty lines to the console for better readability.
@@ -358,6 +592,24 @@ namespace WorldOfZuul.Entities
             {
                 Console.WriteLine();
             }
+        }
+
+        /*
+        * Displays a response message with the command box visible.
+        * Used for interactive object responses (inspect, open, etc.)
+        */
+        public void PrintResponse(string message)
+        {
+            Console.Clear();
+            
+            // Draw command box and get its height
+            int boxHeight = DrawCommandBox();
+            
+            // Reset to left side for response content
+            Console.SetCursorPosition(0, boxHeight + 1);
+            
+            Console.WriteLine(message);
+            Console.WriteLine();
         }
     }
 }

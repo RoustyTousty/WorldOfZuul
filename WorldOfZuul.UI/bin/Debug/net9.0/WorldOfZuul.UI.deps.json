@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "WorldOfZuul.UI/1.0.0": {
+        "dependencies": {
+          "WorldOfZuul": "1.0.0"
+        },
+        "runtime": {
+          "WorldOfZuul.UI.dll": {}
+        }
+      },
+      "WorldOfZuul/1.0.0": {
+        "runtime": {
+          "WorldOfZuul.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "WorldOfZuul.UI/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "WorldOfZuul/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

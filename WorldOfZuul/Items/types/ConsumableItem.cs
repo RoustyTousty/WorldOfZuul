@@ -12,9 +12,10 @@ namespace WorldOfZuul.Items
 
 
 
-        public override void Use()
+
+        public override bool Use()
         {
-            if (Uses > 0)
+        if (Uses > 0)
             {
                 Uses--;
 
@@ -34,7 +35,9 @@ namespace WorldOfZuul.Items
             }
             else
             {
-                Console.WriteLine("nothing happens...");
+                Console.WriteLine($"The {Name} has been fully consumed.");
+                // TODO: remove from inventory here
+                return true;  // Use succeeded, item consumed
             }
         }
     }
