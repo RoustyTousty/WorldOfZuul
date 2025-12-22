@@ -41,10 +41,11 @@ namespace WorldOfZuul.Items
             if (EventId != null)
             {
                 EventManager.Instance.Trigger(EventId);
-                return;
+                return true;
             }
 
             Console.WriteLine("Nothing happens...");
+            return false;
         }
 
         public virtual void Drop()
