@@ -69,16 +69,16 @@ namespace WorldOfZuul.Items {
             }
             else
             {
-            Console.WriteLine("Inventory:"); // Prints the header "Inventory:"
-            foreach (Item item in items) // Loops through each item in the array(items)
-            {
-                if (item == items[0])
+                Console.WriteLine("Inventory:"); // Prints the header "Inventory:"
+                foreach (Item item in items) // Loops through each item in the array(items)
                 {
-                    Console.WriteLine(item); // Prints the first item without extra line
+                    if (item == items[0])
+                    {
+                        Console.WriteLine($" - {item.Name} ({item.Description})"); // Prints the first item with name and description
+                    }
+                    else
+                        Console.WriteLine($" - {item.Name} ({item.Description})"); // Prints each item with name and description
                 }
-                else
-                Console.WriteLine(" - " + item);// Prints each intem with a dash in front
-            }
             }
         }
         private bool Contains(Item[] items, Item item)

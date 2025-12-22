@@ -32,9 +32,18 @@ namespace WorldOfZuul.World
         */
         public Exit? GetExit(string id)
         {
+            // Try exact key first
             if (Exits.TryGetValue(id, out var exit))
             {
                 return exit;
+            }
+            // Fallback: case-insensitive key match
+            foreach (var kvp in Exits)
+            {
+                if (string.Equals(kvp.Key, id, StringComparison.OrdinalIgnoreCase))
+                {
+                    return kvp.Value;
+                }
             }
             return null;
         }
@@ -42,14 +51,25 @@ namespace WorldOfZuul.World
 
 
         /*
-        * Returns an item by its ID.
+        * Returns an item by its ID or by name (case-insensitive).
         */
         public Item? GetItem(string id)
         {
+            // First try exact ID match
             if (Items.TryGetValue(id, out var item))
             {
                 return item;
             }
+
+            // If no ID match, search by name (case-insensitive)
+            foreach (var kvp in Items)
+            {
+                if (kvp.Value.Name.Equals(id, StringComparison.OrdinalIgnoreCase))
+                {
+                    return kvp.Value;
+                }
+            }
+
             return null;
         }
 
@@ -107,10 +127,24 @@ namespace WorldOfZuul.World
         public string HandleInteractiveAction(string objectId, string verb)
         {
             if (!InteractiveObjects.TryGetValue(objectId, out var obj))
+            {
+                // Try case-insensitive match on object IDs
+                foreach (var kvp in InteractiveObjects)
+                {
+                    if (string.Equals(kvp.Key, objectId, StringComparison.OrdinalIgnoreCase))
+                    {
+                        obj = kvp.Value;
+                        break;
+                    }
+                }
+            }
+
+            if (obj == null)
                 return $"There's no '{objectId}' here.";
 
             var (response, sideEffect) = obj.Execute(State, verb);
             sideEffect?.Invoke(State);
+
             return response;
         }
     }

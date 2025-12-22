@@ -43,7 +43,7 @@ namespace WorldOfZuul.Entities
         {
             if (CurrentNode == null) return;
 
-            Console.WriteLine($"\n{nameof(Name)}: {CurrentNode.Text}");
+            Console.WriteLine($"\n{Name}: {CurrentNode.Text}");
 
             if (CurrentNode.Responses == null || CurrentNode.Responses.Count == 0)
                 return;

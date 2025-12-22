@@ -9,7 +9,7 @@
         {
           "id": "City",
           "name": "City",
-          "description": "You are in the City lobby. Here is the center of the game.",
+          "description": "Italy is in turmoil.\nA hidden system of corruption so vast it touches every corner of politics, business, and finance is beginning to crack.\nJournalists call it Tangentopoli, 'Bribesville.' To the public, it's a scandal. To those inside, it's simply the way things are done.\nYou are an investigator, newly assigned to the Mani Pulite task force.\nYour mission: follow the money, uncover the truth, and bring to light the network of bribes, offshore accounts, and secret dealings that bind together businessmen, politicians, and even religious institutions.\nBut you are not welcome here. Every office, every hidden vault, every careless note left on a desk could hold the evidence you need—or the trap that ends your investigation.\nEach room is a fragment of a larger conspiracy. Piece them together, and you may unravel one of the greatest corruption scandals in Italian history.",
           "exits": [
             { "name": "Montedison", "targetRoomId": "Montedison" },
             { "name": "ENI", "targetRoomId": "ENI" },
@@ -40,8 +40,7 @@
           "name": "ENI",
           "description": "You step into the ENI corporate office. The air feels tense and quiet.",
           "exits": [
-            {"name":"City", "targetRoomId":"City"},
-            {"name":"CEO Office 2", "targetRoomId":"CEO Office 2"}
+            {"name":"City", "targetRoomId":"City"}
           ]
         },
         {

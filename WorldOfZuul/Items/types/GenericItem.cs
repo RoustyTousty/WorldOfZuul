@@ -15,6 +15,5 @@ public class GenericItem : Item
             return false; // Use failed - item cannot be used
         }
 
-
     }
 }
