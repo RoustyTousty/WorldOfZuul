@@ -285,7 +285,7 @@ namespace WorldOfZuul.Entities
             int boxHeight = DrawCommandBox();
             Console.SetCursorPosition(0, boxHeight + 1);
 
-            if (Inventory.items.Length == 0)
+            if (Inventory.items.Count == 0)
             {
                 Console.WriteLine("Your inventory is empty.");
                 return;
@@ -330,19 +330,8 @@ namespace WorldOfZuul.Entities
         */
         private bool TryUnlockExit(Exit exit)
         {
-            if (string.IsNullOrEmpty(exit.KeyItemId))
-            {
-                Console.WriteLine("This exit cannot be unlocked.");
-                return false;
-            }
-
-            if (Inventory.HasItemWithId(exit.KeyItemId))
-            {
-                exit.Unlock();
-                Console.WriteLine($"You unlocked the {exit.Name}!");
-                return true;
-            }
             Console.WriteLine("You might need a key or an item to unlock it.");
+            exit.IsLocked = false;
             return false;
         }
 

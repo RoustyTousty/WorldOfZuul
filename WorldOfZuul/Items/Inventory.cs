@@ -3,8 +3,8 @@ using WorldOfZuul.Items;
 namespace WorldOfZuul.Items {
     public class Inventory
     {
-        private List<Item> items = new List<Item>();
-        private int Capacity { get; }
+        public List<Item> items = new List<Item>();
+        public int Capacity { get; }
 
         public Inventory(int capacity = 10)
         {
@@ -15,7 +15,7 @@ namespace WorldOfZuul.Items {
 
         public void AddItem(Item item)
         {
-            if (items.Length == 0)
+            if (items.Count == 0)
             {
                 Console.WriteLine("Your inventory is empty.");
                 return;
@@ -23,14 +23,14 @@ namespace WorldOfZuul.Items {
             else
             {
                 Console.WriteLine("Inventory:"); // Prints the header "Inventory:"
-                foreach (Item item in items) // Loops through each item in the array(items)
+                foreach (Item i in items) // Loops through each item in the array(items)
                 {
-                    if (item == items[0])
+                    if (i == items[0])
                     {
-                        Console.WriteLine($" - {item.Name} ({item.Description})"); // Prints the first item with name and description
+                        Console.WriteLine($" - {i.Name} ({i.Description})"); // Prints the first item with name and description
                     }
                     else
-                        Console.WriteLine($" - {item.Name} ({item.Description})"); // Prints each item with name and description
+                        Console.WriteLine($" - {i.Name} ({i.Description})"); // Prints each item with name and description
                 }
             }
             items.Add(item);
@@ -52,10 +52,10 @@ namespace WorldOfZuul.Items {
 
 
         
-        public Item? GetItem(string id)
-        {
-            return items.FirstOrDefault(i => i.Id == id);
-        }
+        // public Item? GetItem(string id)
+        // {
+        //     return items.FirstOrDefault(i => i.Id == id);
+        // }
         public Item? GetItem(string itemName)
         {
             foreach (Item item in items)

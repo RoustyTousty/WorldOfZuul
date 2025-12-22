@@ -1,3 +1,5 @@
+using System.Reflection.Metadata.Ecma335;
+
 namespace WorldOfZuul.Items
 {
     public class ConsumableItem : Item
@@ -39,6 +41,7 @@ namespace WorldOfZuul.Items
                 // TODO: remove from inventory here
                 return true;  // Use succeeded, item consumed
             }
+            return false;
         }
     }
 }
