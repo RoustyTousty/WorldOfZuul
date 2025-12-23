@@ -395,7 +395,7 @@ namespace WorldOfZuul.Entities
         private bool TryUnlockExit(Exit exit)
         {
             Console.WriteLine("You might need a key or an item to unlock it.");
-            exit.Unlock();
+            exit.IsLocked = false;
             return false;
         }
 

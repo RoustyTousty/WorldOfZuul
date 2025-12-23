@@ -367,6 +367,11 @@ namespace WorldOfZuul
                     break;
 
 
+                case "travel":
+                    player!.MoveToLocation(command.SecondWord, map);
+                    break;
+
+
                 case "talk" or "talkto":
                     if (command.SecondWord == null)
                     {
