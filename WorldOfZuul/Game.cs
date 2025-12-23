@@ -19,16 +19,16 @@ namespace WorldOfZuul
             Builder builder = new Builder();
             map = builder.BuildMapFromJSON();
  /*
-            * Add the Montedison Executive Office room (interactive demonstration).
+           * Add the Montedison Executive Office room (interactive demonstration).
             */
              Room montedisonOffice = MontedisonRoomBuilder.BuildMontedisonOffice();
              // Replace the JSON Montedison room with the interactive version
-              var locationWithMontedison = map.Locations.Values
-        .FirstOrDefault(loc => loc.Rooms.ContainsKey("Montedison"));
-        if (locationWithMontedison != null)
+              
+                var courtHouseLocation = map.GetLocation("Court House");
+             if (courtHouseLocation != null && courtHouseLocation.Rooms.ContainsKey("Montedison"))
     {
-        Room oldRoom = locationWithMontedison.GetRoom("Montedison")!;
-        locationWithMontedison.SetRoom(montedisonOffice);
+        Room oldMontedisonRoom = courtHouseLocation.GetRoom("Montedison")!;
+            courtHouseLocation.SetRoom(montedisonOffice);
  // Update all exits in the map that were pointing to the old Montedison room to point to the new one
         foreach (var location in map.Locations.Values)
         {
@@ -36,21 +36,31 @@ namespace WorldOfZuul
             {
                 foreach (var exit in room.Exits.Values)
                 {
-                    if (exit.TargetRoom == oldRoom)
+                    if (exit.TargetRoom == oldMontedisonRoom)
                     {
                         exit.TargetRoom = montedisonOffice;
                     }
                 }
+                
             }
         }
-    }
+
+                // Set up the Montedison room's exit back to City
+                if (montedisonOffice.Exits.ContainsKey("City"))
+                {
+                    var cityRoom = courtHouseLocation.GetRoom("City");
+                    if (cityRoom != null)
+                    {
+                        montedisonOffice.Exits["City"].TargetRoom = cityRoom;
+                    }
+                }
+            }
             /*
             * Add the ENI Executive Office room (interactive demonstration).
             */
             Room eniOffice = ENIRoomBuilder.BuildENIExecutiveOffice();
 
             // Replace the JSON ENI room with the interactive version
-            var courtHouseLocation = map.GetLocation("Court House");
             if (courtHouseLocation != null && courtHouseLocation.Rooms.ContainsKey("ENI"))
             {
                 Room oldEniRoom = courtHouseLocation.GetRoom("ENI")!;

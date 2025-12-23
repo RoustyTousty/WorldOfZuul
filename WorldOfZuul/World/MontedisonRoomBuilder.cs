@@ -37,6 +37,7 @@ namespace WorldOfZuul.World
             room.InteractiveObjects["usb_drive"] = BuildUsbDrive();
 
             room.Npcs["contini"] = BuildContiniNPC();
+            room.Exits["City"] = new Exit("City", "City", room);
 
             return room;
         }
@@ -107,7 +108,7 @@ namespace WorldOfZuul.World
                     if (verb == "inspect" || verb == "inspect clock")
                         return ("There is a loose panel behind the clock.", null);
 
-                    if (verb == "open clock")
+                    if (verb == "open clock"|| verb=="open wall_clock")
                     {
                         if (state.GetFlag("finance_key_taken"))
                             return ("The clock is empty.", null);
@@ -136,7 +137,7 @@ namespace WorldOfZuul.World
                     if (verb == "inspect" || verb == "inspect cabinet")
                         return ("A keyhole labeled 'Finance'.", null);
 
-                    if (verb == "open cabinet")
+                    if (verb == "open cabinet"||verb=="open filing_cabinet")
                     {
                         if (!state.GetFlag("finance_key_taken"))
                             return ("You need the Finance Cabinet Key.", null);
@@ -294,6 +295,7 @@ Paper verification is advised.",
         }
 
         // ───────── CONTINI NPC ─────────
+
        private static Npc BuildContiniNPC()
 {
     return new Npc
