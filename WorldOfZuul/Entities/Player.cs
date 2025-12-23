@@ -1,5 +1,6 @@
 using WorldOfZuul.World;
 using WorldOfZuul.Items;
+using WorldOfZuul.Events;
 
 namespace WorldOfZuul.Entities
 {
@@ -90,6 +91,9 @@ namespace WorldOfZuul.Entities
                         // Mark investigation as complete
                         CurrentRoom.State.SetFlag("eni_investigation_complete");
 
+                        // Add clue to CaseState for game ending
+                        EventManager.Instance.Trigger("eni_ledger_clue");
+
                         // Display completion message
                         Console.Clear();
                         Console.WriteLine("\n╔══════════════════════════════════════════════════════════════════╗");
@@ -152,6 +156,9 @@ namespace WorldOfZuul.Entities
 
                         // Mark investigation as complete
                         CurrentRoom.State.SetFlag("office01_investigation_complete");
+
+                        // Add clue to CaseState for game ending
+                        EventManager.Instance.Trigger("mont_invoice_clue");
 
                         // Display completion message
                         Console.Clear();

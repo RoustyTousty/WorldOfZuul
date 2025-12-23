@@ -78,6 +78,19 @@
           "id": "Office Bank",
           "name": "Office Bank",
           "description": "You are in the Office bank",
+          "items": [
+            {
+              "id": "bank_statement",
+              "name": "Offshore Account Statement",
+              "description": "A confidential bank statement listing offshore accounts and suspicious wire transfers.",
+              "useText": "You photograph the offshore account statement. This is critical evidence!",
+              "event": {
+                "id": "bank_account_clue",
+                "type": "AddClueEvent",
+                "params": { "clueId": "witness_testimony" }
+              }
+            }
+          ],
           "exits": [
             { "name": "Bank", "targetRoomId": "Bank" },
             { "name": "Lobby", "targetRoomId": "Lobby" },
@@ -139,7 +152,7 @@
         {
           "id": "Political Offices",
           "name": "Political Offices",
-          "description": "You are inside of Political Offices where deals are sealed with whispers.",
+          "description": "Welcome to the political offices . Due to holidays some offices are currently closed. But one office is open.",
           "exits": [
             {"name":"City", "targetRoomId":"City"},
             {"name":"Office 01", "targetRoomId":"Office 01"},
@@ -160,7 +173,7 @@
         {
           "id": "Office 02",
           "name": "Office 02",
-          "description": "You are in the office 02",
+          "description": "Welcome to the department of agriculture. Due to holidays, the office is currently closed. It will reopen on the next semester.",
           "exits": [
             { "name": "Political Offices", "targetRoomId": "Political Offices" },
             { "name": "Office 01", "targetRoomId": "Office 01" },
@@ -170,7 +183,7 @@
         {
           "id": "Office 03",
           "name": "Office 03",
-          "description": "You are in the Office 03",
+          "description": "Welcome to the department of education. Due to holidays, the office is currently closed. It will reopen on the next semester.",
           "exits": [
             { "name": "Political Offices", "targetRoomId": "Political Offices" },
             { "name": "Office 01", "targetRoomId": "Office 01" },
