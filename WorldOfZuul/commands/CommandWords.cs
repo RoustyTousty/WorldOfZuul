@@ -4,9 +4,10 @@
     {
         public List<string> ValidCommands { get; } = new List<string> {
             "quit", "help", "look", // General commands
-            "back", "move", "travel", // Movement commands
-            "take", "inspect", "inventory", // Item commands
+            "back", "move", // Movement commands
+            "take", "inspect", "drop", "use", "inventory", // Item commands
             "talk", "talkto", // NPC commands
+            "conclude", "ending", // Case commands
             "open", "read", "answer", "push" // Interactive object commands
         };
 

@@ -16,6 +16,7 @@ namespace WorldOfZuul.Entities
 
         public Player(Location startingLocation)
         {
+            Console.WriteLine($"Starting location set to {startingLocation}.");
             CurrentLocation = startingLocation;
             CurrentRoom = startingLocation.GetRoom(startingLocation.StartingRoomId)!;
         }
@@ -109,34 +110,104 @@ namespace WorldOfZuul.Entities
                 }
             }
 
-            if (exit.IsLocked)
+            //-Edris
+            // Special check: Block exit from Office 01  until all evidence is collected
+            if (CurrentRoom.Id == "Office 01" && exit.Id == "Political Offices")
             {
-                Console.WriteLine($"The {exit.Name} is locked.");
+                bool hasRolexBox = Inventory.HasItemWithId("rolex_box");
+                bool hasNotebook = Inventory.HasItemWithId("notebook");
+                bool hasNote = Inventory.HasItemWithId("note");
 
-                if (TryUnlockExit(exit))
+                if (!hasRolexBox || !hasNotebook || !hasNote)
                 {
-                    Console.WriteLine($"You unlocked the {exit.Name}!");
+                    Console.WriteLine("You can't leave yet. You need to gather all the evidence first:\n");
+                    if (!hasRolexBox) Console.WriteLine(" - Rolex box with certificate");
+                    if (!hasNotebook) Console.WriteLine(" - Meeting notes notebook");
+                    if (!hasNote) Console.WriteLine(" - Handwritten note on letterhead");
+                    Console.WriteLine("\nYour investigation isn't complete. Keep searching the office.");
+                    return false;
                 }
                 else
                 {
-                    Console.WriteLine("You might need a key or an item to unlock it.");
-                    return false;
+                    // Player has all evidence - process completion
+                    if (!CurrentRoom.State.GetFlag("office01_investigation_complete"))
+                    {
+                        // Remove evidence items from inventory
+                        var rolexBoxItem = Inventory.GetItem("rolex_box");
+                        var notebookItem = Inventory.GetItem("notebook");
+                        var noteItem = Inventory.GetItem("note");
+
+                        if (rolexBoxItem != null) Inventory.RemoveItem(rolexBoxItem);
+                        if (notebookItem != null) Inventory.RemoveItem(notebookItem);
+                        if (noteItem != null) Inventory.RemoveItem(noteItem);
+
+                        // Award completion medal
+                        var medal = new Item(
+                            "housing_medal",
+                            "Medal of Municipal Investigation",
+                            "A medal awarded for undercovering corruption evidence in the department of housing and urban development. " +
+                            "You exposed the connection between edilcoop and suspicious municipal contracts."
+                        );
+                        Inventory.AddItem(medal);
+
+                        // Mark investigation as complete
+                        CurrentRoom.State.SetFlag("office01_investigation_complete");
+
+                        // Display completion message
+                        Console.Clear();
+                        Console.WriteLine("\n╔══════════════════════════════════════════════════════════════════╗");
+                        Console.WriteLine("║                   HOUSING DEPARTMENT INVESTIGATION COMPLETE!                        ║");
+                        Console.WriteLine("╚══════════════════════════════════════════════════════════════════╝\n");
+                        Console.WriteLine("You carefully secure all the evidence in your briefcase:");
+                        Console.WriteLine(" ✓ Empty Rolex Box with Edilcoop certificate");
+                        Console.WriteLine(" ✓ Meeting notes linking politicians to construction firms");
+                        Console.WriteLine(" ✓ Handwritten note about festival donations and permits");
+                        Console.WriteLine("While no single document proves guilt, together they paint a troubling picture.");
+                        Console.WriteLine("Your superiors will be impressed with your thorough investigation.\n");
+                        Console.WriteLine("You have been awarded: Medal of Municipal Investigation\n");
+                        Console.WriteLine("Continue fighting corruption by investigating other rooms in the city.\n");
+                        Console.WriteLine("Continue your journey by typing 'look'.");
+                        Console.ReadLine();
+                    }
                 }
             }
 
-            if (exit.TargetRoom == null)
+            //-Edris
+
+            if (exit.IsLocked)
             {
-                Console.WriteLine("That path seems to lead nowhere...");
+                Console.WriteLine($"The {exit.Name} is locked.");
                 return false;
             }
 
-            PreviousRoom = CurrentRoom;
-            CurrentRoom = exit.TargetRoom;
+            // 🔹 CASE 1: Exit leads to another LOCATION
+            if (exit.TargetLocation != null)
+            {
+                CurrentLocation = exit.TargetLocation;
+                PreviousRoom = null;
+                CurrentRoom = CurrentLocation.GetRoom(CurrentLocation.StartingRoomId)!;
 
-            Console.WriteLine($"You enter {CurrentRoom.Name}.");
-            PrintRoom();
-            return true;
+                Console.WriteLine($"You travel to {CurrentLocation.Name}.");
+                PrintRoom();
+                return true;
+            }
+
+            // 🔹 CASE 2: Exit leads to another ROOM
+            if (exit.TargetRoom != null)
+            {
+                PreviousRoom = CurrentRoom;
+                CurrentRoom = exit.TargetRoom;
+
+                Console.WriteLine($"You enter {CurrentRoom.Name}.");
+                PrintRoom();
+                return true;
+            }
+
+            Console.WriteLine(exit.TargetLocation);
+            Console.WriteLine("That path seems to lead nowhere...");
+            return false;
         }
+
 
 
 
@@ -164,41 +235,11 @@ namespace WorldOfZuul.Entities
 
 
         /*
-        * Moves the player to a new locations starting room.
-        */
-        public bool MoveToLocation(string? locationName, Map map)
-        {
-            if (string.IsNullOrWhiteSpace(locationName))
-            {
-                Console.WriteLine("Travel where?");
-                return false;
-            }
-
-            Location? newLocation = map.GetLocation(locationName);
-
-            if (newLocation == null)
-            {
-                Console.WriteLine($"There is no location called '{locationName}'.");
-                return false;
-            }
-
-            CurrentLocation = newLocation;
-            PreviousRoom = null;
-            CurrentRoom = newLocation.GetRoom(newLocation.StartingRoomId)!;
-
-            Console.WriteLine($"You travel to {newLocation.Name} and arrive at {CurrentRoom.Name}.");
-            PrintRoom();
-            return true;
-        }
-
-
-
-        /*
         * Attempts to take an item from the current room and add it to the player's inventory.
         */
         public void TryTakeItem(string itemName)
         {
-            var item = CurrentRoom.GetItem(itemName);
+            Item? item = CurrentRoom.GetItem(itemName);
             if (item == null)
             {
                 Console.WriteLine($"There is no item named {itemName} here.");
@@ -267,11 +308,12 @@ namespace WorldOfZuul.Entities
 
 
 
-
+        /*
+        * Attempts to use an item from the player's inventory.
+        */
         public void TryUseItem(string itemName)
-
         {
-            var item = Inventory.GetItem(itemName);    //supposed to check for and get the item from inventory
+            Item? item = Inventory.GetItem(itemName);
             if (item == null)
             {
                 Console.WriteLine($"You don't have that item in your inventory.");
@@ -282,14 +324,12 @@ namespace WorldOfZuul.Entities
         }
 
 
-
         /*
         * Attempts to drop an item from the player's inventory into the current room.
         */
         public void TryDropItem(string itemName)
-
         {
-            var item = Inventory.GetItem(itemName);
+            Item? item = Inventory.GetItem(itemName);
             if (item == null)
             {
                 Console.WriteLine($"You don't have that item in your inventory.");
@@ -297,7 +337,8 @@ namespace WorldOfZuul.Entities
             }
 
             Inventory.RemoveItem(item);
-            //TODO: When dropping the item, it needs to put the item into the room it was dropped in.
+            CurrentRoom.SetItem(item);
+
             item.Drop();
     
         }
@@ -308,7 +349,7 @@ namespace WorldOfZuul.Entities
             int boxHeight = DrawCommandBox();
             Console.SetCursorPosition(0, boxHeight + 1);
 
-            if (Inventory.items.Length == 0)
+            if (Inventory.items.Count == 0)
             {
                 Console.WriteLine("Your inventory is empty.");
                 return;
@@ -321,9 +362,14 @@ namespace WorldOfZuul.Entities
             }
         }
 
+
+
+        /*
+        * Attempts to drop an item from the player's inventory into the current room.
+        */
         public void TryInspectItem(string itemName)
         {
-            var item = Inventory.GetItem(itemName);
+            Item? item = Inventory.GetItem(itemName);
             if (item == null)
             {
                 Console.WriteLine($"You don't have that item in your inventory.");
@@ -348,19 +394,8 @@ namespace WorldOfZuul.Entities
         */
         private bool TryUnlockExit(Exit exit)
         {
-            if (string.IsNullOrEmpty(exit.KeyItemId))
-            {
-                Console.WriteLine("This exit cannot be unlocked.");
-                return false;
-            }
-
-            if (Inventory.HasItemWithId(exit.KeyItemId))
-            {
-                exit.Unlock();
-                Console.WriteLine($"You unlocked the {exit.Name}!");
-                return true;
-            }
             Console.WriteLine("You might need a key or an item to unlock it.");
+            exit.Unlock();
             return false;
         }
 
@@ -374,7 +409,7 @@ namespace WorldOfZuul.Entities
             /*
             * Look for an npc with a matching or close to matching name to the input.
             */
-            var npc = CurrentRoom.Npcs.Values.FirstOrDefault(n => n.Name.Contains(npcName, StringComparison.OrdinalIgnoreCase));
+            Npc? npc = CurrentRoom.Npcs.Values.FirstOrDefault(n => n.Name.Contains(npcName, StringComparison.OrdinalIgnoreCase));
 
             if (npc == null)
             {
@@ -440,31 +475,61 @@ namespace WorldOfZuul.Entities
             Console.SetCursorPosition(0, boxHeight + 1);
             
             Console.WriteLine();
+
+            // LOCATION HEADER
+            Console.WriteLine($"=== {CurrentLocation.Name} ===");
+            Console.WriteLine(CurrentLocation.Description);
+            Console.WriteLine();
+
+            // ROOM HEADER
             Console.WriteLine($"--- {CurrentRoom.Name} ---");
             Console.WriteLine(CurrentRoom.Description);
             Console.WriteLine();
 
+            // EXITS
             if (CurrentRoom.Exits.Count > 0)
             {
                 Console.WriteLine("Exits:");
                 foreach (var exit in CurrentRoom.Exits)
                 {
-                    string lockInfo = exit.Value.IsLocked ? "(locked)" : "";
-                    Console.WriteLine($" - {exit.Key} {lockInfo}");
+                    string lockInfo = exit.Value.IsLocked ? " (locked)" : "";
+                    Console.WriteLine($" - {exit.Key}{lockInfo}");
                 }
             }
             else
             {
-                Console.WriteLine("There are no visible exits.");
+                Console.WriteLine("Exits:");
+                Console.WriteLine(" - None");
             }
 
+            // ITEMS
+            Console.WriteLine();
+            Console.WriteLine("Items:");
+            if (CurrentRoom.Items.Count > 0)
+            {
+                foreach (var item in CurrentRoom.Items.Values)
+                {
+                    Console.WriteLine($" - {item.Name}: {item.Description}");
+                }
+            }
+            else
+            {
+                Console.WriteLine(" - None");
+            }
+
+            // NPCS
+            Console.WriteLine();
+            Console.WriteLine("NPCs:");
             if (CurrentRoom.Npcs.Count > 0)
             {
-                Console.WriteLine("\nNpcs:");
                 foreach (var npc in CurrentRoom.Npcs.Values)
                 {
-                    Console.WriteLine($" - {npc.Name} ({npc.Description})");
+                    Console.WriteLine($" - {npc.Name}: {npc.Description}");
                 }
+            }
+            else
+            {
+                Console.WriteLine(" - None");
             }
 
             Console.WriteLine();

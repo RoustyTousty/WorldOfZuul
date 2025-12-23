@@ -4,12 +4,11 @@ namespace WorldOfZuul.Items
      * Represents an item that can be used by the player.
      */
     public class UsableItem : Item
+    {
+        public UsableItem(string id, string name, string description, string? useText=null)
+            : base(id, name, description, useText)
         {
-
             
-            public UsableItem(string id, string name, string description, string? useText=null)
-                : base(id, name, description, useText)
-        {
         }
 
         public override bool Use()

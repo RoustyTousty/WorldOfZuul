@@ -1,8 +1,7 @@
 namespace WorldOfZuul.Items
 {
-public class GenericItem : Item
+    public class GenericItem : Item
     {
-        
         public GenericItem(string id, string name, string description, string? useText = null)
             : base(id, name, description, useText)
         {
@@ -14,6 +13,5 @@ public class GenericItem : Item
             Console.WriteLine($"Can't use {Name}.");
             return false; // Use failed - item cannot be used
         }
-
     }
 }

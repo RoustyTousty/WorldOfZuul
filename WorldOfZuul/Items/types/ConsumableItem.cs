@@ -1,6 +1,8 @@
+using System.Reflection.Metadata.Ecma335;
+
 namespace WorldOfZuul.Items
 {
-public class ConsumableItem : Item
+    public class ConsumableItem : Item
     {
         public int Uses { get; private set; }
 
@@ -17,24 +19,29 @@ public class ConsumableItem : Item
         {
         if (Uses > 0)
             {
-            Uses--;
+                Uses--;
 
-            if (!string.IsNullOrWhiteSpace(UseText))
-            Console.WriteLine(UseText);
-            Console.WriteLine();
-            Console.WriteLine($"{Name} has {Uses} uses left.");
-        
-            if (Uses == 0)
+                if (!string.IsNullOrWhiteSpace(UseText))
+                {
+                    Console.WriteLine(UseText);
+                    Console.WriteLine();
+                    Console.WriteLine($"{Name} has {Uses} uses left.");
+                    
+                
+
+                    if (Uses == 0)
+                    {
+                        Console.WriteLine($"The {Name} has been fully consumed.");
+                    }
+                }
+            }
+            else
             {
                 Console.WriteLine($"The {Name} has been fully consumed.");
                 // TODO: remove from inventory here
                 return true;  // Use succeeded, item consumed
             }
-        return true;  // Use succeeded
-            }
-    else
-    {
-        Console.WriteLine("nothing happens...");
-        return false;  // Use failed, no uses left
+            return false;
+        }
     }
-}}}
+}

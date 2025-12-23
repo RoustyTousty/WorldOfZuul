@@ -1,7 +1,7 @@
 ﻿using WorldOfZuul.World;
 using WorldOfZuul.Entities;
 using WorldOfZuul.Commands;
-using WorldOfZuul.Items;
+using WorldOfZuul.Events;
 
 namespace WorldOfZuul
 {
@@ -9,6 +9,7 @@ namespace WorldOfZuul
     {
         private Player player;
         private Map map;
+        public CaseState Case { get; } = new();
 
         public Game()
         {
@@ -91,10 +92,52 @@ namespace WorldOfZuul
                 }
             }
 
+            //---
+          /*
+            * Add the Department of Housing and Urban Development Office room (interactive demonstration).
+            */
+            Room HousingandUrbanDevelopment = Office1RoomBuilder.BuildPoliticalOffice01();
+
+            // Replace the JSON Office 01 room with the interactive version
+            if (courtHouseLocation != null && courtHouseLocation.Rooms.ContainsKey("Office 01"))
+            {
+                Room oldOffice1Room = courtHouseLocation.GetRoom("Office 01")!;
+                courtHouseLocation.SetRoom(HousingandUrbanDevelopment);
+
+                // Update all exits in the map that were pointing to the old Office 01 room to point to the new one
+                foreach (var location in map.Locations.Values)
+                {
+                    foreach (var room in location.Rooms.Values)
+                    {
+                        foreach (var exit in room.Exits.Values)
+                        {
+                            if (exit.TargetRoom == oldOffice1Room)
+                            {
+                                exit.TargetRoom = HousingandUrbanDevelopment;
+                            }
+                        }
+                    }
+                }
+
+                // Set up the Housing and Urban Development room's exit back to Political Offices
+                if (HousingandUrbanDevelopment.Exits.ContainsKey("Political Offices"))
+                {
+                    var politicalOfficesRoom = courtHouseLocation.GetRoom("Political Offices");
+                    if (politicalOfficesRoom != null)
+                    {
+                        HousingandUrbanDevelopment.Exits["Political Offices"].TargetRoom = politicalOfficesRoom;
+                    }
+                }
+            }
+           // ---
+
             /*
             * Initialize player and prompt for a name.
             */
             player = new Player(map.GetLocation(map.StartingLocationId)!);
+
+            EventManager.Instance.Initialize(this, player, map);
+
             player.PrintEmptySpace(50);
             player.PromptPlayerName();
         }
@@ -334,11 +377,6 @@ namespace WorldOfZuul
                     break;
 
 
-                case "travel":
-                    player!.MoveToLocation(command.SecondWord, map);
-                    break;
-
-
                 case "talk" or "talkto":
                     if (command.SecondWord == null)
                     {
@@ -348,6 +386,10 @@ namespace WorldOfZuul
                     player!.ClearAndBeginContentArea();
                     player!.TryTalkToNpc(command.SecondWord);
                     break;
+
+                
+                case "conclude" or "ending":
+                    return HandleEnding();
 
 
                 case "quit":
@@ -365,6 +407,42 @@ namespace WorldOfZuul
             }
             // Next loop iteration will reposition the prompt at the bottom
             return true;
+        }
+
+
+
+        /*
+        * Handles the game ending logic.
+        */
+        private bool HandleEnding()
+        {
+            if (Case.IsSolved)
+            {
+                Console.WriteLine("The case is already closed.");
+                return true;
+            }
+
+            Console.WriteLine("You prepare to conclude the investigation...");
+
+            if (Case.CanExposeTruth)
+            {
+                Console.WriteLine("\nYou release the evidence to the public.");
+                Console.WriteLine("The city trembles as the truth comes out.");
+                Console.WriteLine("Powerful figures fall. You made enemies.");
+                Console.WriteLine("\nJustice was worth the cost.");
+
+                Case.Solve();
+                return false; // END GAME
+            }
+            else
+            {
+                Console.WriteLine("\nYour evidence is incomplete.");
+                Console.WriteLine("Someone offers you a deal.");
+                Console.WriteLine("The case disappears.");
+
+                Case.Solve();
+                return false; // END GAME (bad ending)
+            }
         }
     }
 }

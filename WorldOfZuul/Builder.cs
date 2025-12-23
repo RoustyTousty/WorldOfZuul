@@ -2,6 +2,8 @@ using System.Text.Json;
 using WorldOfZuul.World;
 using WorldOfZuul.Items;
 using WorldOfZuul.Entities;
+using WorldOfZuul.Events;
+using WorldOfZuul.Factories;
 
 namespace WorldOfZuul
 {
@@ -67,19 +69,32 @@ namespace WorldOfZuul
                     {
                         foreach (var exitData in roomData.Exits)
                         {
-                            if (roomLookup.TryGetValue(exitData.TargetRoomId, out var targetRoom))
+                            if (!string.IsNullOrEmpty(exitData.TargetRoomId))
                             {
                                 // Ensure exit has a usable id. If JSON omits 'id', fall back to the exit name.
                                 string exitId = string.IsNullOrWhiteSpace(exitData.Id) ? exitData.Name : exitData.Id;
+                                Room targetRoom = roomLookup[exitData.TargetRoomId];
                                 Exit exit = new Exit(
                                     exitId,
                                     exitData.Name,
                                     targetRoom,
+                                    null,
                                     exitData.IsLocked ?? false
                                 );
                                 room.SetExit(exit);
                             }
+                            else if (!string.IsNullOrEmpty(exitData.TargetLocationId))
+                            {
+                                var targetLocation = world.GetLocation(exitData.TargetLocationId);
+                                Exit exit = new Exit(exitData.Id, exitData.Name, null, targetLocation, exitData.IsLocked ?? false);
+                                room.SetExit(exit);
+                            }
+                            else
+                            {
+                                throw new Exception($"Exit {exitData.Id} has no target.");
+                            }
                         }
+
                     }
                 }
 
@@ -94,15 +109,20 @@ namespace WorldOfZuul
                     {
                         foreach (var itemData in roomData.Items)
                         {
-                            Item item = new Item(
-                                itemData.Id,
-                                itemData.Name,
-                                itemData.Description
-                            );
+                            Item item = ItemFactory.Create(itemData);
+
+                            if (itemData.Event != null)
+                            {
+                                IEvent ev = EventFactory.Create(itemData.Event);
+                                EventManager.Instance.Register(ev);
+                            }
+
                             room.SetItem(item);
                         }
                     }
                 }
+    
+
 
                 /*
                 * Reads NPCs from JSON and places them in the appropriate rooms.
@@ -177,12 +197,24 @@ namespace WorldOfZuul
         public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public string? Type { get; set; }
+        public string? UseText { get; set; }
+        public bool? CanUse { get; set; }
+
+        public EventData? Event { get; set; }
+    }
+    public class EventData
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
+        public Dictionary<string, JsonElement>? Params { get; set; }
     }
     public class ExitData
     {
         public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
-        public string TargetRoomId { get; set; } = string.Empty;
+        public string? TargetRoomId { get; set; } = string.Empty;
+        public string? TargetLocationId { get; set; } = string.Empty;
         public bool? IsLocked { get; set; }
     }
     public class NpcData
